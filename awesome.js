@@ -2,11 +2,15 @@ import h from 'virtual-dom/h';
 import Freezer from 'freezer-js';
 import { Kefir } from 'kefir';
 
+import Counter from './counter';
+
 var Awesome = function (initialState = {}) {
   var click = Kefir.emitter();
   initialState.streams = {
     click
   };
+
+  initialState.counter = Counter();
 
   var cursor = new Freezer(initialState);
 
@@ -22,9 +26,14 @@ Awesome.getFullName = function (state) {
 };
 
 Awesome.render = function (state) {
-  return h('h1', {
-    'kefir-click': state.streams.click
-  }, [Awesome.getFullName(state)]);
+  return h('span', null, [
+    h('span', [
+      h('span', {
+        'kefir-click': state.streams.click
+      }, [Awesome.getFullName(state)]),
+      ' has liked you more than ', Counter.render(state.counter), ' time(s)'
+    ])
+  ]);
 };
 
 Awesome.clickHandler = function (cursor) {
