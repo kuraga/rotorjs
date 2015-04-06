@@ -2,31 +2,33 @@ import h from 'virtual-dom/h';
 import Freezer from 'freezer-js';
 import { Kefir } from 'kefir';
 
-var Counter = function (initialState = {}) {
-  initialState.count = initialState.count || 0;
+export default class Counter {
 
-  var click = Kefir.emitter();
-  initialState.streams = {
-    click
-  };
+  constructor(initialState = {}) {
+    initialState.count = initialState.count || 0;
 
-  var cursor = new Freezer(initialState);
+    var click = Kefir.emitter();
+    initialState.streams = {
+      click
+    };
 
-  click.onValue( () => {
-    Counter.clickHandler(cursor);
-  } );
+    var cursor = new Freezer(initialState);
 
-  return cursor.get();
+    click.onValue( () => {
+      Counter.clickHandler(cursor);
+    } );
+
+    return cursor.get();
+  }
+
+  static render(state) {
+    return h('span', {
+      'kefir-click': state.streams.click
+    }, [state.count.toString()]);
+  }
+
+  static clickHandler(cursor) {
+    cursor.get().set('count', 1);
+  }
+
 };
-
-Counter.render = function (state) {
-  return h('span', {
-    'kefir-click': state.streams.click
-  }, [state.count.toString()]);
-};
-
-Counter.clickHandler = function (cursor) {
-  cursor.get().set('count', 1);
-};
-
-export default Counter;

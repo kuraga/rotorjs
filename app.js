@@ -4,13 +4,19 @@ import diff from 'virtual-dom/vtree/diff';
 import patch from 'virtual-dom/vdom/patch';
 import create from 'virtual-dom/vdom/create-element';
 
-export default function App(element, initialState, render) {
-  var cursor = new Freezer(initialState);
-  var loop = mainLoop(cursor.get(), render, { diff, create, patch });
+export default class App {
 
-  cursor.on('update', () => {
-    loop.update(cursor.get());
-  });
+  constructor(rootElement, initialState, render) {
+    this.rootElement = rootElement;
 
-  element.appendChild(loop.target);
-}
+    this.cursor = new Freezer(initialState);
+    this.loop = mainLoop(this.cursor.get(), render, { diff, create, patch });
+
+    this.cursor.on('update', () => {
+      this.loop.update(this.cursor.get());
+    });
+
+    this.rootElement.appendChild(this.loop.target);
+  }
+
+};
