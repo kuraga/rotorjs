@@ -1,26 +1,24 @@
+import objectPath from 'object-path';
 import h from 'virtual-dom/h';
-import Freezer from 'freezer-js';
 import { Kefir } from 'kefir';
 
+import Component from './component';
 import Counter from './counter';
 
-export default class Awesome {
+export default class Awesome extends Component {
 
-  constructor(initialState = {}) {
+  constructor(app, componentPath, initialState = {}) {
+    super(app);
+
+    initialState.counter = new Counter(app, [...componentPath, 'counter']);
+
     var click = Kefir.emitter();
-    initialState.streams = {
-      click
-    };
-
-    initialState.counter = new Counter();
-
-    var cursor = new Freezer(initialState);
-
     click.onValue( () => {
-      Awesome.clickHandler(cursor);
+      Awesome.clickHandler(objectPath.get(app.cursor.get(), componentPath));
     } );
+    initialState.streams = { click };
 
-    return cursor.get();
+    return initialState;
   };
 
   static getFullName(state) {
@@ -39,8 +37,8 @@ export default class Awesome {
   }
 
   static clickHandler(cursor) {
-    cursor.get().set('firstName', 'Vladimir');
-    cursor.get().set('lastName', 'Lenin');
+    cursor.set('firstName', 'Vladimir');
+    cursor.set('lastName', 'Lenin');
   };
 
 }

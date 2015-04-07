@@ -2,10 +2,12 @@ import App from './app';
 import Awesome from './awesome'
 
 window.onload = () => {
-  var awesome = new Awesome({
+  var app = new App(document.body);
+
+  var awesome = new Awesome(app, [], {
     firstName: 'Alexander',
     lastName: 'Kurakin'
   });
 
-  var app = new App(document.body, awesome, Awesome.render);
+  app.plug(awesome, Awesome.render);
 };

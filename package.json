@@ -3,6 +3,7 @@
   "author": "Alexander Kurakin <kuraga333@mail.ru>",
 
   "dependencies": {
+    "object-path": "^0.9.1",
     "virtual-dom": "^2.0.1",
     "freezer-js": "^0.5.0",
     "main-loop": "^3.1.0",

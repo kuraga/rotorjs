@@ -1,24 +1,24 @@
+import objectPath from 'object-path';
 import h from 'virtual-dom/h';
-import Freezer from 'freezer-js';
 import { Kefir } from 'kefir';
+
+import Component from './component';
 
 export default class Counter {
 
-  constructor(initialState = {}) {
+  constructor(app, componentPath, initialState = {}) {
+    super(app);
+
     initialState.count = initialState.count || 0;
 
     var click = Kefir.emitter();
-    initialState.streams = {
-      click
-    };
-
-    var cursor = new Freezer(initialState);
-
     click.onValue( () => {
-      Counter.clickHandler(cursor);
+      let componentState = objectPath.get(app.cursor.get(), componentPath);
+      Counter.clickHandler(componentState);
     } );
+    initialState.streams = { click };
 
-    return cursor.get();
+    return initialState;
   }
 
   static render(state) {
@@ -27,8 +27,8 @@ export default class Counter {
     }, [state.count.toString()]);
   }
 
-  static clickHandler(cursor) {
-    cursor.get().set('count', 1);
+  static clickHandler(state) {
+    state.set('count', state.count+1);
   }
 
 };
