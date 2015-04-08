@@ -12,11 +12,13 @@ export default class Awesome extends Component {
 
     initialState.counter = new Counter(app, [...componentPath, 'counter']);
 
-    var click = Kefir.emitter();
-    click.onValue( () => {
-      Awesome.clickHandler(objectPath.get(app.cursor.get(), componentPath));
+    var input = Kefir.emitter();
+    initialState.streams = { input };
+
+    input.onValue( (event) => {
+      let componentState = objectPath.get(app.cursor.get(), componentPath);
+      componentState.set('status', event.target.value);
     } );
-    initialState.streams = { click };
 
     return initialState;
   };
@@ -28,17 +30,12 @@ export default class Awesome extends Component {
   static render(state) {
     return h('span', null, [
       h('span', [
-        h('span', {
-          'kefir-click': state.streams.click
-        }, [Awesome.getFullName(state)]),
+        h('span', null, [Awesome.getFullName(state)]),
+        h('input', { type: 'text', 'kefir-input': state.streams.input }),
+        h('span', null, [String(state.status)]),
         ' has liked you more than ', Counter.render(state.counter), ' time(s)'
       ])
     ]);
   }
-
-  static clickHandler(cursor) {
-    cursor.set('firstName', 'Vladimir');
-    cursor.set('lastName', 'Lenin');
-  };
 
 }
