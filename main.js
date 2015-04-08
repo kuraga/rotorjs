@@ -9,5 +9,5 @@ window.onload = () => {
     lastName: 'Kurakin'
   });
 
-  app.plug(awesome, Awesome.render);
+  app.plug(awesome);
 };

@@ -10,12 +10,13 @@ export default class App {
     this.rootElement = rootElement;
   }
 
-  plug(initialState, render) {
+  plug(initialState) {
+    var render = initialState.component.render.bind(initialState.component);
     this.cursor = new Freezer(initialState);
     this.loop = mainLoop(this.cursor.get(), render, { diff, create, patch });
 
-    this.cursor.on('update', (data) => {
-      this.loop.update(data);
+    this.cursor.on('update', () => {
+      this.loop.update();
     });
 
     this.rootElement.appendChild(this.loop.target);

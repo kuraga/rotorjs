@@ -1,34 +1,27 @@
-import objectPath from 'object-path';
-import h from 'virtual-dom/h';
-import { Kefir } from 'kefir';
-
 import Component from './component';
+import h from 'virtual-dom/h';
 
-export default class Counter {
+export default class Counter extends Component {
 
   constructor(app, componentPath, initialState = {}) {
-    super(app);
+    super(app, componentPath, initialState);
 
     initialState.count = initialState.count || 0;
 
-    var click = Kefir.emitter();
-    click.onValue( () => {
-      let componentState = objectPath.get(app.cursor.get(), componentPath);
-      Counter.clickHandler(componentState);
-    } );
-    initialState.streams = { click };
+    setInterval(this.incCount.bind(this), 1000); // FIXME: somebody have to turn this off
 
     return initialState;
   }
 
-  static render(state) {
-    return h('span', {
-      'kefir-click': state.streams.click
-    }, [state.count.toString()]);
+  render() {
+    return h('div', null, [
+      'I\'m a child component. Do you know how long time have I existed for?',
+      h('br'),
+      'I know: for ', String(this.state.count), ' seconds.'
+    ]);
   }
 
-  static clickHandler(state) {
-    state.set('count', state.count+1);
+  incCount() {
+    this.state.set('count', this.state.count+1);
   }
-
 };

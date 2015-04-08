@@ -1,41 +1,40 @@
-import objectPath from 'object-path';
+import Component from './component';
 import h from 'virtual-dom/h';
 import { Kefir } from 'kefir';
-
-import Component from './component';
 import Counter from './counter';
 
 export default class Awesome extends Component {
 
   constructor(app, componentPath, initialState = {}) {
-    super(app);
+    super(app, componentPath, initialState);
 
-    initialState.counter = new Counter(app, [...componentPath, 'counter']);
+    initialState.counter = new Counter(app, [...this.componentPath, 'counter']);
 
     var input = Kefir.emitter();
     initialState.streams = { input };
 
-    input.onValue( (event) => {
-      let componentState = objectPath.get(app.cursor.get(), componentPath);
-      componentState.set('status', event.target.value);
-    } );
+    input.onValue(this.inputHandler.bind(this)); // FIXME: somebody have to turn this off
 
     return initialState;
-  };
-
-  static getFullName(state) {
-    return `${state.firstName} ${state.lastName}`;
   }
 
-  static render(state) {
-    return h('span', null, [
-      h('span', [
-        h('span', null, [Awesome.getFullName(state)]),
-        h('input', { type: 'text', 'kefir-input': state.streams.input }),
-        h('span', null, [String(state.status)]),
-        ' has liked you more than ', Counter.render(state.counter), ' time(s)'
-      ])
+  get fullName() {
+    return `${this.state.firstName} ${this.state.lastName}`;
+  }
+
+  render() {
+    return h('div', null, [
+      'How have I to address by you? ',
+      h('input', { type: 'text', 'kefir-input': this.state.streams.input }),
+      h('br'),
+      'Ok, ', String(this.state.status), ' ', this.fullName, '. How are you?',
+      h('br'),
+      this.state.counter.component.render()
     ]);
+  }
+
+  inputHandler(event) {
+    this.state.set('status', event.target.value);
   }
 
 }
