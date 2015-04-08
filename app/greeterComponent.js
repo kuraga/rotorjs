@@ -1,6 +1,7 @@
 import Component from '../lib/component';
 import h from 'virtual-dom/h';
 import { Kefir } from 'kefir';
+import EmitterHook from '../lib/emitter-hook';
 import TimerComponent from './timerComponent';
 
 export default class GreeterComponent extends Component {
@@ -25,7 +26,7 @@ export default class GreeterComponent extends Component {
   render() {
     return h('div', null, [
       'How have I to address by you? ',
-      h('input', { type: 'text', 'kefir-input': this.state.streams.input }),
+      h('input', { type: 'text', 'kefir-input': new EmitterHook(this.state.streams.input) }),
       h('br'),
       'Ok, ', String(this.state.status), ' ', this.fullName, '. How are you?',
       h('br'),
