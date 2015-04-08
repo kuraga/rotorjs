@@ -1,7 +1,7 @@
-import Component from './component';
+import Component from './../lib/component';
 import h from 'virtual-dom/h';
 
-export default class Counter extends Component {
+export default class TimerComponent extends Component {
 
   constructor(app, componentPath, initialState = {}) {
     super(app, componentPath, initialState);

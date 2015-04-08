@@ -1,14 +1,14 @@
-import Component from './component';
+import Component from '../lib/component';
 import h from 'virtual-dom/h';
 import { Kefir } from 'kefir';
-import Counter from './counter';
+import TimerComponent from './timerComponent';
 
-export default class Awesome extends Component {
+export default class GreeterComponent extends Component {
 
   constructor(app, componentPath, initialState = {}) {
     super(app, componentPath, initialState);
 
-    initialState.counter = new Counter(app, [...this.componentPath, 'counter']);
+    initialState.timerComponent = new TimerComponent(app, [...this.componentPath, 'timerComponent']);
 
     var input = Kefir.emitter();
     initialState.streams = { input };
@@ -29,7 +29,7 @@ export default class Awesome extends Component {
       h('br'),
       'Ok, ', String(this.state.status), ' ', this.fullName, '. How are you?',
       h('br'),
-      this.state.counter.component.render()
+      this.state.timerComponent.component.render()
     ]);
   }
 

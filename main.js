@@ -1,22 +1,6 @@
-import App from './app';
-import Awesome from './awesome'
-
-class MyApp extends App {
-
-  constructor(firstName, lastName) {
-    super();
-
-    this.awesome = new Awesome(app, [], {
-      firstName, lastName
-    });
-  }
-
-  plug() {
-    super.plug(this.awesome);
-  }
-};
+import GreeterApp from './app/greeterApp';
 
 window.onload = () => {
-  var app = new App(document.body);
+  var app = new GreeterApp(document.body, 'FirstName', 'LastName');
   app.plug();
 };
