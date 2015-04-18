@@ -17,12 +17,13 @@ I don't know the future of this code but I know keywords describe my thoughts:
 * events,
 * streams,
 * ECMAScript 6,
+* minimalism,
+* testability,
 * isomorphic,
-* Web Components,
 * [JSX](https://github.com/alexmingoia/jsx-transform),
 * [directives](http://wix.github.io/react-templates),
 * [thunks](https://github.com/Raynos/vdom-thunk),
-* minimalism.
+* (maybe) Web Components.
 
 ## Usage
 
