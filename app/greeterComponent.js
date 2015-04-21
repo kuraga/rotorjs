@@ -1,6 +1,7 @@
 import Component from '../lib/component';
 import h from 'virtual-dom/h';
 import { Kefir } from 'kefir';
+import Thunk from 'vdom-thunk';
 import EmitterHook from '../lib/emitter-hook';
 import TimerComponent from './timerComponent';
 
@@ -28,9 +29,19 @@ export default class GreeterComponent extends Component {
       'How have I to address by you? ',
       h('input', { type: 'text', 'kefir-input': new EmitterHook(this.state.streams.input) }),
       h('br'),
-      'Ok, ', String(this.state.status), ' ', this.fullName, '. How are you?',
+      `Ok, ${this.state.status} ${this.fullName}! How are you?`,
+      h('br'),
+      h('br'),
+      Thunk(this.renderThunk.bind(this), this.state.status),
+      h('br'),
       h('br'),
       this.state.timerComponent.component.render()
+    ]);
+  }
+
+  renderThunk() {
+    return h('span', null, [
+      `I'm a thunk. I'm changed only if status (now it is "${this.state.status}") has been changed. See: ${Math.random()}`
     ]);
   }
 
