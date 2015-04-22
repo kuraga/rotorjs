@@ -36,17 +36,15 @@ export default class GreeterComponent extends Component {
       Ok, {this.state.status} {this.fullName}! How are you?
       <br />
       <br />
-      {Thunk(this.renderThunk.bind(this), this.state.status)}
+      {Thunk(() => {
+        return <span>
+          I'm a thunk. I'm changed only if status (now it is "{String(this.state.status)}") has been changed. See: {String(Math.random())}
+        </span>;
+      }, this.state.status)}
       <br />
       <br />
       {this.state.timerComponent.component.render()}
     </div>;
-  }
-
-  renderThunk() {
-    return <span>
-      I'm a thunk. I'm changed only if status (now it is "{String(this.state.status)}") has been changed. See: {String(Math.random())}
-    </span>;
   }
 
   inputHandler(event) {
