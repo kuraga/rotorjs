@@ -1,12 +1,14 @@
-import Component from './../lib/component';
+/** @jsx h */
+
+import Component from '../lib/component';
 import h from 'virtual-dom/h';
 
 export default class TimerComponent extends Component {
 
   constructor(app, componentPath, initialState = {}) {
-    super(app, componentPath, initialState);
-
     initialState.count = initialState.count || 0;
+
+    super(app, componentPath, initialState);
 
     setInterval(this.incCount.bind(this), 1000); // FIXME: somebody have to turn this off
 
@@ -14,14 +16,14 @@ export default class TimerComponent extends Component {
   }
 
   render() {
-    return h('div', null, [
-      'I\'m a child component. Do you know how long time have I existed for?',
-      h('br'),
-      'I know: for ', String(this.state.count), ' seconds.'
-    ]);
+    return <div>
+      I'm a child component. Do you know how long time have I existed for?
+      <br />
+      I know: for {String(this.state.count)} seconds.
+    </div>;
   }
 
   incCount() {
-    this.state.set('count', this.state.count+1);
+    this.state.set('count', this.state.count + 1);
   }
 };

@@ -1,3 +1,5 @@
+/** @jsx h */
+
 import Component from '../lib/component';
 import h from 'virtual-dom/h';
 import { Kefir } from 'kefir';
@@ -8,9 +10,11 @@ import TimerComponent from './timerComponent';
 export default class GreeterComponent extends Component {
 
   constructor(app, componentPath, initialState = {}) {
+    initialState.status = initialState.status || 'status';
+
     super(app, componentPath, initialState);
 
-    initialState.timerComponent = new TimerComponent(app, [...this.componentPath, 'timerComponent']);
+    initialState.timerComponent = new TimerComponent(app, this.componentPath.concat('timerComponent'));
 
     var input = Kefir.emitter();
     initialState.streams = { input };
@@ -25,24 +29,24 @@ export default class GreeterComponent extends Component {
   }
 
   render() {
-    return h('div', null, [
-      'How have I to address by you? ',
-      h('input', { type: 'text', 'kefir-input': new EmitterHook(this.state.streams.input) }),
-      h('br'),
-      `Ok, ${this.state.status} ${this.fullName}! How are you?`,
-      h('br'),
-      h('br'),
-      Thunk(this.renderThunk.bind(this), this.state.status),
-      h('br'),
-      h('br'),
-      this.state.timerComponent.component.render()
-    ]);
+    return <div>
+      How have I to address by you?
+      <input type="text" kefir-input={new EmitterHook(this.state.streams.input)} />
+      <br />
+      Ok, {this.state.status} {this.fullName}! How are you?
+      <br />
+      <br />
+      {Thunk(this.renderThunk.bind(this), this.state.status)}
+      <br />
+      <br />
+      {this.state.timerComponent.component.render()}
+    </div>;
   }
 
   renderThunk() {
-    return h('span', null, [
-      `I'm a thunk. I'm changed only if status (now it is "${this.state.status}") has been changed. See: ${Math.random()}`
-    ]);
+    return <span>
+      I'm a thunk. I'm changed only if status (now it is "{String(this.state.status)}") has been changed. See: {String(Math.random())}
+    </span>;
   }
 
   inputHandler(event) {

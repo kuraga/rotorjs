@@ -9,11 +9,11 @@ export default class GreeterApp extends App {
     var routerState = new Router(this, {
 
       '/': (match, routerComponentPath) => {
-        return new MainComponent(this, [...routerComponentPath, 'greeterComponent']);
+        return new MainComponent(this, routerComponentPath.concat('greeterComponent'));
       },
 
       '/greeter/:firstName/:lastName': (match, routerComponentPath) => {
-        return new GreeterComponent(this, [...routerComponentPath, 'greeterComponent'], {
+        return new GreeterComponent(this, routerComponentPath.concat('greeterComponent'), {
           firstName: match.params.firstName,
           lastName: match.params.lastName
         });
