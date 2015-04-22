@@ -1,3 +1,3 @@
 #!/bin/sh
 
-./node_modules/.bin/browserify -t unijsxify -t babelify main.js > dist.js
+./node_modules/.bin/browserify main.js > dist.js

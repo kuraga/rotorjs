@@ -13,8 +13,18 @@
     "route-trie": "^0.2.0"
   },
   "devDependencies": {
-    "browserify": "^9.0.3",
-    "babelify": "^5.0.4",
+    "browserify": "^9.0.8",
+    "babelify": "^6.0.2",
     "unijsxify": "^0.1.2"
+  },
+
+  "browserify": {
+    "transform": [
+      "unijsxify",
+      [ "babelify", {
+        "nonStandard": false,
+        "compact": false
+      } ]
+    ]
   }
 }
