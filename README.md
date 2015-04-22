@@ -30,9 +30,10 @@ I don't know the future of this code but I know keywords describe my thoughts:
 * minimalism,
 * (not yet) testability,
 * (not yet) isomorphic,
-* [JSX](https://github.com/alexmingoia/jsx-transform),
-* (not yet) ["directives"](http://wix.github.io/react-templates),
 * ["thunks"](https://github.com/Raynos/vdom-thunk),
+* [JSX](https://github.com/alexmingoia/jsx-transform),
+* (maybe) dependency injection,
+* (maybe) ["directives"](http://wix.github.io/react-templates),
 * (maybe) Web Components.
 
 ## Dependencies
