@@ -43,7 +43,6 @@ Dependency | Usage
 [freezer-js](https://github.com/arqex/freezer) | Immutable data state
 [main-loop](https://github.com/Raynos/main-loop) | Application loop
 [kefir](http://pozadi.github.io/kefir) | Data streams
-[vdom-thunk](https://github.com/Raynos/vdom-thunk) | "Thunks"
 [route-trie](https://github.com/zensh/route-trie) | Routes matching
 
 ## Development dependencies

@@ -2,8 +2,8 @@
 
 import Component from '../lib/component';
 import h from 'virtual-dom/h';
+import ImmutableThunk from '../lib/immutable-thunk';
 import { Kefir } from 'kefir';
-import Thunk from 'vdom-thunk';
 import EmitterHook from '../lib/emitter-hook';
 import TimerComponent from './timerComponent';
 
@@ -36,11 +36,11 @@ export default class GreeterComponent extends Component {
       Ok, {this.state.status} {this.fullName}! How are you?
       <br />
       <br />
-      {Thunk(() => {
-        return <span>
-          I'm a thunk. I'm changed only if status (now it is "{String(this.state.status)}") has been changed. See: {String(Math.random())}
-        </span>;
-      }, this.state.status)}
+      {new ImmutableThunk(() => (
+        <span>
+          I'm a thunk. I'm changed only if status or name's component has been changed. See: {String(Math.random())}
+        </span>
+      ), [this.state.status, this.fullName])}
       <br />
       <br />
       {this.state.timerComponent.component.render()}
