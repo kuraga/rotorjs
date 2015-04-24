@@ -6,13 +6,23 @@ import h from 'virtual-dom/h';
 export default class TimerComponent extends Component {
 
   constructor(app, componentPath, initialState = {}) {
-    initialState.count = initialState.count || 0;
-
     super(app, componentPath, initialState);
 
-    setInterval(this.incCount.bind(this), 1000); // FIXME: somebody have to turn this off
+    initialState.count = initialState.count || 0;
 
     return initialState;
+  }
+
+  activate() {
+    super.activate();
+
+    this.interval = setInterval(this.incCount.bind(this), 1000);
+  }
+
+  deactivate() {
+    clearInterval(this.interval);
+
+    super.deactivate();
   }
 
   render() {

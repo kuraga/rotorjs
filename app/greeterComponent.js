@@ -10,18 +10,33 @@ import TimerComponent from './timerComponent';
 export default class GreeterComponent extends Component {
 
   constructor(app, componentPath, initialState = {}) {
-    initialState.status = initialState.status || 'status';
-
     super(app, componentPath, initialState);
 
-    initialState.timerComponent = new TimerComponent(app, this.componentPath.concat('timerComponent'));
+    initialState.status = initialState.status || 'status';
+    initialState.timer = new TimerComponent(app, this.componentPath.concat('timer'));
 
-    var input = Kefir.emitter();
-    initialState.streams = { input };
-
-    input.onValue(this.inputHandler.bind(this)); // FIXME: somebody have to turn this off
+    this.input = Kefir.emitter();
+    initialState.streams = {
+      input: this.input
+    };
 
     return initialState;
+  }
+
+  activate() {
+    super.activate();
+
+    this.input.onValue(this.inputHandler.bind(this));
+
+    this.state.timer.component.activate();
+  }
+
+  deactivate() {
+    this.state.timer.component.deactivate();
+
+    this.input.offValue();
+
+    super.deactivate();
   }
 
   get fullName() {
@@ -43,7 +58,7 @@ export default class GreeterComponent extends Component {
       ), [this.state.status, this.fullName])}
       <br />
       <br />
-      {this.state.timerComponent.component.render()}
+      {this.state.timer.component.render()}
     </div>;
   }
 
