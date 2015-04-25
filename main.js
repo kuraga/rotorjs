@@ -1,3 +1,5 @@
+'use strict';
+
 import GreeterApp from './app/greeterApp';
 
 var application;
