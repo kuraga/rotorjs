@@ -1,12 +1,12 @@
 'use strict';
 
-import GreeterApp from './app/greeterApp';
+import GreeterApplication from './app/greeterApplication';
 
 var application;
 
 window.onload = () => {
-  app = new GreeterApp(document.body);
-  app.start('FirstName', 'LastName');
+  application = new GreeterApplication(document.body);
+  application.start('FirstName', 'LastName');
 };
 
 window.onunload = () => {
