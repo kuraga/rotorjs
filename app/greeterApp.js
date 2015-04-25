@@ -26,8 +26,6 @@ export default class GreeterApp extends App {
     });
 
     super.start(routerState);
-
-    this.state.router.component.onPopStateHandler(); // FIXME: we "initialize" router here. we can't do it before `super` call
   }
 
 };
