@@ -5,25 +5,29 @@ import GreeterComponent from './greeterComponent'
 
 export default class GreeterApp extends App {
 
-  constructor(rootElement, firstName, lastName) {
+  constructor(rootElement) {
     super(rootElement);
+  }
 
+  start(firstName, lastName) {
     var routerState = new Router(this, {
 
-      '/': (match, routerComponentPath) => {
-        return new MainComponent(this, routerComponentPath.concat('greeterComponent'));
+      '/': (match, router) => {
+        return new MainComponent(this, router, 'greeter');
       },
 
-      '/greeter/:firstName/:lastName': (match, routerComponentPath) => {
-        return new GreeterComponent(this, routerComponentPath.concat('greeterComponent'), {
+      '/greeter/:firstName/:lastName': (match, router) => {
+        return new GreeterComponent(this, router, 'greeter', {
           firstName: match.params.firstName,
           lastName: match.params.lastName
         });
       }
 
     });
-    this.start(routerState);
-    this.state.component.onPopStateHandler(); // FIXME: we "initialize" router here. we can't do it before `super` call
+
+    super.start(routerState);
+
+    this.state.router.component.onPopStateHandler(); // FIXME: we "initialize" router here. we can't do it before `super` call
   }
 
 };

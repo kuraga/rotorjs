@@ -1,5 +1,6 @@
 import GreeterApp from './app/greeterApp';
 
 window.onload = () => {
-  new GreeterApp(document.body, 'FirstName', 'LastName');
+  let app = new GreeterApp(document.body);
+  app.start('FirstName', 'LastName');
 };

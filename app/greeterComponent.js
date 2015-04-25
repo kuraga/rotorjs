@@ -9,11 +9,11 @@ import TimerComponent from './timerComponent';
 
 export default class GreeterComponent extends Component {
 
-  constructor(app, componentPath, initialState = {}) {
-    super(app, componentPath, initialState);
+  constructor(app, parent = null, componentName = 'greeter', initialState = {}) {
+    super(app, parent, componentName, initialState);
 
     initialState.status = initialState.status || 'status';
-    initialState.timer = new TimerComponent(app, this.componentPath.concat('timer'));
+    initialState.timer = new TimerComponent(app, this, 'timer');
 
     this.input = Kefir.emitter();
     initialState.streams = {

@@ -5,10 +5,9 @@ import h from 'virtual-dom/h';
 
 export default class MainComponent extends Component {
 
-  constructor(app, componentPath) {
+  constructor(app, parent = null, componentName = 'main') {
     var initialState = {};
-
-    super(app, componentPath, initialState);
+    super(app, parent, componentName, initialState);
 
     return initialState;
   }

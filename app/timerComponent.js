@@ -5,8 +5,8 @@ import h from 'virtual-dom/h';
 
 export default class TimerComponent extends Component {
 
-  constructor(app, componentPath, initialState = {}) {
-    super(app, componentPath, initialState);
+  constructor(app, parent = null, componentName = 'timer', initialState = {}) {
+    super(app, parent, componentName, initialState);
 
     initialState.count = initialState.count || 0;
 
