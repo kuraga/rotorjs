@@ -8,8 +8,6 @@ export default class MainComponent extends Component {
   constructor(application, parent = null, name = 'main') {
     let initialState = {};
     super(application, parent, name, initialState);
-
-    return initialState;
   }
 
   render() {

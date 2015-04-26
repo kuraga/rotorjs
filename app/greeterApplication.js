@@ -10,7 +10,7 @@ export default class GreeterApplication extends Application {
   }
 
   start(firstName, lastName) {
-    let routerState = new RouterComponent(this, {
+    let router = new RouterComponent(this, {
 
       '/': (match, router) => (
         new MainComponent(this, router, 'greeter')
@@ -24,8 +24,7 @@ export default class GreeterApplication extends Application {
       )
 
     });
-
-    super.start(routerState);
+    super.start(router, 'router');
   }
 
 };
