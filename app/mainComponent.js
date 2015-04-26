@@ -6,7 +6,7 @@ import h from 'virtual-dom/h';
 export default class MainComponent extends Component {
 
   constructor(application, parent = null, name = 'main') {
-    var initialState = {};
+    let initialState = {};
     super(application, parent, name, initialState);
 
     return initialState;
