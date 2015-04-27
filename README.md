@@ -8,8 +8,8 @@ This is a *early development concept* of a JavaScript library for rich JavaScrip
 
 ```sh
 npm install
-./build.sh
-open index.html
+npm run build
+open dist/index.html
 ```
 
 ## Philosophy
@@ -53,6 +53,7 @@ Dependency | Usage
 [jsx-transform](https://github.com/alexmingoia/jsx-transform) | JSX sugar
 [browserify](http://browserify.org/) | Modules system
 [babel](https://babeljs.io) | For ECMAScript 6
+[gulp.js](http://gulpjs.com) | Development automation
 
 ## Author
 
