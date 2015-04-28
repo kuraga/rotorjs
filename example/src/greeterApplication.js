@@ -1,5 +1,5 @@
-import Application from '../lib/application';
-import RouterComponent from '../lib/routerComponent';
+import { Application, RouterComponent } from 'rotorjs';
+
 import MainComponent from './mainComponent';
 import GreeterComponent from './greeterComponent';
 

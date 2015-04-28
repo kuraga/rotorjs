@@ -1,51 +1,38 @@
 'use strict';
 
+var path = require('path');
 var gulp = require('gulp');
 var runSequence = require('run-sequence');
 var vinylSourceStream = require('vinyl-source-stream');
 var vinylPaths = require('vinyl-paths');
 var del = require('del');
-var browserify = require('browserify');
-var jsxify = require('jsx-transform').browserifyTransform;
-var babelify = require('babelify');
+var gulpBabel = require('gulp-babel');
 
 var paths = {
-  output: './dist',
-  system: ['./main.js'],
-  systemOutput: './main.js',
-  html: './index.html'
-};
-var jsxOptions = {
-  factory: 'h'
+  source: path.join(__dirname, 'src', '**', '*.js'),
+  destination: path.join(__dirname, 'dist'),
 };
 var babelOptions = {
+  modules: 'common',
   nonStandard: false,
   compact: false
 };
 
 gulp.task('clean', function() {
-  return gulp.src([paths.output])
+  return gulp.src(paths.destination)
     .pipe(vinylPaths(del));
 });
 
 gulp.task('build-system', function () {
-  return browserify(paths.system, { debug: true })
-    .transform(jsxify, jsxOptions)
-    .transform(babelify, babelOptions)
-    .bundle()
-    .pipe(vinylSourceStream(paths.systemOutput))
-    .pipe(gulp.dest(paths.output));
+  return gulp.src(paths.source)
+    .pipe(gulpBabel(babelOptions))
+    .pipe(gulp.dest(paths.destination));
 });
 
-gulp.task('build-html', function () {
-  return gulp.src(paths.html)
-    .pipe(gulp.dest(paths.output));
-});
-
-gulp.task('build', function (callback) {
+gulp.task('dist', function (callback) {
   return runSequence(
     'clean',
-    ['build-system', 'build-html'],
+    ['build-system'],
     callback
   );
 });

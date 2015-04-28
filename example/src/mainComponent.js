@@ -1,6 +1,7 @@
 /** @jsx h */
 
-import Component from '../lib/component';
+import { Component } from 'rotorjs';
+
 import h from 'virtual-dom/h';
 
 export default class MainComponent extends Component {

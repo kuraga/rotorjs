@@ -1,10 +1,10 @@
 /** @jsx h */
 
-import Component from '../lib/component';
+import { Component, ImmutableThunk, EmitterHook } from 'rotorjs';
+
 import h from 'virtual-dom/h';
-import ImmutableThunk from '../lib/immutable-thunk';
 import { Kefir } from 'kefir';
-import EmitterHook from '../lib/emitter-hook';
+
 import TimerComponent from './timerComponent';
 
 export default class GreeterComponent extends Component {

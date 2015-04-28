@@ -2,15 +2,7 @@
 
 ## About
 
-This is a *early development concept* of a JavaScript library for rich JavaScript applications and an example application.
-
-## Usage
-
-```sh
-npm install
-npm run build
-open dist/index.html
-```
+This is an *early development concept* of a JavaScript library for rich JavaScript applications and an example application.
 
 ## Philosophy
 
@@ -50,15 +42,12 @@ Dependency | Usage
 
 Dependency | Usage
 ---------- | -----
-[jsx-transform](https://github.com/alexmingoia/jsx-transform) | JSX sugar
-[browserify](http://browserify.org/) | Modules system
 [babel](https://babeljs.io) | For ECMAScript 6
 [gulp.js](http://gulpjs.com) | Development automation
 
 ## Author
 
 Alexander Kurakin <<kuraga333@mail.ru>>
-
 
 ## Feedback and contribute
 

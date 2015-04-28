@@ -2,6 +2,7 @@
   "name": "rotorjs",
   "version": "0.2.0",
   "author": "Alexander Kurakin <kuraga333@mail.ru>",
+  "main": "dist/index.js",
 
   "dependencies": {
     "object-path": "^0.9.1",
@@ -18,12 +19,10 @@
     "vinyl-paths": "^1.0.0",
     "run-sequence": "^1.0.2",
     "del": "^1.1.0",
-    "browserify": "^9.0.8",
-    "jsx-transform": "^2.0.0",
-    "babelify": "^6.0.2"
+    "gulp-babel": "^5.1.0"
   },
 
   "scripts": {
-    "build": "gulp build"
+    "dist": "gulp dist"
   }
 }

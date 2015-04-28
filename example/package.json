@@ -1,0 +1,23 @@
+{
+  "name": "rotorjs-example",
+  "version": "0.2.0",
+  "author": "Alexander Kurakin <kuraga333@mail.ru>",
+
+  "dependencies": {
+    "rotorjs": "file:.."
+  },
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "vinyl-source-stream": "^1.1.0",
+    "vinyl-paths": "^1.0.0",
+    "run-sequence": "^1.0.2",
+    "del": "^1.1.0",
+    "browserify": "^9.0.8",
+    "jsx-transform": "^2.0.0",
+    "babelify": "^6.0.2"
+  },
+
+  "scripts": {
+    "build": "gulp build"
+  }
+}
