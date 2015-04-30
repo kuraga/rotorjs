@@ -3,9 +3,14 @@ import deepEqual from 'deep-equal';
 // `ImmutableThunk` may be used with virtual-dom/vnode.
 export default class ImmutableThunk {
 
-  constructor(fn, args, equalArgs, equalRenders) {
+  type = 'Thunk';
+
+  constructor(fn, args, thunkProto = {}, equalArgs = undefined, equalRenders = undefined) {
     this.fn = fn;
     this.args = args;
+    Object.keys(thunkProto).forEach((key) => {
+      this[key] = thunkProto[key];
+    });
     this.equalArgs = equalArgs || defaultEqualArgs;
     this.equalRenders = equalRenders || defaultEqualRenders;
 
@@ -26,12 +31,12 @@ export default class ImmutableThunk {
     }
 
     function shouldUpdate(current, previous) {
-      return ( !current || !previous ||
+      return (
+        !current || !previous ||
         !current.equalRenders(current.fn, previous.fn) ||
-        !current.equalArgs(current.args, previous.args) );
+        !current.equalArgs(current.args, previous.args)
+      );
     }
   }
 
 };
-
-ImmutableThunk.prototype.type = 'Thunk';
