@@ -6,27 +6,34 @@ This is an *early development concept* of a JavaScript library for rich JavaScri
 
 ## Philosophy
 
-I don't know the future of this code but I know keywords describe my thoughts:
+Entities:
 
 * model,
-* view,
-* presenter / controller / intent,
-* router,
-* functional reactive programming,
-* unidirectional dataflow,
-* immutable state,
+* view (render),
 * main loop,
-* events,
-* streams,
-* ECMAScript 6,
-* minimalism,
+* data streams,
+* router.
+
+Approaches:
+
+* minimalism and simplicity,
 * (not yet) testability,
 * (not yet) isomorphic,
+* unidirectional dataflow,
+* immutable state,
+* functional reactive programming,
+* ECMAScript 6.
+
+Additional features:
+
 * ["thunks"](https://github.com/Raynos/vdom-thunk),
-* [JSX](https://github.com/alexmingoia/jsx-transform),
-* (maybe) dependency injection,
-* (maybe) ["directives"](http://wix.github.io/react-templates),
-* (maybe) Web Components.
+* [JSX](https://github.com/alexmingoia/jsx-transform).
+
+Possible future additional features:
+
+* dependency injection,
+* ["directives"](http://wix.github.io/react-templates),
+* Web Components.
 
 ## Dependencies
 
