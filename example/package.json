@@ -1,7 +1,17 @@
 {
   "name": "rotorjs-example",
   "version": "0.2.0",
-  "author": "Alexander Kurakin <kuraga333@mail.ru>",
+  "license": "MIT",
+
+  "homepage": "https://github.com/kuraga/rotorjs/tree/master/example",
+  "author": {
+    "name": "Alexander Kurakin",
+    "email": "kuraga333@mail.ru"
+  },
+  "bugs": {
+    "url": "https://github.com/kuraga/rotorjs/issues",
+    "email": "kuraga333@mail.ru"
+  },
 
   "dependencies": {
     "rotorjs": "file:.."
