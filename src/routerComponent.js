@@ -1,27 +1,25 @@
 import Component from './component';
 import Trie from 'route-trie';
-import h from 'virtual-dom/h';
+import VText from 'virtual-dom/vnode/vtext';
 
 export default class RouterComponent extends Component {
 
-  // TODO: what if router isn't a root component
-  constructor(application, routes, defaultPath = '/') {
+  constructor(application, parent = null, name = 'router', routes = {}) {
     let trie = new Trie();
     let compiledRoutes = {};
-    Object.keys(routes).forEach( (pattern) => {
+    for (let pattern of Object.keys(routes)) {
       compiledRoutes[pattern] = {
         node: trie.define(pattern),
         initializer: routes[pattern]
       };
-    });
+    }
 
     let initialState = {
-      defaultPath,
       currentComponentName: null,
       trie,
       compiledRoutes
     };
-    super(application, null, 'router', initialState);
+    super(application, parent, name, initialState);
   }
 
   activate() {
@@ -46,7 +44,7 @@ export default class RouterComponent extends Component {
       this.state[this.currentComponentName] : null;
   }
 
-  _getCurrentPattern() {
+  _getCurrentMatch() {
     let hash = this.application.ownerDocument.location.hash;
     let currentPattern = null;
     let currentMatch = this.state.trie.match(hash.slice(1));
@@ -54,12 +52,12 @@ export default class RouterComponent extends Component {
     if (currentMatch !== null) {
       for (let pattern in this.state.compiledRoutes) {
         if (this.state.compiledRoutes.hasOwnProperty(pattern) && this.state.compiledRoutes[pattern].node === currentMatch.node) {
-          return [ pattern, currentMatch ];
+          return currentMatch;
         }
       }
     }
 
-    return [ null, null ];
+    return null;
   }
 
   onPopStateHandler(event = null) {
@@ -68,14 +66,16 @@ export default class RouterComponent extends Component {
       this.state.remove(['currentComponentName', this.currentComponent.name]);
     }
 
-    let [ currentPattern, currentMatch ] = this._getCurrentPattern();
-    if (currentPattern !== null) {
+    let currentMatch = this._getCurrentMatch();
+    if (currentMatch !== null) {
+      let currentPattern = currentMatch.node._nodeState.pattern;
       let currentRoute = this.state.compiledRoutes[currentPattern];
       let currentComponent = currentRoute.initializer(currentMatch, this);
+      let currentComponentName = currentComponent.name;
 
       this.state.set({
-        currentComponentName: currentComponent.name,
-        [currentComponent.name]: currentComponent
+        currentComponentName,
+        [currentComponentName]: currentComponent
       });
     }
 
@@ -86,7 +86,7 @@ export default class RouterComponent extends Component {
 
   render(...args) {
     if (this.currentComponent === undefined || this.currentComponent === null) {
-      return h('div', 'Invalid route!');
+      return new VText('Invalid route!');
     }
 
     return this.currentComponent.render(...args);

@@ -10,13 +10,13 @@ export default class GreeterApplication extends Application {
   }
 
   start(firstName, lastName) {
-    let router = new RouterComponent(this, {
+    let router = new RouterComponent(this, null, 'router', {
 
-      '/': (match, router) => (
+      '': (match, router) => (
         new MainComponent(this, router, 'greeter')
       ),
 
-      '/greeter/:firstName/:lastName': (match, router) => (
+      'greeter/:firstName/:lastName': (match, router) => (
         new GreeterComponent(this, router, 'greeter', {
           firstName: match.params.firstName,
           lastName: match.params.lastName

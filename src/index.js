@@ -6,12 +6,10 @@ import EmitterHook from './emitterHook';
 import ImmutableThunk from './immutableThunk';
 import RouterComponent from './routerComponent';
 
-let RotorJs = {
+export default {
   Application,
   Component,
   EmitterHook,
   ImmutableThunk,
   RouterComponent
 };
-
-export default RotorJs;

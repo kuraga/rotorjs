@@ -22,7 +22,7 @@
     "vinyl-paths": "^1.0.0",
     "run-sequence": "^1.0.2",
     "del": "^1.1.0",
-    "browserify": "^9.0.8",
+    "browserify": "^10.0.0",
     "jsx-transform": "^2.0.0",
     "babelify": "^6.0.2"
   },

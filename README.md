@@ -6,7 +6,7 @@ This is an *early development concept* of a JavaScript library for rich JavaScri
 
 ## Example
 
-<https://github.com/kuraga/rotorjs-concept/tree/master/example>
+<https://github.com/kuraga/rotorjs/tree/master/example>
 
 ## Philosophy
 
@@ -65,11 +65,12 @@ Alexander Kurakin <<kuraga333@mail.ru>>
 * [mercury](https://github.com/Raynos/mercury),
 * [Cycle.js](https://github.com/staltz/cycle),
 * [Omniscient](http://omniscientjs.github.io),
-* [React](http://facebook.github.io/react).
+* [React](http://facebook.github.io/react),
+* [Zorium](https://github.com/Zorium).
 
 ## Feedback and contribute
 
-<https://github.com/kuraga/rotorjs-concept>
+<https://github.com/kuraga/rotorjs/issues>
 
 ## License
 

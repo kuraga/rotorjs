@@ -1,5 +1,3 @@
-/** @jsx h */
-
 import { Component, ImmutableThunk, EmitterHook } from 'rotorjs';
 
 import h from 'virtual-dom/h';
@@ -48,6 +46,8 @@ export default class GreeterComponent extends Component {
       <input type="text" kefir-input={new EmitterHook(this.state.streams.input)} />
       <br />
       Ok, {this.state.status} {this.fullName}! How are you?
+      <br />
+      I know your name from URL you entered! You can change it...
       <br />
       <br />
       {new ImmutableThunk(() => (
