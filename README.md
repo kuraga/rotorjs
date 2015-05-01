@@ -60,6 +60,13 @@ Dependency | Usage
 
 Alexander Kurakin <<kuraga333@mail.ru>>
 
+## Inspired by
+
+* [mercury](https://github.com/Raynos/mercury),
+* [Cycle.js](https://github.com/staltz/cycle),
+* [Omniscient](http://omniscientjs.github.io),
+* [React](http://facebook.github.io/react).
+
 ## Feedback and contribute
 
 <https://github.com/kuraga/rotorjs-concept>
