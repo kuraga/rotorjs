@@ -31,7 +31,7 @@ gulp.task('clean', function() {
 });
 
 gulp.task('build-system', function () {
-  return browserify(paths.system, { debug: true })
+  return browserify(paths.system)
     .transform(jsxify, jsxOptions)
     .transform(babelify, babelOptions)
     .bundle()
