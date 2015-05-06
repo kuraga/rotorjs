@@ -30,7 +30,7 @@ Approaches:
 
 Additional features:
 
-* ["thunks"](https://github.com/Raynos/vdom-thunk),
+* ["thunks"](https://github.com/kuraga/vnode-immutable-thunk),
 * [JSX](https://github.com/alexmingoia/jsx-transform).
 
 Possible future additional features:
@@ -46,8 +46,8 @@ Dependency | Usage
 [virtual-dom](https://github.com/Matt-Esch/virtual-dom) | DOM rendering
 [freezer-js](https://github.com/arqex/freezer) | Immutable data state
 [main-loop](https://github.com/Raynos/main-loop) | Application loop
-[kefir](http://pozadi.github.io/kefir) | Data streams
 [route-trie](https://github.com/zensh/route-trie) | Routes matching
+[vnode-immutable-thunk](https://github.com/kuraga/vnode-immutable-thunk) | Rendering optimization
 
 ## Development dependencies
 

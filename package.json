@@ -25,8 +25,8 @@
     "virtual-dom": "^2.0.1",
     "freezer-js": "^0.5.1",
     "main-loop": "^3.1.0",
-    "kefir": "^2.1.0",
-    "route-trie": "^0.2.1"
+    "route-trie": "^0.2.1",
+    "vnode-immutable-thunk": "^0.1.0"
   },
   "devDependencies": {
     "gulp": "^3.8.11",
