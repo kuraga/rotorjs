@@ -51,7 +51,7 @@ export default class GreeterComponent extends Component {
         <span>
           I'm a thunk. I'm changed only if status or name's component has been changed. See: {String(Math.random())}
         </span>
-      ), [this.state.status, this.fullName], null, null, (first, second) => (true))}
+      ), [this.state.status, this.fullName], null, null, true)}
       <br />
       <br />
       {this.state.timer.render()}
