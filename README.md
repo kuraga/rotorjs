@@ -1,4 +1,4 @@
-# RotorJS concept
+# RotorJS (concept)
 
 ## About
 

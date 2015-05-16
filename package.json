@@ -38,6 +38,12 @@
   },
 
   "scripts": {
-    "dist": "gulp dist"
+    "dist": "./node_modules/.bin/gulp dist",
+    "build-example": "cd ./example && npm run build",
+
+    "release-patch": "git checkout master && npm version patch && git push origin master --tags && npm publish",
+    "release-minor": "git checkout master && npm version minor && git push origin master --tags && npm publish",
+    "release-major": "git checkout master && npm version major && git push origin master --tags && npm publish",
+    "prepublish": "npm run dist"
   }
 }
