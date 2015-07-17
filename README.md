@@ -1,60 +1,39 @@
 # RotorJS (concept)
 
-## About
-
 This is an *early development concept* of a JavaScript library for rich JavaScript applications and an example application.
-
-## Example
-
-<https://github.com/kuraga/rotorjs/tree/master/example>
 
 ## Philosophy
 
 Entities:
 
 * model,
-* view (render),
+* view (renderer),
 * main loop,
-* data streams,
 * router.
 
 Approaches:
 
 * minimalism and simplicity,
-* (not yet) testability,
-* (not yet) isomorphic,
 * unidirectional dataflow,
 * immutable state,
 * functional reactive programming,
-* ECMAScript 6.
+* (not yet) testability and (not yet) documentability,
+* (not yet) isomorphic,
+* ECMAScript 2016.
 
-Additional features:
+## Example
 
-* ["thunks"](https://github.com/kuraga/vnode-immutable-thunk),
-* [JSX](https://github.com/alexmingoia/jsx-transform).
-
-Possible future additional features:
-
-* dependency injection,
-* ["directives"](http://wix.github.io/react-templates),
-* Web Components.
+See <https://github.com/kuraga/rotorjs/tree/master/example>.
 
 ## Dependencies
 
 Dependency | Usage
 ---------- | -----
 [virtual-dom](https://github.com/Matt-Esch/virtual-dom) | DOM rendering
-[freezer-js](https://github.com/arqex/freezer) | Immutable data state
+[Freezer](https://github.com/arqex/freezer) | Immutable data state
 [main-loop](https://github.com/Raynos/main-loop) | Application loop
 [route-trie](https://github.com/zensh/route-trie) | Routes matching
 [vnode-immutable-thunk](https://github.com/kuraga/vnode-immutable-thunk) | Rendering optimization
-
-## Development dependencies
-
-Dependency | Usage
----------- | -----
-[babel](https://babeljs.io) | For ECMAScript 6
-[gulp.js](http://gulpjs.com) | Development automation
 
 ## Author
 
@@ -66,7 +45,7 @@ Alexander Kurakin <<kuraga333@mail.ru>>
 * [Cycle.js](https://github.com/staltz/cycle),
 * [Omniscient](http://omniscientjs.github.io),
 * [React](http://facebook.github.io/react),
-* [Zorium](https://github.com/Zorium).
+* [Zorium](https://github.com/Zorium/zorium).
 
 ## Feedback and contribute
 

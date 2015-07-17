@@ -12,14 +12,21 @@ npm run build
 open dist/index.html
 ```
 
+## Dependencies
+
+Dependency | Usage
+---------- | -----
+[RotorJS](https://github.com/kuraga/rotorjs) | Magic
+[virtual-hyperscript](https://github.com/Matt-Esch/virtual-dom/tree/master/virtual-hyperscript) | DOM construction
+[vnode-immutable-thunk](vnode-immutable-thunk) | ["Thunks"](https://github.com/Matt-Esch/virtual-dom/blob/master/docs/thunk.md)
+
 ## Development dependencies
 
 Dependency | Usage
 ---------- | -----
-[jsx-transform](https://github.com/alexmingoia/jsx-transform) | JSX sugar
-[browserify](http://browserify.org/) | Modules system
-[babel](https://babeljs.io) | For ECMAScript 6
-[gulp.js](http://gulpjs.com) | Development automation
+[Browserify](http://browserify.org/) | Modules system
+[Babel](https://babeljs.io) | For ECMAScript 2016 & JSX conversion
+[Gulp](http://gulpjs.com) | Development automation
 
 ## Author
 
@@ -27,7 +34,7 @@ Alexander Kurakin <<kuraga333@mail.ru>>
 
 ## Feedback and contribute
 
-<https://github.com/kuraga/rotorjs-concept>
+<https://github.com/kuraga/rotorjs>
 
 ## License
 
