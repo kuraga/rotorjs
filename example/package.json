@@ -30,6 +30,7 @@
   },
 
   "scripts": {
-    "build": "./node_modules/.bin/gulp build"
+    "build": "./node_modules/.bin/gulp build",
+    "clean": "./node_modules/.bin/gulp clean"
   }
 }
