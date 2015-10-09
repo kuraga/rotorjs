@@ -14,7 +14,9 @@
   },
 
   "dependencies": {
-    "rotorjs": "file:.."
+    "rotorjs": "file:..",
+    "virtual-dom": "^2.0.1",
+    "vnode-immutable-thunk": "^0.2.0"
   },
   "devDependencies": {
     "gulp": "^3.8.11",
