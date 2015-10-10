@@ -27,4 +27,9 @@ export default class GreeterApplication extends Application {
     super.start(router, 'router');
   }
 
+  stop() {
+    alert('Good bye!');
+
+    super.stop();
+  }
 };
