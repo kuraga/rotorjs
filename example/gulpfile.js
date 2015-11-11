@@ -20,6 +20,8 @@ var jsxOptions = {
   factory: 'h'
 };
 var babelOptions = {
+  global: true,
+  ignore: /\/node_modules\/(?!rotorjs\/)/,
   stage: 1,
   nonStandard: false,
   compact: false

@@ -17,7 +17,7 @@
     "email": "kuraga333@mail.ru"
   },
 
-  "main": "dist/index.js",
+  "main": "src/index.js",
 
   "dependencies": {
     "virtual-dom": "^2.1.1",
@@ -25,19 +25,8 @@
     "main-loop": "^3.2.0",
     "route-trie": "^1.1.1"
   },
-  "devDependencies": {
-    "gulp": "^3.9.0",
-    "vinyl-source-stream": "^1.1.0",
-    "vinyl-paths": "^2.1.0",
-    "run-sequence": "^1.1.5",
-    "del": "^2.2.0",
-    "gulp-babel": "^5.3.0"
-  },
 
   "scripts": {
-    "dist": "gulp dist",
-    "build-example": "cd ./example && npm run build",
-
     "release-patch": "git checkout master && npm version patch && git push origin master --tags && npm publish",
     "release-minor": "git checkout master && npm version minor && git push origin master --tags && npm publish",
     "release-major": "git checkout master && npm version major && git push origin master --tags && npm publish"
