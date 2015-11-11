@@ -20,7 +20,7 @@ var jsxOptions = {
   factory: 'h'
 };
 var babelOptions = {
-  stage: 0,
+  stage: 1,
   nonStandard: false,
   compact: false
 };

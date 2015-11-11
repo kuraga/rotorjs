@@ -13,7 +13,7 @@ var paths = {
   destination: path.join(__dirname, 'dist'),
 };
 var babelOptions = {
-  stage: 0,
+  stage: 1,
   nonStandard: false,
   compact: false
 };
