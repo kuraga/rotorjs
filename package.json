@@ -20,13 +20,10 @@
   "main": "dist/index.js",
 
   "dependencies": {
-    "object-path": "^0.9.1",
-    "deep-equal": "^1.0.0",
     "virtual-dom": "^2.0.1",
     "freezer-js": "^0.5.2",
     "main-loop": "^3.1.0",
-    "route-trie": "^1.0.0",
-    "vnode-immutable-thunk": "^0.2.0"
+    "route-trie": "^1.0.0"
   },
   "devDependencies": {
     "gulp": "^3.8.11",

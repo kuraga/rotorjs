@@ -1,5 +1,4 @@
 import Freezer from 'freezer-js';
-import objectPath from 'object-path';
 
 export default class Component extends Freezer {
 

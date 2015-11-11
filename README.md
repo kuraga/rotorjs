@@ -33,7 +33,6 @@ Dependency | Usage
 [Freezer](https://github.com/arqex/freezer) | Immutable data state
 [main-loop](https://github.com/Raynos/main-loop) | Application loop
 [route-trie](https://github.com/zensh/route-trie) | Routes matching
-[vnode-immutable-thunk](https://github.com/kuraga/vnode-immutable-thunk) | Rendering optimization
 
 ## Author
 
