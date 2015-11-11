@@ -3,11 +3,12 @@ import Freezer from 'freezer-js';
 export default class Component extends Freezer {
 
   constructor(application, parent, name, initialState = {}) {
-    initialState.application = application;
-    initialState.parent = parent;
-    initialState.name = name;
-
-    super(initialState);
+    let clonedInitialState = Object.assign({}, initialState, {
+      application: application,
+      parent: parent,
+      name: name
+    });
+    super(clonedInitialState);
 
     this.on('update', (currentState) => {
       this.application.stateUpdatedHandler(currentState);
