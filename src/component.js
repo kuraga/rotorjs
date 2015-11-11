@@ -42,4 +42,7 @@ export default class Component extends Freezer {
     return this.state.name;
   }
 
+  render() {
+    throw new Error('Not implemented');
+  }
 };
