@@ -34,7 +34,7 @@ export default class Component extends Freezer {
   }
 
   get parent() {
-    return this.state.parrent;
+    return this.state.parent;
   }
 
   get name() {
