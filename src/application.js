@@ -16,35 +16,35 @@ export default class Application {
       [rootComponentName]: rootComponent
     };
 
-    this.cursor = new Freezer(initialState);
-    this.rootComponent = this.cursor.get()[rootComponentName];
+    this.__cursor = new Freezer(initialState);
+    this.rootComponent = this.__cursor.get()[rootComponentName];
 
     this.render = (currentState) => {
       return this.rootComponent.render();
     };
-    this.updater = (currentState) => {
-      this.loop.update(currentState);
+    this.__updater = (currentState) => {
+      this.__loop.update(currentState);
     };
 
-    this.loop = mainLoop(this.cursor.get(), this.render, { diff, create, patch });
-    this.cursor.on('update', this.updater);
+    this.__loop = mainLoop(this.__cursor.get(), this.render, { diff, create, patch });
+    this.__cursor.on('update', this.__updater);
 
     this.rootComponent.activate();
-    this.rootElement.appendChild(this.loop.target);
+    this.rootElement.appendChild(this.__loop.target);
   }
 
   stop() {
     this.rootComponent.deactivate();
 
-    this.cursor.off('update', this.updater);
+    this.__cursor.off('update', this.__updater);
   }
 
   stateUpdatedHandler(currentState) {
-    this.cursor.trigger('update', currentState);
+    this.__cursor.trigger('update', currentState);
   }
 
-  get state() {
-    return this.cursor.get();
+  get __state() {
+    return this.__cursor.get();
   }
 
 };
