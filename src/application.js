@@ -13,11 +13,10 @@ export default class Application {
   start(rootComponent) {
     let rootComponentName = rootComponent.name;
     let initialState = {
+      rootComponentName,
       [rootComponentName]: rootComponent
     };
-
     this.__cursor = new Freezer(initialState);
-    this.rootComponent = this.__cursor.get()[rootComponentName];
 
     this.render = (currentState) => {
       return this.rootComponent.render();
@@ -47,4 +46,7 @@ export default class Application {
     return this.__cursor.get();
   }
 
+  get rootComponent() {
+    return this.__state[this.__state.rootComponentName];
+  }
 };
