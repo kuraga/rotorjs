@@ -43,14 +43,6 @@ export default class Application {
     this.cursor.trigger('update', currentState);
   }
 
-  get target() {
-    return this.loop.target;
-  }
-
-  get ownerDocument() {
-    return this.target.ownerDocument;
-  }
-
   get state() {
     return this.cursor.get();
   }
