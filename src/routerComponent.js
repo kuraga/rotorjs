@@ -48,7 +48,7 @@ export default class RouterComponent extends Component {
   }
 
   _getCurrentMatch() {
-    let hash = this.application.rootElement.ownerDocument.location.hash;
+    let hash = this.application.rootNode.ownerDocument.location.hash;
     let path = hash.slice(1);
     return this.state.trie.match(path);
   }

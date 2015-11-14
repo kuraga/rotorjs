@@ -5,8 +5,8 @@ import GreeterComponent from './greeterComponent';
 
 export default class GreeterApplication extends Application {
 
-  constructor(rootElement) {
-    super(rootElement);
+  constructor(rootNode) {
+    super(rootNode);
   }
 
   start(firstName, lastName) {

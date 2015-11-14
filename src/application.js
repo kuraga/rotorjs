@@ -6,8 +6,8 @@ import create from 'virtual-dom/vdom/create-element';
 
 export default class Application {
 
-  constructor(rootElement) {
-    this.rootElement = rootElement;
+  constructor(rootNode) {
+    this.rootNode = rootNode;
   }
 
   start(rootComponent) {
@@ -20,7 +20,7 @@ export default class Application {
 
     this.__loop = mainLoop(this.__state, this.render.bind(this), { diff, create, patch });
     this.rootComponent.activate();
-    this.rootElement.appendChild(this.__loop.target);
+    this.rootNode.appendChild(this.__loop.target);
   }
 
   stop() {
