@@ -20,20 +20,19 @@ export default class RouterComponent extends Component {
       compiledRoutes
     };
     super(application, parent, name, initialState);
+
+    this.onPopStateHandlerBinded = this.onPopStateHandler.bind(this);
   }
 
   activate() {
     super.activate();
 
     this.onPopStateHandler();
-
-    this.state.set('onPopStateHandlerBinded', this.onPopStateHandler.bind(this));
-    window.addEventListener('popstate', this.state.onPopStateHandlerBinded);
+    window.addEventListener('popstate', this.onPopStateHandlerBinded);
   }
 
   deactivate() {
-    window.removeEventListener('popstate', this.state.onPopStateHandlerBinded);
-    this.state.remove('onPopStateHandlerBinded');
+    window.removeEventListener('popstate', this.onPopStateHandlerBinded);
 
     super.deactivate();
   }
