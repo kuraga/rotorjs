@@ -23,6 +23,8 @@ export default class RouterComponent extends Component {
   }
 
   activate() {
+    super.activate();
+
     this.onPopStateHandler();
 
     this.state.set('onPopStateHandlerBinded', this.onPopStateHandler.bind(this));
@@ -32,6 +34,8 @@ export default class RouterComponent extends Component {
   deactivate() {
     window.removeEventListener('popstate', this.state.onPopStateHandlerBinded);
     this.state.remove('onPopStateHandlerBinded');
+
+    super.deactivate();
   }
 
   get currentComponentName() {
