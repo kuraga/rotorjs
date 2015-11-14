@@ -18,28 +18,21 @@ export default class Application {
     };
     this.__cursor = new Freezer(initialState);
 
-    this.render = (currentState) => {
-      return this.rootComponent.render();
-    };
-    this.__updater = (currentState) => {
-      this.__loop.update(currentState);
-    };
-
-    this.__loop = mainLoop(this.__cursor.get(), this.render, { diff, create, patch });
-    this.__cursor.on('update', this.__updater);
-
+    this.__loop = mainLoop(this.__state, this.render.bind(this), { diff, create, patch });
     this.rootComponent.activate();
     this.rootElement.appendChild(this.__loop.target);
   }
 
   stop() {
     this.rootComponent.deactivate();
-
-    this.__cursor.off('update', this.__updater);
   }
 
-  stateUpdatedHandler(currentState) {
-    this.__cursor.trigger('update', currentState);
+  render(currentState = undefined) {
+    return this.rootComponent.render();
+  };
+
+  update() {
+    this.__loop.update(this.__state);
   }
 
   get __state() {

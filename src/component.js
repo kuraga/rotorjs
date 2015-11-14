@@ -8,17 +8,18 @@ export default class Component extends Freezer {
       parent: parent,
       name: name
     });
+
     super(clonedInitialState);
 
-    this.on('update', (currentState) => {
-      this.application.stateUpdatedHandler(currentState);
-    });
+    this.__updateBinded = this.update.bind(this);
   }
 
   activate() {
+    this.on('update', this.__updateBinded);
   }
 
   deactivate() {
+    this.off('update', this.__updateBinded);
   }
 
   get path() {
@@ -44,5 +45,9 @@ export default class Component extends Freezer {
 
   render() {
     throw new Error('Not implemented');
+  }
+
+  update(currentState = undefined) {
+    (this.parent !== null ? this.parent : this.application).update();
   }
 };
