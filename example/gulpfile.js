@@ -7,7 +7,6 @@ var vinylSourceStream = require('vinyl-source-stream');
 var vinylPaths = require('vinyl-paths');
 var del = require('del');
 var browserify = require('browserify');
-var jsxify = require('jsx-transform').browserifyTransform;
 var babelify = require('babelify');
 
 var paths = {
@@ -16,14 +15,14 @@ var paths = {
   systemOutput: path.join(__dirname, 'main.js'),
   html: path.join(__dirname, 'index.html')
 };
-var jsxOptions = {
-  factory: 'h'
-};
 var babelOptions = {
   global: true,
-  ignore: /\/node_modules\/(?!rotorjs\/)/,
-  stage: 1,
-  nonStandard: false,
+  ignore: /node_modules\/(?!rotorjs)/,
+  presets: ['es2015', 'stage-1'],
+  plugins: [
+    ['transform-react-jsx', {pragma: 'h'}],
+    ['transform-runtime']
+  ],
   compact: false
 };
 
@@ -34,7 +33,6 @@ gulp.task('clean', function() {
 
 gulp.task('build-system', function () {
   return browserify(paths.system)
-    .transform(jsxify, jsxOptions)
     .transform(babelify, babelOptions)
     .bundle()
     .pipe(vinylSourceStream(paths.systemOutput))

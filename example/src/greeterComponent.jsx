@@ -1,8 +1,10 @@
+/** @jsx h */
+
 import { Component } from 'rotorjs';
 
-import h from 'virtual-dom/h';
 import ImmutableThunk from 'vnode-immutable-thunk';
 import PropertyHook from 'virtual-dom/virtual-hyperscript/hooks/soft-set-hook';
+import h from './helpers/virtualDomSpreadH';
 
 import TimerComponent from './timerComponent.jsx';
 

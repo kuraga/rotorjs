@@ -1,6 +1,8 @@
+/** @jsx h */
+
 import { Component } from 'rotorjs';
 
-import h from 'virtual-dom/h';
+import h from './helpers/virtualDomSpreadH';
 
 export default class TimerComponent extends Component {
 
