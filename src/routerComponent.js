@@ -4,7 +4,7 @@ import VText from 'virtual-dom/vnode/vtext';
 
 export default class RouterComponent extends Component {
 
-  constructor(application, parent = null, name = 'router', routes = {}) {
+  constructor(application, parent, name, routes = {}) {
     let trie = new Trie();
     let compiledRoutes = {};
     for (let pattern of Object.keys(routes)) {
