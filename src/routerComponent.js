@@ -15,7 +15,6 @@ export default class RouterComponent extends Component {
     }
 
     let initialState = {
-      currentComponentName: null,
       __trie: trie,
       __compiledRoutes: compiledRoutes
     };
@@ -42,8 +41,11 @@ export default class RouterComponent extends Component {
   }
 
   get currentComponent() {
-    return this.currentComponentName !== undefined && this.currentComponentName !== null ?
-      this.state[this.currentComponentName] : null;
+    return this.currentComponentName === undefined
+      ? undefined
+      : this.currentComponentName === null
+        ? null
+        : this.state[this.currentComponentName];
   }
 
   get __currentMatch() {
@@ -55,9 +57,9 @@ export default class RouterComponent extends Component {
   onPopStateHandler() {
     if (this.currentComponentName !== undefined && this.currentComponentName !== null) {
       this.currentComponent.deactivate();
-      this.state.remove(this.currentComponent.name);
+      this.state.set(this.currentComponentName, null);
     }
-    this.state.remove('currentComponentName');
+    this.state.set('currentComponentName', null);
 
     if (this.__currentMatch !== null) {
       let currentPattern = currentMatch.node._nodeState.pattern;
