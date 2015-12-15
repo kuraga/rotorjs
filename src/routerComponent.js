@@ -43,29 +43,18 @@ export default class RouterComponent extends Component {
   }
 
   get currentComponent() {
-    let currentComponentName = this.state.currentComponentName;
     return this.currentComponentName !== undefined && this.currentComponentName !== null ?
       this.state[this.currentComponentName] : null;
   }
 
   _getCurrentMatch() {
     let hash = this.application.ownerDocument.location.hash;
-    let currentPattern = null;
-    let currentMatch = this.state.trie.match(hash.slice(1));
-
-    if (currentMatch !== null) {
-      for (let pattern in this.state.compiledRoutes) {
-        if (this.state.compiledRoutes.hasOwnProperty(pattern) && this.state.compiledRoutes[pattern].node === currentMatch.node) {
-          return currentMatch;
-        }
-      }
-    }
-
-    return null;
+    let path = hash.slice(1);
+    return this.state.trie.match(path);
   }
 
-  onPopStateHandler(event = null) {
-    if (this.currentComponent !== undefined && this.currentComponent !== null) {
+  onPopStateHandler() {
+    if (this.currentComponentName !== undefined && this.currentComponentName !== null) {
       this.currentComponent.deactivate();
       this.state.remove(this.currentComponent.name);
     }
@@ -75,26 +64,24 @@ export default class RouterComponent extends Component {
     if (currentMatch !== null) {
       let currentPattern = currentMatch.node._nodeState.pattern;
       let currentRoute = this.state.compiledRoutes[currentPattern];
+
       let currentComponent = currentRoute.initializer(currentMatch, this);
-      let currentComponentName = currentComponent.name;
 
       this.state.set({
-        currentComponentName,
-        [currentComponentName]: currentComponent
+        currentComponentName: currentComponent.name,
+        [currentComponent.name]: currentComponent
       });
-    }
 
-    if (this.currentComponent !== undefined && this.currentComponent !== null) {
       this.currentComponent.activate();
     }
   };
 
-  render(...args) {
-    if (this.currentComponent === undefined || this.currentComponent === null) {
+  render() {
+    if (this.currentComponentName === undefined || this.currentComponentName === null) {
       return new VText('Invalid route!');
     }
 
-    return this.currentComponent.render(...args);
+    return this.currentComponent.render();
   }
 
 }
