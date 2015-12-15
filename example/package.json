@@ -3,7 +3,11 @@
   "version": "0.3.0",
   "license": "MIT",
 
-  "homepage": "https://github.com/kuraga/rotorjs/tree/master/example",
+  "homepage": "https://github.com/kuraga/rotorjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kuraga/rotorjs.git"
+  },
   "author": {
     "name": "Alexander Kurakin",
     "email": "kuraga333@mail.ru"
