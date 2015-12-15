@@ -1,5 +1,6 @@
-import { Application, RouterComponent } from 'rotorjs';
+import { Application } from 'rotorjs';
 
+import BrowserRouterComponent from './helpers/browserRouterComponent';
 import MainComponent from './mainComponent';
 import GreeterComponent from './greeterComponent';
 
@@ -10,7 +11,7 @@ export default class GreeterApplication extends Application {
   }
 
   start(firstName, lastName) {
-    let router = new RouterComponent(this, null, 'router', {
+    let router = new BrowserRouterComponent(this, null, 'router', {
 
       '': (match, router) => (
         new MainComponent(this, router, 'greeter')
