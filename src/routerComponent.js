@@ -16,8 +16,8 @@ export default class RouterComponent extends Component {
 
     let initialState = {
       currentComponentName: null,
-      trie,
-      compiledRoutes
+      __trie: trie,
+      __compiledRoutes: compiledRoutes
     };
     super(application, parent, name, initialState);
 
@@ -46,10 +46,10 @@ export default class RouterComponent extends Component {
       this.state[this.currentComponentName] : null;
   }
 
-  _getCurrentMatch() {
+  get __currentMatch() {
     let hash = this.application.rootNode.ownerDocument.location.hash;
     let path = hash.slice(1);
-    return this.state.trie.match(path);
+    return this.state.__trie.match(path);
   }
 
   onPopStateHandler() {
@@ -59,10 +59,9 @@ export default class RouterComponent extends Component {
     }
     this.state.remove('currentComponentName');
 
-    let currentMatch = this._getCurrentMatch();
-    if (currentMatch !== null) {
+    if (this.__currentMatch !== null) {
       let currentPattern = currentMatch.node._nodeState.pattern;
-      let currentRoute = this.state.compiledRoutes[currentPattern];
+      let currentRoute = this.state.__compiledRoutes[currentPattern];
 
       let currentComponent = currentRoute.initializer(currentMatch, this);
 
