@@ -12,11 +12,12 @@ export default class TimerComponent extends Component {
   activate() {
     super.activate();
 
-    setInterval(this.incCount.bind(this), 1000);
+    let intervalId = setInterval(this.incCount.bind(this), 1000);
+    this.state.set('intervalId', intervalId);
   }
 
   deactivate() {
-    clearInterval(this.interval);
+    clearInterval(this.state.intervalId);
 
     super.deactivate();
   }
