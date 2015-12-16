@@ -76,12 +76,13 @@ export default class RouterComponent extends Component {
     }
   };
 
-  render() {
-    if (this.currentComponentName === undefined || this.currentComponentName === null) {
-      return new VText('Invalid route!');
-    }
-
-    return this.currentComponent.render();
+  renderInvalidRoute() {
+    return new VText('Invalid route!');
   }
 
+  render() {
+    return this.currentComponentName !== undefined && this.currentComponentName !== null
+      ? this.currentComponent.render()
+      : this.renderInvalidRoute();
+  }
 }
