@@ -83,7 +83,7 @@ export default class RouterComponent extends Component {
       });
     }
 
-    if (this.currentComponent !== null) {
+    if (this.currentComponent !== undefined && this.currentComponent !== null) {
       this.currentComponent.activate();
     }
   };
