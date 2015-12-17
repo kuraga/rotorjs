@@ -52,7 +52,11 @@ export default class RouterComponent extends Component {
       });
 
       this.currentComponent.activate();
+
+      return true;
     }
+
+    return false;
   };
 
   renderInvalidRoute() {
