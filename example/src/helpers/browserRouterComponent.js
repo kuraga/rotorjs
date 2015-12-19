@@ -1,5 +1,4 @@
 import { RouterComponent } from 'rotorjs';
-import VText from 'virtual-dom/vnode/vtext';
 
 export default class BrowserRouterComponent extends RouterComponent {
 
@@ -27,9 +26,5 @@ export default class BrowserRouterComponent extends RouterComponent {
     let path = hash.slice(1);
 
     return path;
-  }
-
-  renderInvalidRoute() {
-    return new VText('Invalid route!');
   }
 }
