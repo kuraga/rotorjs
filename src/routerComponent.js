@@ -1,5 +1,5 @@
 import Component from './component';
-import Trie from 'route-trie';
+import Trie from './core/__trie';
 
 export default class RouterComponent extends Component {
 

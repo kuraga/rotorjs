@@ -1,8 +1,5 @@
-import Freezer from 'freezer-js';
-import mainLoop from 'main-loop';
-import diff from 'virtual-dom/vtree/diff';
-import patch from 'virtual-dom/vdom/patch';
-import create from 'virtual-dom/vdom/create-element';
+import Cursor from './core/__cursor';
+import Loop from './core/__loop';
 
 export default class Application {
 
@@ -16,11 +13,11 @@ export default class Application {
       rootComponentName,
       [rootComponentName]: rootComponent
     };
-    this.__cursor = new Freezer(initialState);
+    this.__cursor = new Cursor(initialState);
 
     this.rootComponent.activate();
 
-    this.__loop = mainLoop(this.__state, this.render.bind(this), { diff, create, patch });
+    this.__loop = new Loop(this.__state, this.render.bind(this));
     this.rootNode.appendChild(this.__loop.target);
   }
 
@@ -30,7 +27,7 @@ export default class Application {
     this.rootNode.removeChild(this.__loop.target);
   }
 
-  render(currentState = undefined) {
+  render() {
     return this.rootComponent.render();
   };
 

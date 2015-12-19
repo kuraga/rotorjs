@@ -1,6 +1,6 @@
-import Freezer from 'freezer-js';
+import Cursor from './core/__cursor';
 
-export default class Component extends Freezer {
+export default class Component extends Cursor {
 
   constructor(application, parent, name, initialState = {}) {
     let clonedInitialState = Object.assign({}, initialState, {
