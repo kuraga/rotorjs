@@ -67,8 +67,9 @@ export default class RouterComponent extends Component {
   onPopStateHandler(event = null) {
     if (this.currentComponent !== undefined && this.currentComponent !== null) {
       this.currentComponent.deactivate();
-      this.state.remove(['currentComponentName', this.currentComponent.name]);
+      this.state.remove(this.currentComponent.name);
     }
+    this.state.remove('currentComponentName');
 
     let currentMatch = this._getCurrentMatch();
     if (currentMatch !== null) {
