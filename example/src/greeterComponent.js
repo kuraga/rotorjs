@@ -29,6 +29,7 @@ export default class GreeterComponent extends Component {
 
   deactivate() {
     this.state.timer.deactivate();
+    this.state.remove('timer');
 
     super.deactivate();
   }
