@@ -44,7 +44,7 @@ export default class RouterComponent extends Component {
       let currentPattern = currentMatch.node._nodeState.pattern;
       let currentRoute = this.state.__compiledRoutes[currentPattern];
 
-      let currentComponent = currentRoute.initializer(currentMatch, this);
+      let currentComponent = (0, currentRoute.initializer)(currentMatch, this);
 
       this.state.set({
         currentComponentName: currentComponent.name,
