@@ -14,12 +14,11 @@ test('RouterComponent', function (t) {
   let rootNode,
     application,
     name, routerComponent,
-    firstComponent, secondComponent,
-    firstComponentRenderResult, secondComponentRenderResult,
+    firstComponent, firstComponentRenderResult, secondComponent,
     firstPattern, secondPattern,
     firstInitializer, firstInitializerSpy, secondInitializer, secondInitializerSpy,
     routes,
-    firstRouteCorrectPath, firstRouteCorrectPathParams, secondRouteCorrectPath, secondRouteCorrectPathParams, wrongPath;
+    firstRouteCorrectPath, secondRouteCorrectPath, secondRouteCorrectPathParams, wrongPath;
 
   t.beforeEach(function (t) {
     sandbox = sinon.sandbox.create();
@@ -32,7 +31,7 @@ test('RouterComponent', function (t) {
     name = 'routerComponentName';
     firstPattern = 'some/simple|difficult/path/:id';
     firstComponentRenderResult = h('span');
-    firstInitializer = function (match, router) {
+    firstInitializer = function (match, router) {  // eslint-disable-line no-unused-vars
       firstComponent = new Component(application, router, 'firstComponentName');
       sandbox.stub(firstComponent, 'render');
       firstComponent.render.returns(firstComponentRenderResult);
@@ -41,11 +40,8 @@ test('RouterComponent', function (t) {
     };
     firstInitializerSpy = sandbox.spy(firstInitializer);
     secondPattern = '/:id([0-9]*)/another/:way/to/((make)?)/:stuff(*)';
-    secondComponentRenderResult = h('span');
-    secondInitializer = function (match, router) {
+    secondInitializer = function (match, router) {  // eslint-disable-line no-unused-vars
       secondComponent = new Component(application, router, 'secondComponentName');
-      sandbox.stub(secondComponent, 'render');
-      secondComponent.render.returns(secondComponentRenderResult);
       sandbox.spy(secondComponent, 'activate');
       return secondComponent;
     };
@@ -55,7 +51,6 @@ test('RouterComponent', function (t) {
       [secondPattern]: secondInitializerSpy
     };
     firstRouteCorrectPath = 'some/simple/path/12';
-    firstRouteCorrectPathParams = { id: 12 };
     secondRouteCorrectPath = '/147/another/the_99_way/to/make/blah/blah';
     secondRouteCorrectPathParams = { id: '147', way: 'the_99_way', stuff: 'blah/blah' };
     wrongPath = '/wrong/another/the_99_way/to/make/everybody/happy';

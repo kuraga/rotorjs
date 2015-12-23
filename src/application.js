@@ -2,7 +2,6 @@ import Cursor from './core/__cursor';
 import Loop from './core/__loop';
 
 export default class Application {
-
   constructor(rootNode) {
     this.rootNode = rootNode;
   }
@@ -29,7 +28,7 @@ export default class Application {
 
   render() {
     return this.rootComponent.render();
-  };
+  }
 
   update() {
     this.__loop.update(this.__state);
@@ -42,4 +41,4 @@ export default class Application {
   get rootComponent() {
     return this.__state[this.__state.rootComponentName];
   }
-};
+}

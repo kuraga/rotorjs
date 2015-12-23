@@ -3,12 +3,11 @@ import { Application } from 'rotorjs';
 import GreeterRouter from './greeterRouter';
 
 export default class GreeterApplication extends Application {
-
   constructor(rootNode) {
     super(rootNode);
   }
 
-  start(firstName, lastName) {
+  start() {
     let router = new GreeterRouter(this, null, 'router');
 
     super.start(router);
@@ -19,4 +18,4 @@ export default class GreeterApplication extends Application {
 
     super.stop();
   }
-};
+}

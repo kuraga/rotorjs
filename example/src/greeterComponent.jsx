@@ -4,12 +4,11 @@ import { Component } from 'rotorjs';
 
 import ImmutableThunk from 'vnode-immutable-thunk';
 import PropertyHook from 'virtual-dom/virtual-hyperscript/hooks/soft-set-hook';
-import h from './helpers/virtualDomSpreadH';
+import h from './helpers/virtualDomSpreadH';  // eslint-disable-line no-unused-vars
 
 import TimerComponent from './timerComponent.jsx';
 
 export default class GreeterComponent extends Component {
-
   constructor(application, parent = null, name = 'greeter', initialState = {}) {
     initialState.status = initialState.status || 'status';
 

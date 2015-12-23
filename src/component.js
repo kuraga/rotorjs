@@ -1,7 +1,6 @@
 import Cursor from './core/__cursor';
 
 export default class Component extends Cursor {
-
   constructor(application, parent, name, initialState = {}) {
     let clonedInitialState = Object.assign({}, initialState, {
       application: application,
@@ -47,7 +46,7 @@ export default class Component extends Cursor {
     throw new Error('Not implemented');
   }
 
-  update(currentState = undefined) {
+  update() {
     (this.parent !== null ? this.parent : this.application).update();
   }
-};
+}

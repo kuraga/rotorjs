@@ -2,10 +2,9 @@
 
 import { Component } from 'rotorjs';
 
-import h from './helpers/virtualDomSpreadH';
+import h from './helpers/virtualDomSpreadH';  // eslint-disable-line no-unused-vars
 
 export default class MainComponent extends Component {
-
   constructor(application, parent = null, name = 'main') {
     let initialState = {};
     super(application, parent, name, initialState);
@@ -18,5 +17,4 @@ export default class MainComponent extends Component {
       Or try to visit an invalid <a href="#invalid">link</a>.
     </div>;
   }
-
 }

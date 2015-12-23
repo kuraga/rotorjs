@@ -1,9 +1,8 @@
 import { RouterComponent } from 'rotorjs';
 
 export default class BrowserRouterComponent extends RouterComponent {
-
   activate() {
-    this.onPopState = function (event = undefined) {
+    this.onPopState = function (event = undefined) {  // eslint-disable-line no-unused-vars
       this.route(this.__currentPath);
     }.bind(this);
 

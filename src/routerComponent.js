@@ -2,7 +2,6 @@ import Component from './component';
 import Trie from './core/__trie';
 
 export default class RouterComponent extends Component {
-
   constructor(application, parent, name, routes = {}) {
     let trie = new Trie();
     let compiledRoutes = {};
@@ -57,7 +56,7 @@ export default class RouterComponent extends Component {
     }
 
     return false;
-  };
+  }
 
   renderInvalidRoute() {
     throw new Error('Not implemented');

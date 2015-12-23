@@ -6,7 +6,7 @@ var application;
 
 window.onload = () => {
   application = new GreeterApplication(document.body);
-  application.start('FirstName', 'LastName');
+  application.start();
 };
 
 window.onunload = () => {

@@ -37,12 +37,15 @@
     "global": "^4.3.0",
     "browserify": "^12.0.1",
     "babelify": "^7.2.0",
-    "tape-run": "^2.1.0"
+    "tape-run": "^2.1.0",
+    "eslint": "^1.10.3",
+    "babel-eslint": "^5.0.0-beta6"
   },
 
   "scripts": {
     "test": "node scripts/test.js",
     "test-browser": "node scripts/testBrowser.js",
+    "lint": "eslint $(git ls-files '*.js' '*.jsx')",
 
     "release-patch": "git checkout master && npm version patch && git push origin master --tags && npm publish",
     "release-minor": "git checkout master && npm version minor && git push origin master --tags && npm publish",

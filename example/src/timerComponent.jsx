@@ -2,10 +2,9 @@
 
 import { Component } from 'rotorjs';
 
-import h from './helpers/virtualDomSpreadH';
+import h from './helpers/virtualDomSpreadH';  // eslint-disable-line no-unused-vars
 
 export default class TimerComponent extends Component {
-
   constructor(application, parent = null, name = 'timer', initialState = {}) {
     initialState.count = initialState.count || 0;
     initialState.duration = initialState.duration || 1000;
@@ -38,4 +37,4 @@ export default class TimerComponent extends Component {
   incCount() {
     this.state.set('count', this.state.count + 1);
   }
-};
+}
