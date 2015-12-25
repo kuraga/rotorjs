@@ -25,6 +25,9 @@ var babelOptions = {
   ],
   compact: false
 };
+var browserifyOptions = {
+  debug: true
+};
 
 gulp.task('clean', function() {
   return gulp.src([paths.output])
@@ -32,7 +35,7 @@ gulp.task('clean', function() {
 });
 
 gulp.task('build-system', function () {
-  return browserify(paths.system)
+  return browserify(paths.system, browserifyOptions)
     .transform(babelify, babelOptions)
     .bundle()
     .pipe(vinylSourceStream(paths.systemOutput))
