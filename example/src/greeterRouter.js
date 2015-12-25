@@ -1,6 +1,6 @@
 import BrowserRouterComponent from './helpers/browserRouterComponent';
-import MainComponent from './mainComponent';
-import GreeterComponent from './greeterComponent';
+import MainComponent from './mainComponent.jsx';
+import GreeterComponent from './greeterComponent.jsx';
 
 import h from 'virtual-dom/h';
 

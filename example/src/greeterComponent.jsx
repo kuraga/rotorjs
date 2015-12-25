@@ -4,7 +4,7 @@ import h from 'virtual-dom/h';
 import ImmutableThunk from 'vnode-immutable-thunk';
 import PropertyHook from 'virtual-dom/virtual-hyperscript/hooks/soft-set-hook';
 
-import TimerComponent from './timerComponent';
+import TimerComponent from './timerComponent.jsx';
 
 export default class GreeterComponent extends Component {
 
