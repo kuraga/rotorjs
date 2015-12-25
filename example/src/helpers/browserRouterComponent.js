@@ -1,21 +1,25 @@
 import { RouterComponent } from 'rotorjs';
 
 export default class BrowserRouterComponent extends RouterComponent {
-  activate() {
-    this.onPopState = function (event = undefined) {  // eslint-disable-line no-unused-vars
-      this.route(this.__currentPath);
-    }.bind(this);
+  constructor(...args) {
+    super(...args);
 
+    this.onPopState = function (event) {  // eslint-disable-line no-unused-vars
+      return this.routeCurrentPath();
+    };
+    this.__onPopStateBinded = this.onPopState.bind(this);
+  }
+
+  activate() {
     this.onPopState();
 
     super.activate();
 
-    window.addEventListener('popstate', this.onPopState);
+    window.addEventListener('popstate', this.__onPopStateBinded);
   }
 
   deactivate() {
-    window.removeEventListener('popstate', this.onPopState);
-    delete this.onPopState;
+    window.removeEventListener('popstate', this.__onPopStateBinded);
 
     super.deactivate();
   }
@@ -25,5 +29,9 @@ export default class BrowserRouterComponent extends RouterComponent {
     let path = hash.slice(1);
 
     return path;
+  }
+
+  routeCurrentPath() {
+    return this.route(this.__currentPath);
   }
 }
