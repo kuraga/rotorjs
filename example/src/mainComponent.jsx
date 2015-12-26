@@ -1,6 +1,6 @@
 /** @jsx h */
 
-import { Component } from 'rotorjs';
+import { Component } from './helpers/rotorJsClasses';
 
 import h from './helpers/virtualDomSpreadH';  // eslint-disable-line no-unused-vars
 

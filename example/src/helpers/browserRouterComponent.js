@@ -1,4 +1,4 @@
-import { RouterComponent } from 'rotorjs';
+import { RouterComponent } from './rotorJsClasses';
 
 export default class BrowserRouterComponent extends RouterComponent {
   constructor(...args) {

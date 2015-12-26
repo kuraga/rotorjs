@@ -1,8 +1,10 @@
 import test from 'tapes';
 import sinon from 'sinon';
 
-import Application from '../src/application.js';
-import Component from '../src/component.js';
+import {
+  Application,
+  Component
+} from './helpers/rotorJsClasses';
 
 import document from 'global/document';
 import h from 'virtual-dom/h';

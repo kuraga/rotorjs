@@ -1,4 +1,4 @@
-import { Application } from 'rotorjs';
+import { Application } from './helpers/rotorJsClasses';
 
 import GreeterRouter from './greeterRouter';
 

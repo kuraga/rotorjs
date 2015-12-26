@@ -1,6 +1,6 @@
 /** @jsx h */
 
-import { Component } from 'rotorjs';
+import { Component } from './helpers/rotorJsClasses';
 
 import ImmutableThunk from 'vnode-immutable-thunk';
 import PropertyHook from 'virtual-dom/virtual-hyperscript/hooks/soft-set-hook';

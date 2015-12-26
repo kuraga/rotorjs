@@ -17,7 +17,7 @@
     "email": "kuraga333@mail.ru"
   },
 
-  "main": "src/index.js",
+  "main": "index.js",
 
   "dependencies": {
     "virtual-dom": "^2.1.1",
