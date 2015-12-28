@@ -24,7 +24,7 @@ export default class GreeterApplication extends Application {
       )
 
     });
-    super.start(router, 'router');
+    super.start(router);
   }
 
   stop() {
