@@ -19,12 +19,16 @@ export default class Application {
     this.__cursor = new Freezer(initialState);
 
     this.__loop = mainLoop(this.__state, this.render.bind(this), { diff, create, patch });
+
     this.rootComponent.activate();
+
     this.rootNode.appendChild(this.__loop.target);
   }
 
   stop() {
     this.rootComponent.deactivate();
+
+    this.rootNode.removeChild(this.__loop.target);
   }
 
   render(currentState = undefined) {
