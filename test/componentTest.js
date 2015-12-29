@@ -7,14 +7,13 @@ import {
 } from './helpers/rotorJsClasses';
 
 import document from 'global/document';
-import h from 'virtual-dom/h';
 
 let sandbox;
 
 test('Component', function (t) {
   let rootNode,
     application,
-    rootComponent, name, initialState, component;
+    rootComponent, name, additionalInitialState, component;
 
   t.beforeEach(function (t) {
     sandbox = sinon.sandbox.create();
@@ -22,8 +21,8 @@ test('Component', function (t) {
     application = new Application(rootNode);
     rootComponent = new Component(application, null, 'rootComponentName');
     name = 'componentName';
-    initialState = { property: 'value' };
-    component = new Component(application, rootComponent, name, initialState);
+    additionalInitialState = { property: 'value' };
+    component = new Component(application, rootComponent, name, additionalInitialState);
 
     t.end();
   });
@@ -72,23 +71,22 @@ test('Component', function (t) {
     t.end();
   });
 
-  t.test('.state', function (t) {
+  t.test('.initialState', function (t) {
     t.test('should be an Object', function (t) {
-      t.assert(component.state instanceof Object);
+      t.assert(component.initialState instanceof Object);
 
       t.end();
     });
 
-    t.test('should be copy of initialState\'s properties', function (t) {
-      t.not(component.state, initialState);
-      t.is(component.state.property, initialState.property);
+    t.test('should contain additionalInitialState\'s properties', function (t) {
+      t.is(component.initialState.property, additionalInitialState.property);
 
       t.end();
     });
 
     t.test('.application', function (t) {
-      t.test('should refer to application', function (t) {
-        t.is(component.state.application, application);
+      t.test('should return application', function (t) {
+        t.is(component.initialState.application, application);
 
         t.end();
       });
@@ -99,9 +97,9 @@ test('Component', function (t) {
     t.test('.parent', function (t) {
       t.test('of root component', function (t) {
         t.test('should be null', function (t) {
-          let anotherComponent = new Component(application, null, name, initialState);
+          let anotherComponent = new Component(application, null, name, additionalInitialState);
 
-          t.is(anotherComponent.state.parent, null);
+          t.is(anotherComponent.initialState.parent, null);
 
           t.end();
         });
@@ -111,7 +109,7 @@ test('Component', function (t) {
 
       t.test('of child component', function (t) {
         t.test('should be refer to parent component', function (t) {
-          t.is(component.state.parent, rootComponent);
+          t.is(component.initialState.parent, rootComponent);
 
           t.end();
         });
@@ -124,7 +122,17 @@ test('Component', function (t) {
 
     t.test('.name', function (t) {
       t.test('should be equal to name', function (t) {
-        t.is(component.state.name, name);
+        t.is(component.initialState.name, name);
+
+        t.end();
+      });
+
+      t.end();
+    });
+
+    t.test('.component', function (t) {
+      t.test('should be equal to name', function (t) {
+        t.is(component.initialState.component, component);
 
         t.end();
       });
@@ -148,7 +156,7 @@ test('Component', function (t) {
   t.test('.parent', function (t) {
     t.test('of root component', function (t) {
       t.test('should be null', function (t) {
-        let anotherComponent = new Component(application, null, name, initialState);
+        let anotherComponent = new Component(application, null, name, additionalInitialState);
 
         t.is(anotherComponent.parent, null);
 
@@ -184,7 +192,7 @@ test('Component', function (t) {
   t.test('.path', function (t) {
     t.test('of root component', function (t) {
       t.test('should return array with name', function (t) {
-        let anotherComponent = new Component(application, null, name, initialState);
+        let anotherComponent = new Component(application, null, name, additionalInitialState);
 
         t.deepEqual(anotherComponent.path, ['componentName']);
 
@@ -241,31 +249,49 @@ test('Component', function (t) {
 
   t.test('between .activate and .deactivate', function (t) {
     t.beforeEach(function (t) {
-      component.render = function () {  // will be called by application.start 
-        return h('span');
-      };
-      application.start(component);  // calls rootComponent.activate
+      component.activate();
 
       t.end();
     });
 
     t.afterEach(function (t) {
-      application.stop();  // calls rootComponent.deactivate
+      component.deactivate();
 
       t.end();
     });
 
-    t.test('.update', function (t) {
+    t.test('.render', function (t) {
+      t.test('isn\'t implemented', function (t) {
+        t.throws(function () {
+          component.render();
+        }, /Not implemented/);
+
+        t.end();
+      });
+
+      t.end();
+    });
+
+    t.test('.state', function (t) {
+      t.beforeEach(function (t) {
+        sandbox.stub(application, 'getComponentState');
+
+        t.end();
+      });
+
       t.test('of root component', function (t) {
-        t.test('should call application\'s update without arguments', function (t) {
-          sandbox.spy(application, 'update');
+        let rootComponentStateObject = {};
 
-          let someState = {};
-          rootComponent.update(someState);
+        t.beforeEach(function (t) {
+          application.getComponentState.withArgs(rootComponent.path).returns(rootComponentStateObject);
 
-          t.assert(application.update.calledOnce);
-          t.assert(application.update.calledWithExactly());
-          t.assert(application.update.calledOn(application));
+          t.end();
+        });
+
+        t.test('should return root component\'s state', function (t) {
+          let result = rootComponent.state;
+
+          t.is(result, rootComponentStateObject);
 
           t.end();
         });
@@ -274,52 +300,24 @@ test('Component', function (t) {
       });
 
       t.test('of child component', function (t) {
-        t.test('should call parent\'s update without arguments', function (t) {
-          sandbox.spy(rootComponent, 'update');
+        let childComponentStateObject;
 
-          let someState = {};
-          component.update(someState);
-
-          t.assert(rootComponent.update.calledOnce);
-          t.assert(rootComponent.update.calledWithExactly());
-          t.assert(rootComponent.update.calledOn(rootComponent));
+        t.beforeEach(function (t) {
+          childComponentStateObject = {};
+          application.getComponentState.withArgs(component.path).returns(childComponentStateObject);
 
           t.end();
         });
 
-        t.test('should call application\'s update without arguments', function (t) {
-          sandbox.spy(application, 'update');
+        t.test('should return child component\'s state', function (t) {
+          let result = component.state;
 
-          let someState = {};
-          component.update(someState);
-
-          t.assert(application.update.calledOnce);
-          t.assert(application.update.calledWithExactly());
-          t.assert(application.update.calledOn(application));
+          t.is(result, childComponentStateObject);
 
           t.end();
         });
 
         t.end();
-      });
-
-      t.end();
-    });
-
-    t.test('state updating', function (t) {
-      t.test('should call .update', function (t) {
-        application.stop();  // calls rootComponent.deactivate
-        sandbox.spy(component, 'update');
-        component.__updateBinded = component.update.bind(component);
-        application.start(component);  // calls rootComponent.activate
-
-        component.state.set('property', 'newValue');
-
-        setTimeout(() => {
-          t.assert(component.update.calledOnce);
-
-          t.end();
-        }, 20);
       });
 
       t.end();

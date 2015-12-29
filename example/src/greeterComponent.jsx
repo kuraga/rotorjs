@@ -11,7 +11,6 @@ import TimerComponent from './timerComponent.jsx';
 export default class GreeterComponent extends Component {
   constructor(application, parent = null, name = 'greeter', initialState = {}) {
     initialState.status = initialState.status || 'status';
-
     super(application, parent, name, initialState);
   }
 
@@ -24,12 +23,12 @@ export default class GreeterComponent extends Component {
     });
 
     let timer = new TimerComponent(this.application, this, 'timer');
-    this.state.set('timer', timer);
-    this.state.timer.activate();
+    this.state.set('timer', timer.initialState);
+    this.state.timer.component.activate();
   }
 
   deactivate() {
-    this.state.timer.deactivate();
+    this.state.timer.component.deactivate();
     this.state.remove('timer');
 
     super.deactivate();
@@ -56,7 +55,7 @@ export default class GreeterComponent extends Component {
       ), [this.state.status, this.fullName], null, null, true)}
       <br />
       <br />
-      {this.state.timer.render()}
+      {this.state.timer.component.render()}
     </div>;
   }
 

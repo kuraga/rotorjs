@@ -26,7 +26,7 @@ export default function getRouterComponent(Component, Trie) {
         ? undefined
         : this.currentComponentName === null
           ? null
-          : this.state[this.currentComponentName];
+          : this.state[this.currentComponentName].component;
     }
 
     route(newPath) {
@@ -44,7 +44,7 @@ export default function getRouterComponent(Component, Trie) {
         let currentComponent = (0, currentRoute.initializer)(currentMatch, this);
         this.state.set({
           currentComponentName: currentComponent.name,
-          [currentComponent.name]: currentComponent
+          [currentComponent.name]: currentComponent.initialState
         });
 
         this.currentComponent.activate();

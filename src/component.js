@@ -1,23 +1,25 @@
-export default function getComponentClass(Cursor) {
-  class Component extends Cursor {
-    constructor(application, parent, name, initialState = {}) {
-      let clonedInitialState = Object.assign({}, initialState, {
-        application: application,
-        parent: parent,
-        name: name
+export default function getComponentClass() {
+  class Component {
+    constructor(application, parent, name, additionalInitialState = {}) {
+      this.application = application;
+      this.parent = parent;
+      this.name = name;
+      this.__additionalInitialState = additionalInitialState;
+    }
+
+    get initialState() {
+      return Object.assign({}, this.__additionalInitialState, {
+        application: this.application,
+        parent: this.parent,
+        name: this.name,
+        component: this
       });
-
-      super(clonedInitialState);
-
-      this.__updateBinded = this.update.bind(this);
     }
 
     activate() {
-      this.on('update', this.__updateBinded);
     }
 
     deactivate() {
-      this.off('update', this.__updateBinded);
     }
 
     get path() {
@@ -26,27 +28,11 @@ export default function getComponentClass(Cursor) {
     }
 
     get state() {
-      return this.get();
-    }
-
-    get application() {
-      return this.state.application;
-    }
-
-    get parent() {
-      return this.state.parent;
-    }
-
-    get name() {
-      return this.state.name;
+      return this.application.getComponentState(this.path);
     }
 
     render() {
       throw new Error('Not implemented');
-    }
-
-    update() {
-      (this.parent !== null ? this.parent : this.application).update();
     }
   }
 

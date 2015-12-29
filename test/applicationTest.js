@@ -125,8 +125,6 @@ test('Application', function (t) {
 
   t.test('between .start and .stop', function (t) {
     t.beforeEach(function (t) {
-      sandbox.spy(component, 'render');
-
       application.start(component);
 
       t.end();
@@ -148,24 +146,44 @@ test('Application', function (t) {
       t.end();
     });
 
-    t.test('.update', function (t) {
-      t.skip('should re-render root component', function (t) {
-        component.update();
+    t.skip('.getComponentState', function (t) {
+      t.test('for root component', function (t) {
+        t.test('should return root component\'s state', function (t) {
+          // TODO: check if result correct
 
-        // TODO: check if render called
-
-        t.end();
-      });
-
-      t.skip('should update target node', function (t) {
-        component.update();
-
-        // TODO: check root element's tree
+          t.end();
+        });
 
         t.end();
       });
 
-    t.end();
+      t.test('for child component', function (t) {
+        t.test('should return child component\'s state', function (t) {
+          // TODO: check if result correct
+
+          t.end();
+        });
+
+        t.end();
+      });
+
+      t.test('updating', function (t) {
+        t.test('should re-render root component', function (t) {
+          // TODO: check render calling
+
+          t.end();
+        });
+
+        t.skip('should update target node', function (t) {
+          // TODO: check root element's tree
+
+          t.end();
+        });
+
+        t.end();
+      });
+
+      t.end();
     });
 
     t.end();
