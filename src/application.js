@@ -9,10 +9,8 @@ function objectPath(object, chunks) {
 
 export default function getApplicationClass(Cursor, Loop) {
   class Application {
-    constructor(rootNode) {
-      this.rootNode = rootNode;
-
-      this.__updateBinded = this.update.bind(this);
+    constructor() {
+      this.__redrawBinded = this.redraw.bind(this);
       this.__renderBinded = this.render.bind(this);
     }
 
@@ -26,26 +24,27 @@ export default function getApplicationClass(Cursor, Loop) {
 
       this.rootComponent.activate();
 
-      this.__loop = new Loop(this.__state, this.__renderBinded);
-      this.rootNode.appendChild(this.__loop.target);
+      this.__loop = new Loop(this.__renderBinded);
 
-      this.__cursor.on('update', this.__updateBinded);
+      this.__cursor.on('update', this.__redrawBinded);
     }
 
     stop() {
       this.rootComponent.deactivate();
 
-      this.__cursor.off('update', this.__updateBinded);
+      this.__cursor.off('update', this.__redrawBinded);
+    }
 
-      this.rootNode.removeChild(this.__loop.target);
+    get target() {
+      return this.__loop.target;
     }
 
     render() {
       return this.rootComponent.render();
     }
 
-    update() {
-      this.__loop.update(this.__state);
+    redraw() {
+      this.__loop.redraw();
     }
 
     get __state() {

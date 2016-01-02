@@ -3,8 +3,10 @@ import { Application } from './helpers/rotorJsClasses';
 import GreeterRouter from './greeterRouter';
 
 export default class GreeterApplication extends Application {
-  constructor(rootNode) {
-    super(rootNode);
+  constructor(ownerDocument) {
+    super();
+
+    this.ownerDocument = ownerDocument;
   }
 
   start() {

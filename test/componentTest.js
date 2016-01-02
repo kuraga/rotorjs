@@ -6,19 +6,15 @@ import {
   Component
 } from './helpers/rotorJsClasses';
 
-import document from 'global/document';
-
 let sandbox;
 
 test('Component', function (t) {
-  let rootNode,
-    application,
+  let application,
     rootComponent, name, additionalInitialState, component;
 
   t.beforeEach(function (t) {
     sandbox = sinon.sandbox.create();
-    rootNode = document.body;
-    application = new Application(rootNode);
+    application = new Application();
     rootComponent = new Component(application, null, 'rootComponentName');
     name = 'componentName';
     additionalInitialState = { property: 'value' };

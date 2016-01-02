@@ -6,20 +6,17 @@ import {
   Component
 } from './helpers/rotorJsClasses';
 
-import document from 'global/document';
 import h from 'virtual-dom/h';
 
 let sandbox;
 
 test('Application', function (t) {
-  let rootNode,
-    application,
+  let application,
     component;
 
   t.beforeEach(function (t) {
     sandbox = sinon.sandbox.create();
-    rootNode = document.body;
-    application = new Application(rootNode);
+    application = new Application();
     component = new Component(application, null, 'componentName');
     component.render = function () {
       return h('span');
@@ -37,16 +34,6 @@ test('Application', function (t) {
   t.test('constructor', function (t) {
     t.test('should construct an Application instance', function (t) {
       t.assert(application instanceof Application);
-
-      t.end();
-    });
-
-    t.end();
-  });
-
-  t.test('.rootNode', function (t) {
-    t.test('should return rootNode', function (t) {
-      t.is(application.rootNode, rootNode);
 
       t.end();
     });
@@ -84,12 +71,6 @@ test('Application', function (t) {
       t.end();
     });
 
-    t.skip('should attach target node', function (t) {
-      // TODO: check root element's tree
-
-      t.end();
-    });
-
     t.end();
   });
 
@@ -108,14 +89,6 @@ test('Application', function (t) {
       t.assert(component.deactivate.calledOnce);
       t.assert(component.deactivate.calledWithExactly());
       t.assert(component.deactivate.calledOn(component));
-
-      t.end();
-    });
-
-    t.skip('should detach target node', function (t) {
-      application.stop();
-
-      // TODO: check root element's tree
 
       t.end();
     });
@@ -146,6 +119,26 @@ test('Application', function (t) {
       t.end();
     });
 
+    t.skip('.target', function (t) {
+      t.test('should return loop\'s target', function (t) {
+        // TODO: check if loop's target has been returned
+
+        t.end();
+      });
+
+      t.end();
+    });
+
+    t.skip('.redraw', function (t) {
+      t.test('should call loop\'s .redraw', function (t) {
+        // TODO: check if loop's .redraw has been called
+
+        t.end();
+      });
+
+      t.end();
+    });
+
     t.skip('.getComponentState', function (t) {
       t.test('for root component', function (t) {
         t.test('should return root component\'s state', function (t) {
@@ -168,13 +161,7 @@ test('Application', function (t) {
       });
 
       t.test('updating', function (t) {
-        t.test('should re-render root component', function (t) {
-          // TODO: check render calling
-
-          t.end();
-        });
-
-        t.skip('should update target node', function (t) {
+        t.test('should call .redraw', function (t) {
           // TODO: check root element's tree
 
           t.end();

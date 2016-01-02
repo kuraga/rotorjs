@@ -7,14 +7,12 @@ import {
   RouterComponent
 } from './helpers/rotorJsClasses';
 
-import document from 'global/document';
 import h from 'virtual-dom/h';
 
 let sandbox;
 
 test('RouterComponent', function (t) {
-  let rootNode,
-    application,
+  let application,
     name, routerComponent,
     firstComponent, firstComponentRenderResult, secondComponent,
     firstPattern, secondPattern,
@@ -24,8 +22,7 @@ test('RouterComponent', function (t) {
 
   t.beforeEach(function (t) {
     sandbox = sinon.sandbox.create();
-    rootNode = document.body;
-    application = new Application(rootNode);
+    application = new Application();
     application.render = function () {  // avoid routerComponent.renderInvalidRoute at application start
       return h('span');
     };

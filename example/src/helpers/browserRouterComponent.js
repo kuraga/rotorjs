@@ -25,7 +25,7 @@ export default class BrowserRouterComponent extends RouterComponent {
   }
 
   get __currentPath() {
-    let hash = this.application.rootNode.ownerDocument.location.hash;
+    let hash = this.application.ownerDocument.location.hash;
     let path = hash.slice(1);
 
     return path;

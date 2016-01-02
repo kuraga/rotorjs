@@ -4,16 +4,17 @@ export default function getComponentClass() {
       this.application = application;
       this.parent = parent;
       this.name = name;
-      this.__additionalInitialState = additionalInitialState;
-    }
 
-    get initialState() {
-      return Object.assign({}, this.__additionalInitialState, {
+      this.__initialState = Object.assign({}, additionalInitialState, {
         application: this.application,
         parent: this.parent,
         name: this.name,
         component: this
       });
+    }
+
+    get initialState() {
+      return this.__initialState;
     }
 
     activate() {
