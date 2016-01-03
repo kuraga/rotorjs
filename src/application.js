@@ -18,10 +18,9 @@ export default class Application {
     };
     this.__cursor = new Freezer(initialState);
 
-    this.__loop = mainLoop(this.__state, this.render.bind(this), { diff, create, patch });
-
     this.rootComponent.activate();
 
+    this.__loop = mainLoop(this.__state, this.render.bind(this), { diff, create, patch });
     this.rootNode.appendChild(this.__loop.target);
   }
 
