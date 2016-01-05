@@ -3,6 +3,22 @@
   "version": "0.4.0",
   "license": "MIT",
 
+  "description": "Component-based JavaScript library for single-page applications",
+  "keywords": [
+    "RotorJS",
+    "component",
+    "single-page application", "SPA",
+    "user interface", "UI",
+    "rich Internet application", "RIA",
+    "model", "state",
+    "DOM", "virtual DOM",
+    "application loop",
+    "router",
+    "unidirectional dataflow",
+    "minimalistic", "modular",
+    "isomorphic", "universal", "browser", "server",
+    "ES2015", "ES6"
+  ],
   "homepage": "https://github.com/kuraga/rotorjs",
   "repository": {
     "type": "git",
