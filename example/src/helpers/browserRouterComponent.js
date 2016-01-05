@@ -4,9 +4,6 @@ export default class BrowserRouterComponent extends RouterComponent {
   constructor(...args) {
     super(...args);
 
-    this.onPopState = function (event) {  // eslint-disable-line no-unused-vars
-      return this.routeCurrentPath();
-    };
     this.__onPopStateBinded = this.onPopState.bind(this);
   }
 
@@ -33,5 +30,9 @@ export default class BrowserRouterComponent extends RouterComponent {
 
   routeCurrentPath() {
     return this.route(this.__currentPath);
+  }
+
+  onPopState(event) {  // eslint-disable-line no-unused-vars
+    return this.routeCurrentPath();
   }
 }

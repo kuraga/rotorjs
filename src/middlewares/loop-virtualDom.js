@@ -5,12 +5,20 @@ import vDomPatch from 'virtual-dom/vdom/patch';
 
 export default class Loop {
   constructor(view) {
-    this.view = view;
-
-    this.__currentTree = (0, this.view)();
-    this.target = vDomCreate(this.__currentTree);
+    this.__view = view;
 
     this.__redrawImmediatelyBinded = this.__redrawImmediately.bind(this);
+
+    this.__currentTree = (0, this.__view)();
+    this.__target = vDomCreate(this.__currentTree);
+  }
+
+  get view() {
+    return this.__view;
+  }
+
+  get target() {
+    return this.__target;
   }
 
   redraw() {
@@ -20,7 +28,7 @@ export default class Loop {
   __redrawImmediately() {
     let newTree = (0, this.view)();
     let patches = vDomDiff(this.__currentTree, newTree);
-    this.target = vDomPatch(this.target, patches);
+    this.__target = vDomPatch(this.__target, patches);
 
     this.__currentTree = newTree;
   }

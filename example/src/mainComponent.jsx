@@ -6,8 +6,7 @@ import h from './helpers/virtualDomSpreadH';  // eslint-disable-line no-unused-v
 
 export default class MainComponent extends Component {
   constructor(application, parent = null, name = 'main') {
-    let initialState = {};
-    super(application, parent, name, initialState);
+    super(application, parent, name);
   }
 
   render() {

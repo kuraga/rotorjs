@@ -1,9 +1,9 @@
 export default function getComponentClass() {
   class Component {
     constructor(application, parent, name, additionalInitialState = {}) {
-      this.application = application;
-      this.parent = parent;
-      this.name = name;
+      this.__application = application;
+      this.__parent = parent;
+      this.__name = name;
 
       this.__initialState = Object.assign({}, additionalInitialState, {
         application: this.application,
@@ -15,6 +15,18 @@ export default function getComponentClass() {
 
     get initialState() {
       return this.__initialState;
+    }
+
+    get application() {
+      return this.__application;
+    }
+
+    get parent() {
+      return this.__parent;
+    }
+
+    get name() {
+      return this.__name;
     }
 
     activate() {
