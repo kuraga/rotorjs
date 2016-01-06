@@ -6,24 +6,37 @@ import {
   Component
 } from './helpers/rotorJsClasses';
 
+import h from 'virtual-dom/h';
+
 let sandbox;
 
 test('Component', function (t) {
   let application,
-    rootComponent, name, additionalInitialState, component;
+    rootComponent, name, additionalInitialState, component,
+    subcomponent, anotherSubcomponent;
 
   t.beforeEach(function (t) {
     sandbox = sinon.sandbox.create();
     application = new Application();
+    application.render = function () {  // avoid renderInvalidRoute
+      return h('span');
+    };
+    application.__renderBinded = application.render.bind(application);
     rootComponent = new Component(application, null, 'rootComponentName');
     name = 'componentName';
     additionalInitialState = { property: 'value' };
     component = new Component(application, rootComponent, name, additionalInitialState);
+    subcomponent = new Component(application, rootComponent, 'subcomponentName');
+    anotherSubcomponent = new Component(application, rootComponent, 'anotherSubcomponentName');
+
+    application.start(rootComponent);
 
     t.end();
   });
 
   t.afterEach(function (t) {
+    application.stop();
+
     sandbox.restore();
 
     t.end();
@@ -318,6 +331,134 @@ test('Component', function (t) {
 
       t.end();
     });
+
+    t.end();
+  });
+
+  t.test('.addSubcomponent', function (t) {
+    t.test('with non-existant subcomponent', function (t) {
+      t.test('should return this', function (t) {
+        let result = rootComponent.addSubcomponent(subcomponent);
+
+        t.is(result, rootComponent);
+
+        t.end();
+      });
+
+      t.test('should add subcomponent to subcomponents', function (t) {
+        rootComponent.addSubcomponent(subcomponent);
+
+        t.is(rootComponent.getSubcomponent('subcomponentName'), subcomponent);
+        t.assert(rootComponent.subcomponentNames.indexOf('subcomponentName') !== -1);
+
+        t.end();
+      });
+
+      t.end();
+    });
+
+    t.test('with existant subcomponent', function (t) {
+      t.beforeEach(function (t) {
+        rootComponent.addSubcomponent(subcomponent);
+        rootComponent.addSubcomponent(anotherSubcomponent);
+
+        t.end();
+      });
+
+      t.test('should throw error', function (t) {
+        t.throws(function () {
+          rootComponent.addSubcomponent(subcomponent);
+        }, /Subcomponent 'subcomponentName' already exists/);
+
+        t.end();
+      });
+
+      t.test('should not modify existant subcomponent', function (t) {
+        t.throws(function () {
+          rootComponent.addSubcomponent(subcomponent);
+        }, /Subcomponent 'subcomponentName' already exists/);
+
+        t.assert(rootComponent.subcomponentNames.indexOf('subcomponentName') !== -1);
+        t.is(rootComponent.getSubcomponent('subcomponentName'), subcomponent);
+
+        t.end();
+      });
+
+      t.end();
+    });
+
+    t.end();
+  });
+
+  t.test('.removeSubcomponent', function (t) {
+    t.test('with existant subcomponent name', function (t) {
+      t.beforeEach(function (t) {
+        rootComponent.addSubcomponent(subcomponent);
+        rootComponent.addSubcomponent(anotherSubcomponent);
+
+        t.end();
+      });
+
+      t.test('should return this', function (t) {
+        let result = rootComponent.removeSubcomponent('subcomponentName');
+
+        t.is(result, rootComponent);
+
+        t.end();
+      });
+
+      t.test('should remove subcomponent', function (t) {
+        rootComponent.removeSubcomponent('subcomponentName');
+
+        t.assert(rootComponent.subcomponentNames.indexOf('subcomponentName') === -1);
+        t.throws(function () {
+          rootComponent.getSubcomponent('subcomponentName');
+        }, /Subcomponent 'subcomponentName' doesn't exist/);
+
+        t.end();
+      });
+
+      t.test('should not modify other subcomponents', function (t) {
+        rootComponent.removeSubcomponent('subcomponentName');
+
+        t.assert(rootComponent.subcomponentNames.indexOf('anotherSubcomponentName') !== -1);
+        t.is(rootComponent.getSubcomponent('anotherSubcomponentName'), anotherSubcomponent);
+
+        t.end();
+      });
+
+      t.end();
+    });
+
+    t.test('with non-existant subcomponent name', function (t) {
+      t.test('should throw error', function (t) {
+        t.throws(function () {
+          rootComponent.removeSubcomponent('wrongSubcomponentName');
+        }, /Subcomponent 'wrongSubcomponentName' doesn't exist/);
+
+        t.end();
+      });
+
+      t.end();
+    });
+
+    t.end();
+  });
+
+  t.test('.getSubcomponentNames', function (t) {
+    t.test('should return subcomponent names', function (t) {
+      t.deepEquals(rootComponent.subcomponentNames, []);
+
+      t.end();
+    });
+
+    // see also .addSubcomponent and .removeSubcomponent tests
+
+    t.end();
+  });
+
+  t.test('.getSubcomponent', function (t) {
+    // see also .addSubcomponent and .removeSubcomponent tests
 
     t.end();
   });

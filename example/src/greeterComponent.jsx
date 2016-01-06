@@ -23,13 +23,15 @@ export default class GreeterComponent extends Component {
     });
 
     let timer = new TimerComponent(this.application, this, 'timer');
-    this.state.set('timer', timer.initialState);
-    this.state.timer.component.activate();
+    this.addSubcomponent(timer);
+
+    this.getSubcomponent('timer').activate();
   }
 
   deactivate() {
-    this.state.timer.component.deactivate();
-    this.state.remove('timer');
+    this.getSubcomponent('timer').deactivate();
+
+    this.removeSubcomponent('timer');
 
     super.deactivate();
   }
@@ -55,7 +57,7 @@ export default class GreeterComponent extends Component {
       ), [this.state.status, this.fullName], null, null, true)}
       <br />
       <br />
-      {this.state.timer.component.render()}
+      {this.getSubcomponent('timer').render()}
     </div>;
   }
 

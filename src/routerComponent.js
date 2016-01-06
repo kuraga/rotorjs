@@ -26,26 +26,24 @@ export default function getRouterComponent(Component, Trie) {
         ? undefined
         : this.currentComponentName === null
           ? null
-          : this.state[this.currentComponentName].component;
+          : this.getSubcomponent(this.currentComponentName);
     }
 
     route(newPath) {
       if (this.currentComponentName !== undefined && this.currentComponentName !== null) {
         this.currentComponent.deactivate();
-        this.state.set(this.currentComponentName, null);
+        this.removeSubcomponent(this.currentComponentName);
       }
       this.state.set('currentComponentName', null);
 
       let currentMatch = this.state.__trie.match(newPath);
       if (currentMatch !== null) {
-        let currentPattern = currentMatch.node._nodeState.pattern;
+        let currentPattern = currentMatch.node.pattern;
         let currentRoute = this.state.__compiledRoutes[currentPattern];
 
         let currentComponent = (0, currentRoute.initializer)(currentMatch, this);
-        this.state.set({
-          currentComponentName: currentComponent.name,
-          [currentComponent.name]: currentComponent.initialState
-        });
+        this.state.set('currentComponentName', currentComponent.name)
+        this.addSubcomponent(currentComponent);
 
         this.currentComponent.activate();
 

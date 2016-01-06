@@ -9,7 +9,8 @@ export default function getComponentClass() {
         application: this.application,
         parent: this.parent,
         name: this.name,
-        component: this
+        component: this,
+        __subcomponents: {}
       });
     }
 
@@ -46,6 +47,41 @@ export default function getComponentClass() {
 
     render() {
       throw new Error('Not implemented');
+    }
+
+    get subcomponentNames() {
+      return Object.keys(this.state.__subcomponents);
+    }
+
+    getSubcomponent(subcomponentName) {
+      if (!this.state.__subcomponents.hasOwnProperty(subcomponentName)) {
+        throw new Error(`Subcomponent '${subcomponentName}' doesn't exist`);
+      }
+
+      let subcomponentState = this.state.__subcomponents[subcomponentName];
+      return subcomponentState.component;
+    }
+
+    addSubcomponent(subcomponent) {
+      let subcomponentName = subcomponent.name;
+
+      if (this.state.__subcomponents.hasOwnProperty(subcomponentName)) {
+        throw new Error(`Subcomponent '${subcomponentName}' already exists`);
+      }
+
+      this.state.__subcomponents.set(subcomponentName, subcomponent.initialState);
+
+      return this;
+    }
+
+    removeSubcomponent(subcomponentName) {
+      if (!this.state.__subcomponents.hasOwnProperty(subcomponentName)) {
+        throw new Error(`Subcomponent '${subcomponentName}' doesn't exist`);
+      }
+
+      this.state.__subcomponents.remove(subcomponentName);
+
+      return this;
     }
   }
 

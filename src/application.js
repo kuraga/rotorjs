@@ -1,12 +1,3 @@
-function objectPath(object, chunks) {
-  let result = object;
-  for (let chunk of chunks) {
-    result = result[chunk];
-  }
-
-  return result;
-}
-
 export default function getApplicationClass(Cursor, Loop) {
   class Application {
     constructor() {
@@ -18,7 +9,9 @@ export default function getApplicationClass(Cursor, Loop) {
       let rootComponentName = rootComponent.name;
       let initialState = {
         rootComponentName,
-        [rootComponentName]: rootComponent.initialState
+        __subcomponents: {
+          [rootComponentName]: rootComponent.initialState
+        }
       };
       this.__cursor = new Cursor(initialState);
 
@@ -52,11 +45,18 @@ export default function getApplicationClass(Cursor, Loop) {
     }
 
     get rootComponent() {
-      return this.__state[this.__state.rootComponentName].component;
+      let rootComponentName = this.__state.rootComponentName;
+      let rootComponentState = this.__state.__subcomponents[rootComponentName];
+      return rootComponentState.component;
     }
 
     getComponentState(path) {
-      return objectPath(this.__state, path);
+      let result = this.__state;
+      for (let chunk of path) {
+        result = result.__subcomponents[chunk];
+      }
+
+      return result;
     }
   }
 
