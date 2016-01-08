@@ -63,6 +63,10 @@ export default function getComponentClass() {
     }
 
     addSubcomponent(subcomponent) {
+      if (subcomponent.parent !== this) {
+        throw new Error(`Subcomponent has different parent`);
+      }
+
       let subcomponentName = subcomponent.name;
 
       if (this.state.__subcomponents.hasOwnProperty(subcomponentName)) {

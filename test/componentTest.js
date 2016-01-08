@@ -387,6 +387,18 @@ test('Component', function (t) {
       t.end();
     });
 
+    t.test('with wrong parent', function (t) {
+      t.test('should throw error', function (t) {
+        t.throws(function () {
+          subcomponent.addSubcomponent(anotherSubcomponent);
+        }, /Subcomponent has different parent/);
+
+        t.end();
+      });
+
+      t.end();
+    });
+
     t.end();
   });
 
