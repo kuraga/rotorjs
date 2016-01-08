@@ -17,6 +17,14 @@ export default function getRouterComponent(Component, Trie) {
       super(application, parent, name, initialState);
     }
 
+    deactivate() {
+      if (this.currentComponentName !== undefined && this.currentComponentName !== null) {
+        this.currentComponent.deactivate();
+        this.removeSubcomponent(this.currentComponentName);
+        this.state.set('currentComponentName', null);
+      }
+    }
+
     get currentComponentName() {
       return this.state.currentComponentName;
     }

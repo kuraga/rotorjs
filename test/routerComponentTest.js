@@ -277,6 +277,34 @@ test('RouterComponent', function (t) {
       t.end();
     });
 
+
+    t.test('.deactivate', function (t) {
+      t.test('should deactivate subcomponents', function (t) {
+        firstComponent.deactivate.reset();
+
+        routerComponent.deactivate();
+
+        t.assert(firstComponent.deactivate.calledOnce);
+        t.assert(firstComponent.deactivate.calledWithExactly());
+        t.assert(firstComponent.deactivate.calledOn(firstComponent));
+
+        t.end();
+      });
+
+      t.test('should remove subcomponents', function (t) {
+        routerComponent.deactivate();
+
+        t.deepEquals(routerComponent.subcomponentNames, []);
+        t.throws(function () {
+          routerComponent.getSubcomponent('firstComponentName');
+        }, /Subcomponent 'firstComponentName' doesn't exist/);
+
+        t.end();
+      });
+
+      t.end();
+    });
+
     t.test('.route', function (t) {
       t.test('with correct path', function (t) {
         t.test('should return true', function (t) {
