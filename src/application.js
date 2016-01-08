@@ -52,6 +52,10 @@ export default function getApplicationClass(Cursor, Loop) {
     }
 
     getComponentState(path) {
+      if (path.length == 0) {
+        throw new Error('Incorrect component path');
+      }
+
       let result = this.__state;
       for (let chunk of path) {
         result = result.__subcomponents[chunk];

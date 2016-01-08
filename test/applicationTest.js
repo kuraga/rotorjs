@@ -203,6 +203,18 @@ test('Application', function (t) {
         t.end();
       });
 
+      t.test('with wrong path', function (t) {
+        t.test('should throw an error', function (t) {
+          t.throws(function () {
+            application.getComponentState([]);
+          }, /Incorrect component path/);
+
+          t.end();
+        });
+
+        t.end();
+      });
+
       t.test('updating', function (t) {
         t.test('should call .redraw', function (t) {
           let componentState = application.getComponentState(['componentName']);
