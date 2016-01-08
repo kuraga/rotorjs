@@ -2,6 +2,7 @@ export default function getApplicationClass(Cursor, Loop) {
   class Application {
     constructor() {
       this.__redrawBinded = this.redraw.bind(this);
+      this.__cursorUpdatedHandler = () => { this.redraw() };
       this.__renderBinded = this.render.bind(this);
     }
 
@@ -19,13 +20,13 @@ export default function getApplicationClass(Cursor, Loop) {
 
       this.__loop = new Loop(this.__renderBinded);
 
-      this.__cursor.on('update', this.__redrawBinded);
+      this.__cursor.on('update', this.__cursorUpdatedHandler);
     }
 
     stop() {
       this.rootComponent.deactivate();
 
-      this.__cursor.off('update', this.__redrawBinded);
+      this.__cursor.off('update', this.__cursorUpdatedHandler);
     }
 
     get target() {

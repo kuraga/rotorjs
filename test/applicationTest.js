@@ -1,5 +1,6 @@
 import test from 'tapes';
 import sinon from 'sinon';
+import raf from 'raf';
 
 import {
   Application,
@@ -12,12 +13,16 @@ let sandbox;
 
 test('Application', function (t) {
   let application,
-    component;
+    componentInitialState, component;
 
   t.beforeEach(function (t) {
     sandbox = sinon.sandbox.create();
     application = new Application();
-    component = new Component(application, null, 'componentName');
+    sandbox.spy(application, 'redraw');
+    componentInitialState = {
+      property: 'value'
+    };
+    component = new Component(application, null, 'componentName', componentInitialState);
     component.render = function () {
       return h('span');
     };
@@ -119,9 +124,17 @@ test('Application', function (t) {
       t.end();
     });
 
-    t.skip('.target', function (t) {
+    t.test('.target', function (t) {
       t.test('should return loop\'s target', function (t) {
-        // TODO: check if loop's target has been returned
+        let applicationLoopTargetObject = {};
+        // FIXME: Can't use sandbox here, see https://github.com/sinonjs/sinon/issues/781
+        // should assign to a variable here, see https://groups.google.com/forum/#!topic/sinonjs/kRrON0h7riU
+        let stub = sinon.stub(application.__loop, 'target', { get: function () { return applicationLoopTargetObject; }});
+
+        let result = application.target;
+
+        t.assert(stub.get.calledOnce);
+        t.is(result, applicationLoopTargetObject);  // calls application.target !
 
         t.end();
       });
@@ -129,9 +142,16 @@ test('Application', function (t) {
       t.end();
     });
 
-    t.skip('.redraw', function (t) {
+    t.test('.redraw', function (t) {
       t.test('should call loop\'s .redraw', function (t) {
-        // TODO: check if loop's .redraw has been called
+        // FIXME: Can't use sandbox here, see https://github.com/sinonjs/sinon/issues/781
+        sinon.spy(application.__loop, 'redraw');
+
+        application.redraw();
+
+        t.assert(application.__loop.redraw.calledOnce);
+        t.assert(application.__loop.redraw.calledWithExactly());
+        t.assert(application.__loop.redraw.calledOn(application.__loop));
 
         t.end();
       });
@@ -139,10 +159,12 @@ test('Application', function (t) {
       t.end();
     });
 
-    t.skip('.getComponentState', function (t) {
-      t.test('for root component', function (t) {
-        t.test('should return root component\'s state', function (t) {
-          // TODO: check if result correct
+    t.test('.getComponentState', function (t) {
+      t.test('for component', function (t) {
+        t.test('should contain component state\'s properties', function (t) {
+          let result = application.getComponentState(['componentName']);
+
+          t.is(result.property, 'value');
 
           t.end();
         });
@@ -150,9 +172,30 @@ test('Application', function (t) {
         t.end();
       });
 
-      t.test('for child component', function (t) {
-        t.test('should return child component\'s state', function (t) {
-          // TODO: check if result correct
+      t.test('for subcomponent', function (t) {
+        let subcomponentInitialState, subcomponent;
+
+        t.beforeEach(function (t) {
+          subcomponentInitialState = {
+            secondProperty: 'second value'
+          };
+          subcomponent = new Component(application, component, 'subcomponentName', subcomponentInitialState);
+
+          component.addSubcomponent(subcomponent);
+
+          t.end();
+        });
+
+        t.afterEach(function (t) {
+          component.removeSubcomponent('subcomponentName');
+
+          t.end();
+        });
+
+        t.test('should contain subcomponent state\'s properties', function (t) {
+          let result = application.getComponentState(['componentName', 'subcomponentName']);
+
+          t.is(result.secondProperty, 'second value');
 
           t.end();
         });
@@ -162,9 +205,18 @@ test('Application', function (t) {
 
       t.test('updating', function (t) {
         t.test('should call .redraw', function (t) {
-          // TODO: check root element's tree
+          let componentState = application.getComponentState(['componentName']);
 
-          t.end();
+          application.redraw.reset();
+          componentState.set('newProperty', 'new value');
+
+          raf(function () {
+            t.assert(application.redraw.calledOnce);
+            t.assert(application.redraw.calledWithExactly());
+            t.assert(application.redraw.calledOn(application));
+
+            t.end();
+          });
         });
 
         t.end();
