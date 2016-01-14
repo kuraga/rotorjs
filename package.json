@@ -23,7 +23,7 @@
     "virtual-dom": "^2.1.1",
     "freezer-js": "^0.9.6",
     "raf": "^3.1.0",
-    "route-trie": "^1.1.1",
+    "route-trie": "^1.2.1",
     "babel-runtime": "^6.3.19"
   },
   "devDependencies": {

@@ -24,52 +24,82 @@ test('Trie', function (t) {
   });
 
   t.test('.define', function (t) {
-    t.test('should return comparable nodes 1', function (t) {
+    t.test('returned value', function (t) {
+      t.test('.pattern', function (t) {
+        t.test('should return pattern', function (t) {
+          let node = trie.define('/path1/:path2/path3');
+
+          t.assert(trie.is(node.pattern, '/path1/:path2/path3'));
+
+          t.end();
+        });
+
+        t.test('should return first eqivalent pattern', function (t) {
+          let node1 = trie.define('/path1/:path2/path3');
+          let node2 = trie.define('/path1/:path2_but_another/path3');
+          let node3 = trie.define('/path1/:yet_another_path2/path3');
+
+          t.assert(trie.is(node1.pattern, '/path1/:path2/path3'));
+          t.assert(trie.is(node2.pattern, '/path1/:path2/path3'));
+          t.assert(trie.is(node3.pattern, '/path1/:path2/path3'));
+
+          t.end();
+        });
+
+        t.end();
+      });
+
+      t.end();
+    });
+
+    t.test('should return comparable node: nodes with the same patterns should be equal', function (t) {
       t.assert(trie.is(trie.define('/path1'), trie.define('/path1')));
       t.assert(trie.is(trie.define('/path1/:path2/path3'), trie.define('/path1/:path2/path3')));
 
       t.end();
     });
 
-    t.test('should return comparable nodes 2', function (t) {
-      t.assert(!trie.is(trie.define('/path1/[a-z]'), trie.define('/path1/[A-Z]')));
+    t.test('should return comparable nodes: nodes with different patterns should not be the same', function (t) {
+      t.not(trie.is(trie.define('/path1/([a-z])'), trie.define('/path1/([A-Z])')));
+      t.not(trie.is(trie.define('/path1/:path2/path3'), trie.define('/path1/:path2(a|b)/path3')));
+      t.not(trie.is(trie.define('/test:name(a|b)'), trie.define('/test:name(c|d)')));
+      t.not(trie.is(trie.define('/test:name'), trie.define('/test::name')));
 
       t.end();
     });
 
-    t.test('should return comparable nodes 3', function (t) {
-      t.assert(trie.is(trie.define('/path1/:path2/path3'), trie.define('/path1/:path22/path3')));
+    t.test('should return comparable nodes: pattern\'s variable names are discarded', function (t) {
+      t.assert(trie.is(trie.define('/path1/:path2/path3'), trie.define('/path1/:path4/path3')));
 
       t.end();
     });
 
-    t.test('should return comparable nodes 4', function (t) {
-      t.assert(!trie.is(trie.define('/path1/:path2/path3'), trie.define('/path1/:path2(a|b)/path3')));
+    t.test('should return comparable nodes: pattern\'s variable names are optional', function (t) {
+      t.assert(trie.is(trie.define('/path1/:path2([0-9])'), trie.define('/path1/([0-9])')));
 
       t.end();
     });
 
-    t.test('should return comparable nodes 5', function (t) {
-      t.assert(!trie.is(trie.define('/*'), trie.define('/')));
+    t.test('should return comparable nodes: wildcard option 1', function (t) {
+      t.not(trie.is(trie.define('/*'), trie.define('/post')));
 
       t.end();
     });
 
-    t.test('should return comparable nodes 5', function (t) {
-      t.assert(!trie.is(trie.define('/*'), trie.define('/post')));
+    t.test('should return comparable nodes: wildcard option 2', function (t) {
+      t.not(trie.is(trie.define('/*'), trie.define('/')));
 
       t.end();
     });
 
-    t.test('should return comparable nodes 6', function (t) {
-      t.assert(!trie.is(trie.define('/test:name(a|b)'), trie.define('/test:name(c|d)')));
-      t.assert(!trie.is(trie.define('/test:name(a|b)'), trie.define('/test::name(a|b)')));
+    t.test('should return comparable nodes: wildcard option 3', function (t) {
+      t.not(trie.is(trie.define('/'), trie.define('/:all(*)')));
 
       t.end();
     });
 
     t.test('is case-sensetive', function (t) {
-      t.assert(!trie.is(trie.define('/Post'), trie.define('/post')));
+      t.not(trie.is(trie.define('/Post'), trie.define('/post')));
 
       t.end();
     });
@@ -82,9 +112,9 @@ test('Trie', function (t) {
       t.assert(trie.is(node, trie.define('path1/path2')));
       t.assert(trie.is(node, trie.define('/path1/path2/')));
 
-      t.assert(!trie.is(node, trie.define('/path1/path2/path3')));
-      t.assert(!trie.is(node, trie.define('/path1/:path2')));
-      t.assert(!trie.is(node, trie.define('/path2/path2')));
+      t.not(trie.is(node, trie.define('/path1/path2/path3')));
+      t.not(trie.is(node, trie.define('/path1/:path2')));
+      t.not(trie.is(node, trie.define('/path2/path2')));
 
       t.end();
     });
@@ -121,12 +151,20 @@ test('Trie', function (t) {
       t.end();
     });
 
-    t.test('doesn\'t allow partial redefining', function (t) {
-      trie.define('/*');
+    t.test('doesn\'t allow partial redefining 1', function (t) {
+      trie.define('/(*)');
 
       t.throws(function () {
-        trie.define('/(*)');
-      });
+        trie.define('');
+      })
+
+      t.throws(function () {
+        trie.define('/');
+      })
+
+      t.throws(function () {
+        trie.define('/a');
+      })
 
       t.throws(function () {
         trie.define('/(a|b)');
@@ -139,13 +177,35 @@ test('Trie', function (t) {
       t.end();
     });
 
-    t.test('returned value', function (t) {
-      t.test('.pattern', function (t) {
-        let node = trie.define('/path1/:path2/path3');
+    t.test('doesn\'t allow partial redefining 2', function (t) {
+      trie.define('/a/(*)');
 
-        t.assert(trie.is(node.pattern, '/path1/:path2/path3'));
+      t.throws(function () {
+        trie.define('/a/b');
+      });
 
-        t.end();
+      t.throws(function () {
+        trie.define('/a/b/c');
+      });
+
+      t.end();
+    });
+
+    t.test('doesn\'t allow partial redefining 3', function (t) {
+      trie.define('/a/b(*)');
+      trie.define('/a/bc');
+      trie.define('/a/b/c');
+      trie.define('/a/c(*)');
+      trie.define('/a/d(*)');
+
+      t.throws(function () {
+        trie.define('/a/d(*)/e');
+      });
+
+      trie.define('/a/(*)');
+
+      t.throws(function () {
+        trie.define('/a/e(*)');
       });
 
       t.end();
@@ -155,28 +215,104 @@ test('Trie', function (t) {
   });
 
   t.test('.match', function (t) {
-    t.test('matches patterns without params correctly', function (t) {
+    t.test('matches patterns without params correctly 1', function (t) {
       let node = trie.define('/');
       let match = trie.match('/');
 
       t.assert(trie.is(node, match.node));
       t.deepEqual(match.params, {});
 
-      t.is(null, trie.match('/path'));
-      t.is(null, trie.match('path'));
+      t.is(trie.match('/path'), null);
+      t.is(trie.match('path'), null);
 
       t.end();
     });
 
-    t.test('matches patterns with params correctly', function (t) {
+    t.test('matches patterns without params correctly 2', function (t) {
+      let node = trie.define('/post');
+      trie.define('/пост');
+      let match = trie.match('/post');
+
+      t.assert(trie.is(node, match.node));
+      t.deepEqual(match.params, {});
+
+      t.end();
+    });
+
+    t.test('matches patterns without params correctly 3', function (t) {
+      trie.define('/post');
+      let node = trie.define('/пост');
+      let match = trie.match('/пост');
+
+      t.assert(trie.is(node, match.node));
+      t.deepEqual(match.params, {});
+
+      t.end();
+    });
+
+    t.test('matches patterns without params correctly 4', function (t) {
+      trie.define('/post');
+      trie.define('/пост');
+
+      t.is(trie.match('/path'), null);
+      t.is(trie.match('/'), null);
+      t.is(trie.match('/post/abc'), null);
+
+      t.end();
+    });
+
+    t.test('matches patterns with params correctly 1', function (t) {
       let node = trie.define('/:type');
       let match = trie.match('/post');
 
+      t.assert(trie.is(node, match.node));
       t.deepEqual(match.params, {
         type: 'post'
       });
+
+      t.end();
+    });
+
+    t.test('matches patterns with params correctly 2', function (t) {
+      let node = trie.define('/:type');
+      let match = trie.match('/пост');
+
       t.assert(trie.is(node, match.node));
-      t.assert(trie.is(node, trie.match('/task').node));
+      t.deepEqual(match.params, {
+        type: 'пост'
+      });
+
+      t.end();
+    });
+
+    t.test('matches patterns with params correctly 3', function (t) {
+      let node = trie.define('/prefix:type');
+      let match = trie.match('/prefixpost');
+
+      t.assert(trie.is(node, match.node));
+      t.deepEqual(match.params, {
+        type: 'post'
+      });
+
+      t.end();
+    });
+
+    t.test('matches patterns with params correctly 4', function (t) {
+      let node = trie.define('/префикс:type');
+      let match = trie.match('/префикспост');
+
+      t.assert(trie.is(node, match.node));
+      t.deepEqual(match.params, {
+        type: 'пост'
+      });
+
+      t.end();
+    });
+
+    t.test('matches patterns with params correctly 5', function (t) {
+      let node = trie.define('/prefix:type');
+
+      t.is(trie.match('/prEfixpost'), null);
 
       t.end();
     });
@@ -200,7 +336,7 @@ test('Trie', function (t) {
     });
 
     t.test('matches patterns with regexped params correctly 2', function (t) {
-      let node = trie.define('/post|task/([1-9a-z]{6})');
+      let node = trie.define('/(post|task)/([1-9a-z]{6})');
 
       t.deepEqual(trie.match('/post/a12345').params, {});
       t.assert(trie.is(trie.match('/post/a12345').node, node));
@@ -308,7 +444,7 @@ test('Trie', function (t) {
     });
 
     t.test('matches patterns with regexped params correctly 7', function (t) {
-      let node = trie.define('*');
+      let node = trie.define('(*)');
 
       t.assert(trie.is(trie.match('').node, node));
       t.assert(trie.is(trie.match('/').node, node));
@@ -336,16 +472,6 @@ test('Trie', function (t) {
     });
 
     t.test('matches patterns with regexped params correctly 9', function (t) {
-      let node = trie.define('/:all*');
-
-      t.assert(trie.is(trie.match('').node, node));
-      t.assert(trie.is(trie.match('/').node, node));
-      t.assert(trie.is(trie.match('/x').node, node));
-
-      t.end();
-    });
-
-    t.test('matches patterns with regexped params correctly 10', function (t) {
       let node = trie.define('/:type/:other(*)');
 
       t.is(trie.match('/post'), null);
@@ -354,46 +480,89 @@ test('Trie', function (t) {
       t.end();
     });
 
+    t.test('matches patterns with regexped params correctly 10', function (t) {
+      let node = trie.define('/(post|task)/([1-9a-z]{6})');
+
+      t.assert(trie.is(trie.match('/post/c1a2t3').node, node));
+
+      t.end();
+    });
+
     t.test('matches patterns with regexped params correctly 11', function (t) {
-      let node = trie.define('/post|task/([1-9a-z]{6})');
-
-      t.assert(trie.is(trie.define('/(post|task)/([1-9a-z]{6})'), node));
-      t.assert(trie.is(trie.define('/post|task/[1-9a-z]{6}'), node));
-
-      t.end();
-    });
-
-    t.test('matches patterns with regexped params correctly 12', function (t) {
       let node = trie.define('/:type(post|task)/:id([1-9a-z]{6})');
+      let match = trie.match('/post/c1a2t3');
 
-      t.assert(trie.is(trie.define('/:type1(post|task)/[1-9a-z]{6}'), node));
-
-      t.end();
-    });
-
-    t.test('matches patterns precisely 1', function (t) {
-      let node = trie.define('/:all*');
-      trie.define('');
-
-      t.assert(!trie.is(trie.define(''), node));
-      t.assert(!trie.is(trie.match('/').node, node));
-      t.assert(trie.is(trie.match('/x').node, node));
-      t.deepEqual(trie.match('').params, {});
-      t.deepEqual(trie.match('/').params, {});
-      t.deepEqual(trie.match('/post/abc').params, {
-        all: 'post/abc'
+      t.assert(trie.is(match.node, node));
+      t.deepEqual(match.params, {
+        type: 'post',
+        id: 'c1a2t3'
       });
 
       t.end();
     });
 
-    t.test('matches patterns precisely 2', function (t) {
+    t.test('matches patterns with regexped params correctly 12', function (t) {
+      let node = trie.define('/:type((cat|dog)s?)/:id(\\d+)');
+      let match = trie.match('/cat/123');
+
+      t.assert(trie.is(match.node, node));
+      t.deepEqual(match.params, {
+        type: 'cat',
+        id: '123'
+      });
+
+      t.end();
+    });
+
+    t.test('matches patterns with regexped params correctly 13', function (t) {;
+      let node = trie.define('/((post|task)s?)/([\\w\\d]{6})');
+
+      t.assert(trie.is(trie.match('/post/a12345').node, node));
+      t.deepEqual(trie.match('/post/a12345').params, {});
+
+      t.assert(trie.is(trie.match('/posts/a12345').node, node));
+      t.deepEqual(trie.match('/posts/a12345').params, {});
+
+      t.assert(trie.is(trie.match('/task/a12345').node, node));
+      t.deepEqual(trie.match('/task/a12345').params, {});
+
+      t.assert(trie.is(trie.match('/tasks/a12345').node, node));
+      t.deepEqual(trie.match('/tasks/a12345').params, {});
+
+      t.is(trie.match('/event/a12345'), null);
+      t.is(trie.match('/task/a123456'), null);
+      t.is(trie.match('/task/a12345/6'), null);
+      t.is(trie.match('/post'), null);
+      t.is(trie.match('/'), null);
+
+      t.end();
+    });
+
+    t.test('matches patterns with regexped params correctly 14', function (t) {;
+      let node = trie.define('/:type((post|task)s?)/:id([\\w\\d]{6})');
+
+      t.assert(trie.is(trie.match('/post/a12345').node, node));
+      t.deepEqual(trie.match('/post/a12345').params, {
+        type: 'post',
+        id: 'a12345'
+      });
+
+      t.assert(trie.is(trie.match('/tasks/a12345').node, node));
+      t.deepEqual(trie.match('/tasks/a12345').params, {
+        type: 'tasks',
+        id: 'a12345'
+      });
+
+      t.end();
+    });
+
+    t.test('matches patterns precisely 1', function (t) {
       let node = trie.define('/:type/:other(*)');
       trie.define('/:type');
       trie.define('/post');
 
-      t.assert(!trie.is(trie.define('/post'), node));
-      t.assert(!trie.is(trie.define('/:type'), node));
+      t.not(trie.is(trie.define('/post'), node));
+      t.not(trie.is(trie.define('/:type'), node));
       t.is(trie.match('/post/abc'), null);
       t.deepEqual(trie.match('').params, {
         type: ''
@@ -417,7 +586,7 @@ test('Trie', function (t) {
       t.end();
     });
 
-    t.test('matches patterns precisely 3', function (t) {
+    t.test('matches patterns precisely 2', function (t) {
       trie.define('/prefix:name/:other(*)');
       trie.define('/test.com::name');
       trie.define('/post');
