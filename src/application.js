@@ -20,13 +20,13 @@ export default function getApplicationClass(Cursor, Loop) {
 
       this.__loop = new Loop(this.__renderBinded);
 
-      this.__cursor.on('update', this.__cursorUpdatedHandler);
+      this.__cursor.subscribe(this.__cursorUpdatedHandler);
     }
 
     stop() {
       this.rootComponent.deactivate();
 
-      this.__cursor.off('update', this.__cursorUpdatedHandler);
+      this.__cursor.unsubscribe(this.__cursorUpdatedHandler);
     }
 
     get target() {
