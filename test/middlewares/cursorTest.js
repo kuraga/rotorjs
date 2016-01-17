@@ -1,6 +1,8 @@
 // Mostly inherited from https://github.com/arqex/freezer (by Arqex)
 
 import test from 'tapes';
+import sinon from 'sinon';
+import raf from 'raf';
 
 import { Cursor_FreezerJs as Cursor } from '../../middlewares';
 
@@ -13,11 +15,20 @@ let seed = {
   string: 'cats'
 };
 
+let sandbox;
+
 test('Cursor', function (t) {
   let cursor;
 
   t.beforeEach(function (t) {
+    sandbox = sinon.sandbox.create();
     cursor = new Cursor(seed);
+
+    t.end();
+  });
+
+  t.afterEach(function (t) {
+    sandbox.restore();
 
     t.end();
   });
@@ -302,7 +313,7 @@ test('Cursor', function (t) {
       t.end();
     });
 
-    t.test('object element', function (t) {
+    t.test('with object element', function (t) {
       t.test('should return updated object', function (t) {
         let result = data.object.remove('z');
         let updated = cursor.get().object;
@@ -340,7 +351,7 @@ test('Cursor', function (t) {
       t.end();
     });
 
-    t.test('with unexistent element', function (t) {
+    t.test('with non-existent element', function (t) {
       t.test('should return object called on', function (t) {
         let result = data.object.remove('unreal');
 
@@ -471,8 +482,350 @@ test('Cursor', function (t) {
     t.end();
   });
 
-  t.skip('listeners', function (t) {
-    // TODO
+  t.test('listeners', function (t) {
+    let cursor, data,
+      callback, callbackSpy, anotherCallback, anotherCallbackSpy;
+
+    t.beforeEach(function (t) {
+      cursor = new Cursor(seed);
+      data = cursor.get();
+      callback = function (data) {};  // eslint-disable-line no-unused-vars
+      callbackSpy = sandbox.spy(callback);
+      anotherCallback = function (data) {};  // eslint-disable-line no-unused-vars
+      anotherCallbackSpy = sandbox.spy(anotherCallback);
+
+      t.end();
+    });
+
+    t.test('.subscribe', function (t) {
+      t.test('should do something', function (t) {
+        t.doesNotThrow(function () {
+          cursor.subscribe(callback);
+        });
+
+        t.end();
+      });
+
+      t.test('should subscribe a callback', function (t) {
+        cursor.subscribe(callbackSpy);
+        callbackSpy.reset();
+
+        data.object.set('a', 2);
+
+        raf(function () {
+          t.assert(callbackSpy.calledOnce);
+
+          t.end();
+        });
+      });
+
+      t.test('should subscribe several callbacks', function (t) {
+        cursor.subscribe(callbackSpy);
+        cursor.subscribe(anotherCallbackSpy);
+        callbackSpy.reset();
+        anotherCallbackSpy.reset();
+
+        data.object.set('a', 2);
+
+        raf(function () {
+          t.assert(callbackSpy.calledOnce);
+          t.assert(anotherCallbackSpy.calledOnce);
+
+          t.end();
+        });
+      });
+
+      t.test('should trigger callbacks after...', function (t) {
+        t.test('setting property', function (t) {
+          t.test('on root', function (t) {
+            cursor.subscribe(function (data) {
+              t.pass();
+              t.is(data.a, 1);
+              t.is(cursor.get().a, 1);
+
+              t.end();
+            });
+
+            data.set('a', 1);
+          });
+
+          t.test('on object element', function (t) {
+            cursor.subscribe(function (data) {
+              t.pass();
+              t.is(data.object.a, 1);
+              t.is(cursor.get().object.a, 1);
+
+              t.end();
+            });
+
+            data.object.set('a', 1);
+          });
+
+          t.test('on array element', function (t) {
+            cursor.subscribe(function (data) {
+              t.pass();
+              t.is(data.array[3], 1);
+              t.is(cursor.get().array[3], 1);
+
+              t.end();
+            });
+
+            data.array.set(3, 1);
+          });
+
+          t.end();
+        });
+
+        t.test('updating property', function (t) {
+          t.test('on root', function (t) {
+            cursor.subscribe(function (data) {
+              t.pass();
+              t.is(data.number, 2);
+              t.is(cursor.get().number, 2);
+
+              t.end();
+            });
+
+            data.set('number', 2);
+          });
+
+          t.test('on object element', function (t) {
+            cursor.subscribe(function (data) {
+              t.pass();
+              t.is(data.object.z, 2);
+              t.is(cursor.get().object.z, 2);
+
+              t.end();
+            });
+
+            data.object.set('z', 2);
+          });
+
+          t.test('on array element', function (t) {
+            cursor.subscribe(function (data) {
+              t.pass();
+              t.is(data.array[0], 2);
+              t.is(cursor.get().array[0], 2);
+
+              t.end();
+            });
+
+            data.array.set(0, 2);
+          });
+
+          t.end();
+        });
+
+        t.test('removing property', function (t) {
+          t.test('on root', function (t) {
+            cursor.subscribe(function (data) {
+              t.pass();
+              t.assert(!data.hasOwnProperty('number'));
+              t.assert(!data.hasOwnProperty('number'));
+
+              t.end();
+            });
+
+            data.remove('number');
+          });
+
+          t.test('on object element', function (t) {
+            cursor.subscribe(function (data) {
+              t.pass();
+              t.assert(!data.object.hasOwnProperty('z'));
+              t.assert(!data.object.hasOwnProperty('z'));
+
+              t.end();
+            });
+
+            data.object.remove('z');
+          });
+
+          t.end();
+        });
+
+        t.end();
+      });
+
+      t.test('should not trigger callback on .remove with non-existant property', function (t) {
+        cursor.subscribe(callbackSpy);
+        callbackSpy.reset();
+
+        data.remove('wrongProperty');
+
+        raf(function () {
+          t.assert(callbackSpy.notCalled);
+
+          t.end();
+        });
+      });
+
+      t.test('should not trigger callback on non-updating .set', function (t) {
+        cursor.subscribe(callbackSpy);
+        callbackSpy.reset();
+
+        data.object.set('a', 2);
+
+        raf(function () {
+          callbackSpy.reset();
+          cursor.get().object.set('a', 2);
+
+          raf(function () {
+            t.assert(callbackSpy.notCalled);
+
+            t.end();
+          });
+        });
+      });
+
+      // TODO: Doesn't work (for Freezer) due to https://github.com/arqex/freezer/pull/67
+      t.skip('should not trigger callback if it has been subscribed after .set call', function (t) {
+        callbackSpy.reset();
+
+        data.object.set('a', 2);
+
+        cursor.subscribe(callbackSpy);
+
+        raf(function () {
+          t.assert(callbackSpy.notCalled);
+
+          t.end();
+        });
+      });
+
+      t.test('should trigger callback after all changes', function (t) {
+        t.test('updating by an object', function (t) {
+          cursor.subscribe(function (data) {
+            t.pass();
+            t.is(data.object.a, 2);
+            t.is(cursor.get().object.a, 2);
+            t.is(data.object.b, 3);
+            t.is(cursor.get().object.b, 3);
+
+            t.end();
+          });
+
+          data.object.set({
+            a: 2,
+            b: 3
+          });
+        });
+
+        t.test('updating by chaining calls', function (t) {
+          cursor.subscribe(function (data) {
+            t.pass();
+            t.is(data.object.a, 2);
+            t.is(cursor.get().object.a, 2);
+            t.is(data.object.b, 3);
+            t.is(cursor.get().object.b, 3);
+
+            t.end();
+          });
+
+          data.object.set('a', 2)
+            .set('b', 3);
+        });
+
+        t.end();
+      });
+
+      t.end();
+    });
+
+    t.test('.unsubscribe', function (t) {
+      t.test('with subscribed callback', function (t) {
+        t.beforeEach(function (t) {
+          cursor.subscribe(callbackSpy);
+
+          t.end();
+        });
+
+        t.test('should do something', function (t) {
+          t.doesNotThrow(function () {
+            cursor.unsubscribe(callbackSpy);
+          });
+
+          t.end();
+        });
+
+        t.test('should unsubscribe callback', function (t) {
+          cursor.unsubscribe(callbackSpy);
+          callbackSpy.reset();
+
+          data.object.set('a', 2);
+
+          raf(function () {
+            t.assert(callbackSpy.notCalled);
+
+            t.end();
+          });
+        });
+
+        t.test('should not unsubscribe other callbacks', function (t) {
+          cursor.subscribe(anotherCallbackSpy);
+
+          cursor.unsubscribe(callbackSpy);
+
+          callbackSpy.reset();
+
+          data.object.set('a', 2);
+
+          raf(function () {
+            t.assert(callbackSpy.notCalled);
+            t.assert(anotherCallbackSpy.calledOnce);
+
+            t.end();
+          });
+        });
+
+        t.end();
+      });
+
+      t.end();
+    });
+
+    t.test('.trigger', function (t) {
+      t.test('should do something', function (t) {
+        t.doesNotThrow(function () {
+          cursor.trigger();
+        });
+
+        t.end();
+      });
+
+      t.test('should trigger callbacks', function (t) {
+        cursor.subscribe(callbackSpy);
+        cursor.subscribe(anotherCallbackSpy);
+        callbackSpy.reset();
+        anotherCallbackSpy.reset();
+
+        cursor.trigger();
+
+        raf(function () {
+          t.assert(callbackSpy.calledOnce);
+          t.assert(anotherCallbackSpy.calledOnce);
+
+          t.end();
+        });
+      });
+
+      // TODO: t.end() called twice (with Freezer) due to https://github.com/arqex/freezer/pull/67
+      t.skip('should trigger callback with current state', function (t) {
+        data.object.set('a', 2);
+
+        cursor.subscribe(function (data) {
+          t.pass();
+          t.is(data.object.a, 2);
+          t.is(cursor.get().object.a, 2);
+
+          t.end();
+        });
+
+        cursor.trigger();
+      });
+
+      t.end();
+    });
 
     t.end();
   });
