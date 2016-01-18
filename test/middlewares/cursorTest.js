@@ -14,6 +14,14 @@ let seed = {
   undefined: undefined,
   string: 'cats'
 };
+let sample = {
+  number: -1,
+  object: { c: 1, b: -1, a: [ 'Y', 'Z' ] },
+  array: [ -1, -2, { e: -3 } ],
+  null: null,
+  undefined: undefined,
+  string: 'dogs'
+};
 
 let sandbox;
 
@@ -44,10 +52,10 @@ test('Cursor', function (t) {
   });
 
   t.test('.get', function (t) {
-    t.test('should return actual data', function (t) {
-      let data = cursor.get();
+    t.test('should return actual state', function (t) {
+      let state = cursor.get();
 
-      t.deepEqual(data, seed);
+      t.deepEqual(state, seed);
 
       t.end();
     });
@@ -56,16 +64,16 @@ test('Cursor', function (t) {
   });
 
   t.test('.set', function (t) {
-    let data;
+    let state;
 
     t.beforeEach(function (t) {
-      data = cursor.get();
+      state = cursor.get();
 
       t.end();
     });
 
     t.test('should return updated object', function (t) {
-      let result = data.set('a', 9);
+      let result = state.set('a', 9);
       let updated = cursor.get();
 
       t.is(result, updated);
@@ -75,7 +83,7 @@ test('Cursor', function (t) {
 
     t.test('with object argument', function (t) {
       t.test('should update values', function (t) {
-        data.set({
+        state.set({
           number: { b: 1 },
           null: 123
         });
@@ -98,7 +106,7 @@ test('Cursor', function (t) {
           null: 123
         };
 
-        data.set(values);
+        state.set(values);
 
         t.deepEqual(values, valuesCopy);
 
@@ -110,7 +118,7 @@ test('Cursor', function (t) {
 
     t.test('with key and value arguments', function (t) {
       t.test('should update value', function (t) {
-        data.set('object', { b: 1 });
+        state.set('object', { b: 1 });
 
         let updated = cursor.get();
 
@@ -123,7 +131,7 @@ test('Cursor', function (t) {
         let value = { b: 1 },
           valueCopy = { b: 1 };
 
-        data.set('object', value);
+        state.set('object', value);
 
         t.deepEqual(value, valueCopy);
 
@@ -135,7 +143,7 @@ test('Cursor', function (t) {
 
     t.test('called on object element', function (t) {
       t.test('should return object called on', function (t) {
-        let result = data.object.set('z', 9);
+        let result = state.object.set('z', 9);
         let updated = cursor.get().object;
 
         t.is(result, updated);
@@ -144,7 +152,7 @@ test('Cursor', function (t) {
       });
 
       t.test('should update value', function (t) {
-        data.object.set('z', 'dogs');
+        state.object.set('z', 'dogs');
 
         let updated = cursor.get();
 
@@ -158,7 +166,7 @@ test('Cursor', function (t) {
 
     t.test('called on array', function (t) {
       t.test('should update value', function (t) {
-        data.array.set(0, 3);
+        state.array.set(0, 3);
 
         let updated = cursor.get();
 
@@ -170,24 +178,24 @@ test('Cursor', function (t) {
       t.end();
     });
 
-    for (let newUpdatedValueType of Object.keys(seed)) {
+    for (let newUpdatedValueType of Object.keys(sample)) {
       t.test('set new ' + newUpdatedValueType + ' value', function (t) {
         t.test('should set value', function (t) {
-          data.set('newValue', seed[newUpdatedValueType]);
+          state.set('newValue', sample[newUpdatedValueType]);
 
           let updated = cursor.get();
 
-          t.deepEqual(updated.newValue, seed[newUpdatedValueType]);
+          t.deepEqual(updated.newValue, sample[newUpdatedValueType]);
 
           t.end();
         });
 
         t.test('should not modify other values', function (t) {
-          data.set('newValue', seed[newUpdatedValueType]);
+          state.set('newValue', sample[newUpdatedValueType]);
 
           let updated = cursor.get();
 
-          for (let key of Object.keys(seed)) {
+          for (let key of Object.keys(sample)) {
             if (key !== 'newValue') {
               t.deepEqual(updated[key], seed[key]);
             }
@@ -199,24 +207,24 @@ test('Cursor', function (t) {
         t.end();
       });
 
-      for (let firstValueType of Object.keys(seed)) {
+      for (let firstValueType of Object.keys(sample)) {
         t.test('update ' + firstValueType + ' value to ' + newUpdatedValueType + ' value', function (t) {
           t.test('should update value', function (t) {
-            data.set(firstValueType, seed[newUpdatedValueType]);
+            state.set(firstValueType, sample[newUpdatedValueType]);
 
             let updated = cursor.get();
 
-            t.deepEqual(updated[firstValueType], seed[newUpdatedValueType]);
+            t.deepEqual(updated[firstValueType], sample[newUpdatedValueType]);
 
             t.end();
           });
 
           t.test('should not modify other values', function (t) {
-            data.set(firstValueType, seed[newUpdatedValueType]);
+            state.set(firstValueType, sample[newUpdatedValueType]);
 
             let updated = cursor.get();
 
-            for (let key of Object.keys(seed)) {
+            for (let key of Object.keys(sample)) {
               if (key !== firstValueType) {
                 t.deepEqual(updated[key], seed[key]);
               }
@@ -231,7 +239,7 @@ test('Cursor', function (t) {
     }
 
     t.test('supports chaining calls', function (t) {
-      let chained = data.set('a', 9)
+      let chained = state.set('a', 9)
         .set('b', 0)
         .set({ c: [2, 3, 4] });
       let updated = cursor.get();
@@ -243,18 +251,18 @@ test('Cursor', function (t) {
 
     t.test('with existing node as value', function (t) {
       t.test('should update value', function (t) {
-        data.set('a', data.object);
+        state.set('a', state.object);
 
         let updated = cursor.get();
 
-        t.is(data.object, updated.a);
+        t.is(state.object, updated.a);
 
         t.end();
       });
 
       t.test('should update value but with reference', function (t) {
-        data.set('a', data.object);
-        data.object.set('z', 2);
+        state.set('a', state.object);
+        state.object.set('z', 2);
 
         let updated = cursor.get();
 
@@ -271,16 +279,16 @@ test('Cursor', function (t) {
   });
 
   t.test('.remove', function (t) {
-    let data;
+    let state;
 
     t.beforeEach(function (t) {
-      data = cursor.get();
+      state = cursor.get();
 
       t.end();
     });
 
     t.test('should return updated object', function (t) {
-      let result = data.remove('number');
+      let result = state.remove('number');
       let updated = cursor.get();
 
       t.is(result, updated);
@@ -289,22 +297,22 @@ test('Cursor', function (t) {
     });
 
     t.test('should remove element', function(t) {
-      data.remove('number');
+      state.remove('number');
 
       let updated = cursor.get();
 
-      t.assert(!updated.hasOwnProperty('number'));
+      t.not('number' in updated);
       t.is(updated.number, undefined);
 
       t.end();
     });
 
     t.test('should not modify other values', function (t) {
-      data.remove('number');
+      state.remove('number');
 
       let updated = cursor.get();
 
-      for (let key of Object.keys(seed)) {
+      for (let key of Object.keys(sample)) {
         if (key !== 'number') {
           t.deepEqual(updated[key], seed[key]);
         }
@@ -315,7 +323,7 @@ test('Cursor', function (t) {
 
     t.test('with object element', function (t) {
       t.test('should return updated object', function (t) {
-        let result = data.object.remove('z');
+        let result = state.object.remove('z');
         let updated = cursor.get().object;
 
         t.is(result, updated);
@@ -324,24 +332,24 @@ test('Cursor', function (t) {
       });
 
       t.test('should remove element', function(t) {
-        data.object.remove('z');
+        state.object.remove('z');
 
         let updated = cursor.get();
 
-        t.assert(!updated.object.hasOwnProperty('z'));
+        t.not('z' in updated.object);
         t.is(updated.object.z, undefined);
 
         t.end();
       });
 
       t.test('should not modify other values', function (t) {
-        data.object.remove('z');
+        state.object.remove('z');
 
         let updated = cursor.get();
 
-        for (let key of Object.keys(seed)) {
+        for (let key of Object.keys(sample)) {
           if (key !== 'number') {
-            t.deepEqual(updated.object[key], seed.object[key]);
+            t.deepEqual(updated.object[key], sample.object[key]);
           }
         }
 
@@ -353,20 +361,20 @@ test('Cursor', function (t) {
 
     t.test('with non-existent element', function (t) {
       t.test('should return object called on', function (t) {
-        let result = data.object.remove('unreal');
+        let result = state.object.remove('unreal');
 
-        t.is(result, data.object);
+        t.is(result, state.object);
 
         t.end();
       });
 
       t.test('should not modify any value', function (t) {
-        data.object.remove('unreal');
+        state.object.remove('unreal');
 
         let updated = cursor.get();
 
-        for (let key of Object.keys(seed)) {
-          t.deepEqual(updated.object[key], seed.object[key]);
+        for (let key of Object.keys(sample)) {
+          t.deepEqual(updated.object[key], sample.object[key]);
         }
 
         t.end();
@@ -377,7 +385,7 @@ test('Cursor', function (t) {
 
     t.test('with array of keys', function (t) {
       t.test('should return updated object', function (t) {
-        let result = data.remove(['number', 'string']);
+        let result = state.remove(['number', 'string']);
         let updated = cursor.get();
 
         t.is(result, updated);
@@ -386,24 +394,24 @@ test('Cursor', function (t) {
       });
 
       t.test('should remove elements', function(t) {
-        data.remove(['number', 'string']);
+        state.remove(['number', 'string']);
 
         let updated = cursor.get();
 
-        t.assert(!updated.hasOwnProperty('number'));
+        t.not('number' in updated);
         t.is(updated.number, undefined);
-        t.assert(!updated.hasOwnProperty('string'));
+        t.not('string' in updated);
         t.is(updated.string, undefined);
 
         t.end();
       });
 
       t.test('should not modify other values', function (t) {
-        data.remove(['number', 'string']);
+        state.remove(['number', 'string']);
 
         let updated = cursor.get();
 
-        for (let key of Object.keys(seed)) {
+        for (let key of Object.keys(sample)) {
           if (key !== 'number' && key !== 'string') {
             t.deepEqual(updated[key], seed[key]);
           }
@@ -417,40 +425,40 @@ test('Cursor', function (t) {
 
     t.test('references to other values', function (t) {
       t.test('should remove element', function(t) {
-        data.set('a', data.object);
+        state.set('a', state.object);
         let updated = cursor.get();
 
         updated.remove('object');
         let newUpdated = cursor.get();
 
-        t.assert(!newUpdated.hasOwnProperty('object'));
+        t.not('object' in newUpdated);
         t.is(newUpdated.object, undefined);
 
         t.end();
       });
 
       t.test('should preserve duplicates', function (t) {
-        data.set('a', data.object);
+        state.set('a', state.object);
         let updated = cursor.get();
 
         updated.remove('object');
         let newUpdated = cursor.get();
 
-        t.is(newUpdated.a, data.object);
+        t.is(newUpdated.a, state.object);
 
         t.end();
       });
 
       t.test('should not preserve duplicates since all have been deleted', function (t) {
-        data.set('a', data.object);
+        state.set('a', state.object);
         let updated = cursor.get();
 
         updated.remove(['object', 'a']);
         let newUpdated = cursor.get();
 
-        t.assert(!newUpdated.hasOwnProperty('object'));
+        t.not('object' in newUpdated);
         t.is(newUpdated.object, undefined);
-        t.assert(!newUpdated.hasOwnProperty('a'));
+        t.not('a' in newUpdated);
         t.is(newUpdated.a, undefined);
 
         t.end();
@@ -463,11 +471,11 @@ test('Cursor', function (t) {
   });
 
   t.test('after .remove', function (t) {
-    t.test('removed object element can\'t update data', function (t) {
-      let data = cursor.get();
-      let object = data.object;
+    t.test('removed object element can\'t update state', function (t) {
+      let state = cursor.get();
+      let object = state.object;
 
-      data.remove('object');
+      state.remove('object');
 
       let updated = cursor.get();
       object.set('z', 2);
@@ -483,15 +491,15 @@ test('Cursor', function (t) {
   });
 
   t.test('listeners', function (t) {
-    let cursor, data,
+    let cursor, state,
       callback, callbackSpy, anotherCallback, anotherCallbackSpy;
 
     t.beforeEach(function (t) {
       cursor = new Cursor(seed);
-      data = cursor.get();
-      callback = function (data) {};  // eslint-disable-line no-unused-vars
+      state = cursor.get();
+      callback = function (state) {};  // eslint-disable-line no-unused-vars
       callbackSpy = sandbox.spy(callback);
-      anotherCallback = function (data) {};  // eslint-disable-line no-unused-vars
+      anotherCallback = function (state) {};  // eslint-disable-line no-unused-vars
       anotherCallbackSpy = sandbox.spy(anotherCallback);
 
       t.end();
@@ -510,7 +518,7 @@ test('Cursor', function (t) {
         cursor.subscribe(callbackSpy);
         callbackSpy.reset();
 
-        data.object.set('a', 2);
+        state.object.set('a', 2);
 
         raf(function () {
           t.assert(callbackSpy.calledOnce);
@@ -525,7 +533,7 @@ test('Cursor', function (t) {
         callbackSpy.reset();
         anotherCallbackSpy.reset();
 
-        data.object.set('a', 2);
+        state.object.set('a', 2);
 
         raf(function () {
           t.assert(callbackSpy.calledOnce);
@@ -538,39 +546,39 @@ test('Cursor', function (t) {
       t.test('should trigger callbacks after...', function (t) {
         t.test('setting property', function (t) {
           t.test('on root', function (t) {
-            cursor.subscribe(function (data) {
+            cursor.subscribe(function (state) {
               t.pass();
-              t.is(data.a, 1);
+              t.is(state.a, 1);
               t.is(cursor.get().a, 1);
 
               t.end();
             });
 
-            data.set('a', 1);
+            state.set('a', 1);
           });
 
           t.test('on object element', function (t) {
-            cursor.subscribe(function (data) {
+            cursor.subscribe(function (state) {
               t.pass();
-              t.is(data.object.a, 1);
+              t.is(state.object.a, 1);
               t.is(cursor.get().object.a, 1);
 
               t.end();
             });
 
-            data.object.set('a', 1);
+            state.object.set('a', 1);
           });
 
           t.test('on array element', function (t) {
-            cursor.subscribe(function (data) {
+            cursor.subscribe(function (state) {
               t.pass();
-              t.is(data.array[3], 1);
+              t.is(state.array[3], 1);
               t.is(cursor.get().array[3], 1);
 
               t.end();
             });
 
-            data.array.set(3, 1);
+            state.array.set(3, 1);
           });
 
           t.end();
@@ -578,39 +586,39 @@ test('Cursor', function (t) {
 
         t.test('updating property', function (t) {
           t.test('on root', function (t) {
-            cursor.subscribe(function (data) {
+            cursor.subscribe(function (state) {
               t.pass();
-              t.is(data.number, 2);
+              t.is(state.number, 2);
               t.is(cursor.get().number, 2);
 
               t.end();
             });
 
-            data.set('number', 2);
+            state.set('number', 2);
           });
 
           t.test('on object element', function (t) {
-            cursor.subscribe(function (data) {
+            cursor.subscribe(function (state) {
               t.pass();
-              t.is(data.object.z, 2);
+              t.is(state.object.z, 2);
               t.is(cursor.get().object.z, 2);
 
               t.end();
             });
 
-            data.object.set('z', 2);
+            state.object.set('z', 2);
           });
 
           t.test('on array element', function (t) {
-            cursor.subscribe(function (data) {
+            cursor.subscribe(function (state) {
               t.pass();
-              t.is(data.array[0], 2);
+              t.is(state.array[0], 2);
               t.is(cursor.get().array[0], 2);
 
               t.end();
             });
 
-            data.array.set(0, 2);
+            state.array.set(0, 2);
           });
 
           t.end();
@@ -618,27 +626,27 @@ test('Cursor', function (t) {
 
         t.test('removing property', function (t) {
           t.test('on root', function (t) {
-            cursor.subscribe(function (data) {
+            cursor.subscribe(function (state) {
               t.pass();
-              t.assert(!data.hasOwnProperty('number'));
-              t.assert(!data.hasOwnProperty('number'));
+              t.not('number' in state);
+              t.is(state.number, undefined);
 
               t.end();
             });
 
-            data.remove('number');
+            state.remove('number');
           });
 
           t.test('on object element', function (t) {
-            cursor.subscribe(function (data) {
+            cursor.subscribe(function (state) {
               t.pass();
-              t.assert(!data.object.hasOwnProperty('z'));
-              t.assert(!data.object.hasOwnProperty('z'));
+              t.not('z' in state.object);
+              t.is(state.object.z, undefined);
 
               t.end();
             });
 
-            data.object.remove('z');
+            state.object.remove('z');
           });
 
           t.end();
@@ -651,7 +659,7 @@ test('Cursor', function (t) {
         cursor.subscribe(callbackSpy);
         callbackSpy.reset();
 
-        data.remove('wrongProperty');
+        state.remove('wrongProperty');
 
         raf(function () {
           t.assert(callbackSpy.notCalled);
@@ -664,7 +672,7 @@ test('Cursor', function (t) {
         cursor.subscribe(callbackSpy);
         callbackSpy.reset();
 
-        data.object.set('a', 2);
+        state.object.set('a', 2);
 
         raf(function () {
           callbackSpy.reset();
@@ -682,7 +690,7 @@ test('Cursor', function (t) {
       t.skip('should not trigger callback if it has been subscribed after .set call', function (t) {
         callbackSpy.reset();
 
-        data.object.set('a', 2);
+        state.object.set('a', 2);
 
         cursor.subscribe(callbackSpy);
 
@@ -695,34 +703,34 @@ test('Cursor', function (t) {
 
       t.test('should trigger callback after all changes', function (t) {
         t.test('updating by an object', function (t) {
-          cursor.subscribe(function (data) {
+          cursor.subscribe(function (state) {
             t.pass();
-            t.is(data.object.a, 2);
+            t.is(state.object.a, 2);
             t.is(cursor.get().object.a, 2);
-            t.is(data.object.b, 3);
+            t.is(state.object.b, 3);
             t.is(cursor.get().object.b, 3);
 
             t.end();
           });
 
-          data.object.set({
+          state.object.set({
             a: 2,
             b: 3
           });
         });
 
         t.test('updating by chaining calls', function (t) {
-          cursor.subscribe(function (data) {
+          cursor.subscribe(function (state) {
             t.pass();
-            t.is(data.object.a, 2);
+            t.is(state.object.a, 2);
             t.is(cursor.get().object.a, 2);
-            t.is(data.object.b, 3);
+            t.is(state.object.b, 3);
             t.is(cursor.get().object.b, 3);
 
             t.end();
           });
 
-          data.object.set('a', 2)
+          state.object.set('a', 2)
             .set('b', 3);
         });
 
@@ -752,7 +760,7 @@ test('Cursor', function (t) {
           cursor.unsubscribe(callbackSpy);
           callbackSpy.reset();
 
-          data.object.set('a', 2);
+          state.object.set('a', 2);
 
           raf(function () {
             t.assert(callbackSpy.notCalled);
@@ -768,7 +776,7 @@ test('Cursor', function (t) {
 
           callbackSpy.reset();
 
-          data.object.set('a', 2);
+          state.object.set('a', 2);
 
           raf(function () {
             t.assert(callbackSpy.notCalled);
@@ -811,11 +819,11 @@ test('Cursor', function (t) {
 
       // TODO: t.end() called twice (with Freezer) due to https://github.com/arqex/freezer/pull/67
       t.skip('should trigger callback with current state', function (t) {
-        data.object.set('a', 2);
+        state.object.set('a', 2);
 
-        cursor.subscribe(function (data) {
+        cursor.subscribe(function (state) {
           t.pass();
-          t.is(data.object.a, 2);
+          t.is(state.object.a, 2);
           t.is(cursor.get().object.a, 2);
 
           t.end();
