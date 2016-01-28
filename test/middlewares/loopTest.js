@@ -1,6 +1,6 @@
 import test from 'tapes';
 import sinon from 'sinon';
-import raf from 'raf';
+import rafRaf from '../helpers/rafRaf';
 import clone from 'clone';
 
 import { Loop_VirtualDom as Loop } from '../../middlewares';
@@ -72,7 +72,7 @@ test('Loop', function (t) {
 
       loop.redraw();
 
-      raf(function () {
+      rafRaf(() => {
         t.assert(viewBindedSpy.calledOnce);
         t.assert(viewBindedSpy.calledWithExactly());
         t.assert(viewBindedSpy.calledOn(undefined));  // try to check here if not rebound
@@ -87,7 +87,7 @@ test('Loop', function (t) {
       state.property = 'new value';
       loop.redraw();
 
-      raf(function () {
+      rafRaf(() => {
         // TODO: Doesn't work due to circular refernces, see https://github.com/substack/node-deep-equal/issues/19
         t.notDeepEquals(loop.target, targetCopy);
 
@@ -100,7 +100,7 @@ test('Loop', function (t) {
 
       loop.redraw();
 
-      raf(function () {
+      rafRaf(() => {
         // TODO: Doesn't work due to circular refernces, see https://github.com/substack/node-deep-equal/issues/19
         t.deepEquals(loop.target, targetCopy);
 

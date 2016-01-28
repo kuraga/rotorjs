@@ -1,6 +1,6 @@
 import test from 'tapes';
 import sinon from 'sinon';
-import raf from 'raf';
+import rafRaf from './helpers/rafRaf';
 
 import {
   Application,
@@ -222,7 +222,7 @@ test('Application', function (t) {
           application.redraw.reset();
           componentState.set('newProperty', 'new value');
 
-          raf(function () {
+          rafRaf(() => {
             t.assert(application.redraw.calledOnce);
             t.assert(application.redraw.calledWithExactly());
             t.assert(application.redraw.calledOn(application));

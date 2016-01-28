@@ -2,7 +2,7 @@
 
 import test from 'tapes';
 import sinon from 'sinon';
-import raf from 'raf';
+import rafRaf from '../helpers/rafRaf';
 
 import { Cursor_FreezerJs as Cursor } from '../../middlewares';
 
@@ -520,7 +520,7 @@ test('Cursor', function (t) {
 
         state.object.set('a', 2);
 
-        raf(function () {
+        rafRaf(() => {
           t.assert(callbackSpy.calledOnce);
 
           t.end();
@@ -535,7 +535,7 @@ test('Cursor', function (t) {
 
         state.object.set('a', 2);
 
-        raf(function () {
+        rafRaf(() => {
           t.assert(callbackSpy.calledOnce);
           t.assert(anotherCallbackSpy.calledOnce);
 
@@ -661,7 +661,7 @@ test('Cursor', function (t) {
 
         state.remove('wrongProperty');
 
-        raf(function () {
+        rafRaf(() => {
           t.assert(callbackSpy.notCalled);
 
           t.end();
@@ -672,17 +672,12 @@ test('Cursor', function (t) {
         cursor.subscribe(callbackSpy);
         callbackSpy.reset();
 
-        state.object.set('a', 2);
+        state.set('number', 1);
 
-        raf(function () {
-          callbackSpy.reset();
-          cursor.get().object.set('a', 2);
+        rafRaf(() => {
+          t.assert(callbackSpy.notCalled);
 
-          raf(function () {
-            t.assert(callbackSpy.notCalled);
-
-            t.end();
-          });
+          t.end();
         });
       });
 
@@ -694,7 +689,7 @@ test('Cursor', function (t) {
 
         cursor.subscribe(callbackSpy);
 
-        raf(function () {
+        rafRaf(() => {
           t.assert(callbackSpy.notCalled);
 
           t.end();
@@ -762,7 +757,7 @@ test('Cursor', function (t) {
 
           state.object.set('a', 2);
 
-          raf(function () {
+          rafRaf(() => {
             t.assert(callbackSpy.notCalled);
 
             t.end();
@@ -778,7 +773,7 @@ test('Cursor', function (t) {
 
           state.object.set('a', 2);
 
-          raf(function () {
+          rafRaf(() => {
             t.assert(callbackSpy.notCalled);
             t.assert(anotherCallbackSpy.calledOnce);
 
@@ -809,7 +804,7 @@ test('Cursor', function (t) {
 
         cursor.trigger();
 
-        raf(function () {
+        rafRaf(() => {
           t.assert(callbackSpy.calledOnce);
           t.assert(anotherCallbackSpy.calledOnce);
 
