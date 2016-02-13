@@ -50,6 +50,11 @@ TODO
 
 See <https://github.com/kuraga/rotorjs/tree/master/example>.
 
+## See also
+
+* [DBMON RotorJS](http://mathieuancelin.github.io/js-repaint-perfs/rotorjs/index.html),
+* [DBMON RotorJS (with using VnodeImmutableThunk)](http://mathieuancelin.github.io/js-repaint-perfs/rotorjs/with_thunks.html).
+
 ## Author
 
 Alexander Kurakin <<kuraga333@mail.ru>>
