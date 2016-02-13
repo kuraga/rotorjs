@@ -4,4 +4,4 @@ export default function rafRaf(callback) {
   raf(function () {
     raf(callback);
   });
-};
+}

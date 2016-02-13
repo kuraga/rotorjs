@@ -310,8 +310,6 @@ test('Trie', function (t) {
     });
 
     t.test('matches patterns with params correctly 5', function (t) {
-      let node = trie.define('/prefix:type');
-
       t.is(trie.match('/prEfixpost'), null);
 
       t.end();
@@ -514,7 +512,7 @@ test('Trie', function (t) {
       t.end();
     });
 
-    t.test('matches patterns with regexped params correctly 13', function (t) {;
+    t.test('matches patterns with regexped params correctly 13', function (t) {
       let node = trie.define('/((post|task)s?)/([\\w\\d]{6})');
 
       t.assert(trie.is(trie.match('/post/a12345').node, node));
@@ -538,7 +536,7 @@ test('Trie', function (t) {
       t.end();
     });
 
-    t.test('matches patterns with regexped params correctly 14', function (t) {;
+    t.test('matches patterns with regexped params correctly 14', function (t) {
       let node = trie.define('/:type((post|task)s?)/:id([\\w\\d]{6})');
 
       t.assert(trie.is(trie.match('/post/a12345').node, node));
