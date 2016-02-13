@@ -12,7 +12,7 @@ window.onload = () => {
 };
 
 window.onunload = () => {
-  document.body.removeChild(application.target);
-
   application.stop();
+
+  document.body.removeChild(application.target);
 };
