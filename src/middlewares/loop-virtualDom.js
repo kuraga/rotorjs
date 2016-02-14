@@ -3,7 +3,7 @@ import vDomCreate from 'virtual-dom/vdom/create-element';
 import vDomDiff from 'virtual-dom/vtree/diff';
 import vDomPatch from 'virtual-dom/vdom/patch';
 
-export default class Loop {
+export default class Loop_VirtualDom {
   constructor(view) {
     this.__view = view;
 

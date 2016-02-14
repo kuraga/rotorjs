@@ -1,6 +1,6 @@
 import Freezer from 'freezer-js';
 
-export default class Cursor {
+export default class Cursor_FreezerJs {
   constructor(object) {
     this.__freezer = new Freezer(object);
   }

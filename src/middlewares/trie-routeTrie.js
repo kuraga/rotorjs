@@ -1,6 +1,6 @@
 import RouteTrie from 'route-trie';
 
-export default class Trie {
+export default class Trie_RouteTrie {
   constructor() {
     this.__routeTrie = new RouteTrie();
   }
