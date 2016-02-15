@@ -14,13 +14,12 @@ export default function getApplicationClass(Cursor, Loop) {
           [rootComponentName]: rootComponent.initialState
         }
       };
+
       this.__cursor = new Cursor(initialState);
+      this.__loop = new Loop(this.__renderBinded);
+      this.__cursor.subscribe(this.__cursorUpdatedHandler);
 
       this.rootComponent.activate();
-
-      this.__loop = new Loop(this.__renderBinded);
-
-      this.__cursor.subscribe(this.__cursorUpdatedHandler);
     }
 
     stop() {
