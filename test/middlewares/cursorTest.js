@@ -179,7 +179,7 @@ test('Cursor', function (t) {
     });
 
     for (let newUpdatedValueType of Object.keys(sample)) {
-      t.test('set new ' + newUpdatedValueType + ' value', function (t) {
+      t.test(`set new ${newUpdatedValueType} value`, function (t) {
         t.test('should set value', function (t) {
           state.set('newValue', sample[newUpdatedValueType]);
 
@@ -208,7 +208,7 @@ test('Cursor', function (t) {
       });
 
       for (let firstValueType of Object.keys(sample)) {
-        t.test('update ' + firstValueType + ' value to ' + newUpdatedValueType + ' value', function (t) {
+        t.test(`update ${firstValueType} value to ${newUpdatedValueType} value`, function (t) {
           t.test('should update value', function (t) {
             state.set(firstValueType, sample[newUpdatedValueType]);
 
