@@ -15,6 +15,6 @@ var testFiles = globSync(testFilesGlob);
 
 require('babel-register')(babelOptions);
 
-testFiles.forEach(function(file) {
-  require(file);
-});
+for (var i = 0; i < testFiles.length; ++i) {
+  require(testFiles[i]);
+}
