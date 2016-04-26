@@ -681,7 +681,7 @@ test('Cursor', function (t) {
         });
       });
 
-      // TODO: Doesn't work (for Freezer) due to https://github.com/arqex/freezer/pull/67
+      // TODO: Doesn't work (for Freezer) due to https://github.com/arqex/freezer/issues/85
       t.skip('should not trigger callback if it has been subscribed after .set call', function (t) {
         callbackSpy.reset();
 
@@ -812,7 +812,7 @@ test('Cursor', function (t) {
         });
       });
 
-      // TODO: t.end() called twice (with Freezer) due to https://github.com/arqex/freezer/pull/67
+      // TODO: t.end() called twice (with Freezer) due to https://github.com/arqex/freezer/issues/85
       t.skip('should trigger callback with current state', function (t) {
         state.object.set('a', 2);
 
