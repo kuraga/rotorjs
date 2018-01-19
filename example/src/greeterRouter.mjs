@@ -1,14 +1,14 @@
 /** @jsx h */
 
-import BrowserRouterComponent from './helpers/browserRouterComponent';
-import MainComponent from './mainComponent.jsx';
-import GreeterComponent from './greeterComponent.jsx';
+import BrowserRouterComponent from './helpers/browserRouterComponent.mjs';
+import MainComponent from './mainComponent.mjs';
+import GreeterComponent from './greeterComponent.mjs';
 
 import h from 'virtual-dom/h';  // eslint-disable-line no-unused-vars
 
 export default class GreeterRouter extends BrowserRouterComponent {
   constructor(application, parent, name) {
-    let routes = {
+    const routes = {
       '': (match, router) => (
         new MainComponent(application, router, 'greeter')
       ),

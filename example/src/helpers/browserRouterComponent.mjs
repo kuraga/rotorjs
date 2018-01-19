@@ -1,4 +1,4 @@
-import { RouterComponent } from './rotorJsClasses';
+import { RouterComponent } from './rotorJsClasses.mjs';
 
 export default class BrowserRouterComponent extends RouterComponent {
   constructor(...args) {
@@ -22,8 +22,8 @@ export default class BrowserRouterComponent extends RouterComponent {
   }
 
   get __currentPath() {
-    let hash = this.application.ownerDocument.location.hash;
-    let path = hash.slice(1);
+    const hash = this.application.ownerDocument.location.hash;
+    const path = hash.slice(1);
 
     return path;
   }

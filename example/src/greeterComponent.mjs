@@ -1,12 +1,12 @@
 /** @jsx h */
 
-import { Component } from './helpers/rotorJsClasses';
+import { Component } from './helpers/rotorJsClasses.mjs';
 
 import ImmutableThunk from 'vnode-immutable-thunk';
 import PropertyHook from 'virtual-dom/virtual-hyperscript/hooks/soft-set-hook';
-import h from './helpers/virtualDomSpreadH';  // eslint-disable-line no-unused-vars
+import h from './helpers/virtualDomSpreadH.mjs';  // eslint-disable-line no-unused-vars
 
-import TimerComponent from './timerComponent.jsx';
+import TimerComponent from './timerComponent.mjs';
 
 export default class GreeterComponent extends Component {
   constructor(application, parent = null, name = 'greeter', initialState = {}) {
@@ -17,12 +17,12 @@ export default class GreeterComponent extends Component {
   activate() {
     super.activate();
 
-    let inputHook = new PropertyHook(this.inputHandler.bind(this));
+    const inputHook = new PropertyHook(this.inputHandler.bind(this));
     this.state.set('hooks', {
       input: inputHook
     });
 
-    let timer = new TimerComponent(this.application, this, 'timer');
+    const timer = new TimerComponent(this.application, this, 'timer');
     this.addSubcomponent(timer);
 
     this.getSubcomponent('timer').activate();

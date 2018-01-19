@@ -1,6 +1,6 @@
 'use strict';
 
-import GreeterApplication from './src/greeterApplication.jsx';
+import GreeterApplication from './src/greeterApplication.mjs';
 
 var application;
 

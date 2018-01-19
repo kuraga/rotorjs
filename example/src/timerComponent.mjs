@@ -1,8 +1,8 @@
 /** @jsx h */
 
-import { Component } from './helpers/rotorJsClasses';
+import { Component } from './helpers/rotorJsClasses.mjs';
 
-import h from './helpers/virtualDomSpreadH';  // eslint-disable-line no-unused-vars
+import h from './helpers/virtualDomSpreadH.mjs';  // eslint-disable-line no-unused-vars
 
 export default class TimerComponent extends Component {
   constructor(application, parent = null, name = 'timer', initialState = {}) {
@@ -16,7 +16,7 @@ export default class TimerComponent extends Component {
   activate() {
     super.activate();
 
-    let intervalId = setInterval(this.__incCountBinded, this.state.duration);
+    const intervalId = setInterval(this.__incCountBinded, this.state.duration);
     this.state.set('intervalId', intervalId);
   }
 

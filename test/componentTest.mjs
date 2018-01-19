@@ -55,7 +55,7 @@ test('Component', function (t) {
 
     t.test('with required arguments only', function (t) {
       t.test('should construct a Component instance', function (t) {
-        let anotherComponent = new Component(application, rootComponent, name);
+        const anotherComponent = new Component(application, rootComponent, name);
 
         t.assert(anotherComponent instanceof Component);
 
@@ -67,7 +67,7 @@ test('Component', function (t) {
 
     t.test('with null as parent component', function (t) {
       t.test('should construct a Component instance', function (t) {
-        let anotherComponent = new Component(application, null, name);
+        const anotherComponent = new Component(application, null, name);
 
         t.assert(anotherComponent instanceof Component);
 
@@ -106,7 +106,7 @@ test('Component', function (t) {
     t.test('.parent', function (t) {
       t.test('of root component', function (t) {
         t.test('should be null', function (t) {
-          let anotherComponent = new Component(application, null, name, additionalInitialState);
+          const anotherComponent = new Component(application, null, name, additionalInitialState);
 
           t.is(anotherComponent.initialState.parent, null);
 
@@ -165,7 +165,7 @@ test('Component', function (t) {
   t.test('.parent', function (t) {
     t.test('of root component', function (t) {
       t.test('should be null', function (t) {
-        let anotherComponent = new Component(application, null, name, additionalInitialState);
+        const anotherComponent = new Component(application, null, name, additionalInitialState);
 
         t.is(anotherComponent.parent, null);
 
@@ -201,7 +201,7 @@ test('Component', function (t) {
   t.test('.path', function (t) {
     t.test('of root component', function (t) {
       t.test('should return array with name', function (t) {
-        let anotherComponent = new Component(application, null, name, additionalInitialState);
+        const anotherComponent = new Component(application, null, name, additionalInitialState);
 
         t.deepEqual(anotherComponent.path, ['componentName']);
 
@@ -289,7 +289,7 @@ test('Component', function (t) {
       });
 
       t.test('of root component', function (t) {
-        let rootComponentStateObject = {};
+        const rootComponentStateObject = {};
 
         t.beforeEach(function (t) {
           application.getComponentState.withArgs(rootComponent.path).returns(rootComponentStateObject);
@@ -298,7 +298,7 @@ test('Component', function (t) {
         });
 
         t.test('should return root component\'s state', function (t) {
-          let result = rootComponent.state;
+          const result = rootComponent.state;
 
           t.is(result, rootComponentStateObject);
 
@@ -319,7 +319,7 @@ test('Component', function (t) {
         });
 
         t.test('should return child component\'s state', function (t) {
-          let result = component.state;
+          const result = component.state;
 
           t.is(result, childComponentStateObject);
 
@@ -338,7 +338,7 @@ test('Component', function (t) {
   t.test('.addSubcomponent', function (t) {
     t.test('with non-existant subcomponent', function (t) {
       t.test('should return this', function (t) {
-        let result = rootComponent.addSubcomponent(subcomponent);
+        const result = rootComponent.addSubcomponent(subcomponent);
 
         t.is(result, rootComponent);
 
@@ -412,7 +412,7 @@ test('Component', function (t) {
       });
 
       t.test('should return this', function (t) {
-        let result = rootComponent.removeSubcomponent('subcomponentName');
+        const result = rootComponent.removeSubcomponent('subcomponentName');
 
         t.is(result, rootComponent);
 

@@ -1,15 +1,15 @@
-import getApplicationClass from './application';
-import getComponentClass from './component';
-import getRouterComponentClass from './routerComponent';
+import getApplicationClass from './application.mjs';
+import getComponentClass from './component.mjs';
+import getRouterComponentClass from './routerComponent.mjs';
 
 export default function getRotorJsClasses(middleware) {
-  let {
+  const {
     Cursor,
     Loop,
     Trie
   } = middleware;
 
-  let Application = getApplicationClass(Cursor, Loop),
+  const Application = getApplicationClass(Cursor, Loop),
     Component = getComponentClass(),
     RouterComponent = getRouterComponentClass(Component, Trie);
 

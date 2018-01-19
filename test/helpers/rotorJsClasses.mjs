@@ -2,16 +2,16 @@ import {
   Cursor_FreezerJs as Cursor,
   Loop_VirtualDom as Loop,
   Trie_RouteTrie as Trie
-} from 'rotorjs/middlewares';
-import { getRotorJsClasses } from 'rotorjs';
+} from '../../middlewares';
+import { getRotorJsClasses } from '../../index';
 
-let middleware = {
+const middleware = {
   Cursor,
   Loop,
   Trie
 };
 
-let {
+const {
   Application,
   Component,
   RouterComponent

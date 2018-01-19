@@ -1,19 +1,14 @@
 'use strict';
 
-var globSync = require('glob').sync,
-    path = require('path');
+const globSync = require('glob').sync,
+  path = require('path'),
+  esm = require("@std/esm");
 
-var babelOptions = {
-  presets: ['es2015', 'stage-1'],
-  plugins: ['transform-runtime'],
-  compact: false
-};
+const esmRequire = esm(module);
 
-var testFilesGlob = path.join(process.cwd(), 'test', '**', '*Test.js');
-var testFiles = globSync(testFilesGlob);
+const testFilesGlob = path.join(process.cwd(), 'test', '**', '*Test.mjs');
+const testFiles = globSync(testFilesGlob);
 
-require('babel-register')(babelOptions);
-
-for (var i = 0; i < testFiles.length; ++i) {
-  require(testFiles[i]);
+for (const testFile of testFiles) {
+  esmRequire(testFile);
 }

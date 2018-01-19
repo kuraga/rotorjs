@@ -82,7 +82,7 @@ test('Loop', function (t) {
     });
 
     t.skip('should re-render target since state has been changed', function (t) {
-      let targetCopy = clone(loop.target);
+      const targetCopy = clone(loop.target);
 
       state.property = 'new value';
       loop.redraw();
@@ -96,7 +96,7 @@ test('Loop', function (t) {
     });
 
     t.skip('should not re-render target until state has been changed', function (t) {
-      let targetCopy = clone(loop.target);
+      const targetCopy = clone(loop.target);
 
       loop.redraw();
 

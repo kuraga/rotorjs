@@ -37,7 +37,7 @@ export default function getComponentClass() {
     }
 
     get path() {
-      let parentComponentPath = this.parent !== null ? this.parent.path : [];
+      const parentComponentPath = this.parent !== null ? this.parent.path : [];
       return parentComponentPath.concat(this.name);
     }
 
@@ -58,7 +58,7 @@ export default function getComponentClass() {
         throw new Error(`Subcomponent '${subcomponentName}' doesn't exist`);
       }
 
-      let subcomponentState = this.state.__subcomponents[subcomponentName];
+      const subcomponentState = this.state.__subcomponents[subcomponentName];
       return subcomponentState.component;
     }
 
@@ -67,7 +67,7 @@ export default function getComponentClass() {
         throw new Error(`Subcomponent has different parent`);
       }
 
-      let subcomponentName = subcomponent.name;
+      const subcomponentName = subcomponent.name;
 
       if (this.state.__subcomponents.hasOwnProperty(subcomponentName)) {
         throw new Error(`Subcomponent '${subcomponentName}' already exists`);

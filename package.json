@@ -2,7 +2,7 @@
   "name": "rotorjs",
   "version": "0.5.2",
   "license": "MIT",
-  "description": "Component-based JavaScript library for single-page applications",
+  "description": "Component-based JavaScript library for single-page applications.",
   "keywords": [
     "RotorJS",
     "component",
@@ -26,13 +26,13 @@
     "browser",
     "server",
     "ES6",
-    "Ecmascript 6",
+    "ECMAScript 6",
     "ES2015",
-    "Ecmascript 2015",
+    "ECMAScript 2015",
     "ES2016",
-    "Ecmascript 2016",
+    "ECMAScript 2016",
     "ES2017",
-    "Ecmascript 2017"
+    "ECMAScript 2017"
   ],
   "homepage": "https://github.com/kuraga/rotorjs",
   "repository": {
@@ -47,35 +47,30 @@
     "url": "https://github.com/kuraga/rotorjs/issues",
     "email": "kuraga333@mail.ru"
   },
-  "main": "index.js",
-  "jsnext:main": "index.js",
-  "browser": "index.js",
+  "main": "index.mjs",
+  "module": "index.mjs",
+  "jsnext:main": "index.mjs",
+  "browser": "index.mjs",
+  "engines": {
+    "node": ">= 8.5.0"
+  },
   "dependencies": {
-    "raf": "^3.1.0",
-    "babel-runtime": "^6.3.19",
-    "virtual-dom": "^2.1.1",
     "freezer-js": "^0.9.6",
-    "route-trie": "^1.2.1"
+    "raf": "^3.1.0",
+    "route-trie": "^1.2.1",
+    "virtual-dom": "^2.1.1"
   },
   "devDependencies": {
-    "glob": "^6.0.4",
-    "tapes": "^3.0.0",
-    "sinon": "^1.17.2",
+    "@std/esm": "*",
     "clone": "^1.0.2",
-    "babel-register": "^6.4.3",
-    "babel-preset-es2015": "^6.3.13",
-    "babel-preset-stage-1": "^6.3.13",
-    "babel-plugin-transform-runtime": "^6.4.3",
-    "browserify": "^13.0.0",
-    "babelify": "^7.2.0",
-    "tape-run": "^2.1.2",
-    "eslint": "^1.10.3",
-    "babel-eslint": "^5.0.0-beta6"
+    "eslint": "^4.12.1",
+    "glob": "^6.0.4",
+    "sinon": "^1.17.2",
+    "tapes": "^3.0.0"
   },
   "scripts": {
     "test": "node scripts/test.js",
-    "test-browser": "node scripts/testBrowser.js",
-    "lint": "eslint $(git ls-files '*.js' '*.jsx')",
+    "lint": "eslint $(git ls-files '*.js' '*.mjs' '*.jsx')",
     "release-patch": "git checkout master && npm version patch && git push origin master --tags && npm publish",
     "release-minor": "git checkout master && npm version minor && git push origin master --tags && npm publish",
     "release-major": "git checkout master && npm version major && git push origin master --tags && npm publish"

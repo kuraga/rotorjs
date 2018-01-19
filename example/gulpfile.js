@@ -3,48 +3,65 @@
 var path = require('path');
 var gulp = require('gulp');
 var runSequence = require('run-sequence');
-var vinylSourceStream = require('vinyl-source-stream');
 var vinylPaths = require('vinyl-paths');
 var del = require('del');
-var browserify = require('browserify');
-var babelify = require('babelify');
+var gulpBabel = require('gulp-babel');
+var gulpRollup = require('gulp-rollup');
+var revertPath = require('gulp-revert-path');
+var resolve = require('rollup-plugin-node-resolve');
+var commonjs = require('rollup-plugin-commonjs');
 
-var paths = {
-  output: path.join(__dirname, 'dist'),
-  system: [path.join(__dirname, 'main.js')],
-  systemOutput: path.join(__dirname, 'main.js'),
-  html: path.join(__dirname, 'index.html')
-};
-var babelOptions = {
-  global: true,
-  ignore: /node_modules\/(?!rotorjs)/,
-  presets: ['es2015', 'stage-1'],
+var babelJsxOptions = {
   plugins: [
-    ['transform-react-jsx', {pragma: 'h'}],
-    ['transform-runtime']
+    ['transform-react-jsx', { pragma: 'h' }]
   ],
   compact: false
 };
-var browserifyOptions = {
-  debug: true
-};
 
 gulp.task('clean', function() {
-  return gulp.src([paths.output])
-    .pipe(vinylPaths(del));
+  return gulp.src([
+    path.join('dist')
+  ])
+  .pipe(vinylPaths(del));
 });
 
 gulp.task('build-system', function () {
-  return browserify(paths.system, browserifyOptions)
-    .transform(babelify, babelOptions)
-    .bundle()
-    .pipe(vinylSourceStream(paths.systemOutput))
-    .pipe(gulp.dest(paths.output));
+  return gulp.src([
+    path.join('src', '**', '*.js'),
+    path.join('src', '**', '*.mjs'),
+    path.join('src', '**', '*.jsx'),
+    path.join('main.mjs')
+  ], { base: '.' })
+  .pipe(gulpBabel(babelJsxOptions))
+  .pipe(revertPath())
+  .pipe(gulpRollup({
+    input: path.join('main.mjs'),
+    output: {
+      format: 'es',
+      sourcemap: true
+    },
+    treeshake: false,
+
+    plugins: [
+      resolve({
+        extensions: [ '.mjs', '.js', '.json' ]
+      }),
+
+      commonjs({
+        sourceMap: true
+      })
+    ],
+
+    allowRealFiles: true
+  }))
+  .pipe(gulp.dest('dist'));
 });
 
 gulp.task('build-html', function () {
-  return gulp.src(paths.html)
-    .pipe(gulp.dest(paths.output));
+  return gulp.src([
+    path.join('index.html')
+  ])
+  .pipe(gulp.dest(path.join('dist')));
 });
 
 gulp.task('build', function (callback) {

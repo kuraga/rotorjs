@@ -126,12 +126,12 @@ test('Application', function (t) {
 
     t.test('.target', function (t) {
       t.test('should return loop\'s target', function (t) {
-        let applicationLoopTargetObject = {};
+        const applicationLoopTargetObject = {};
         // FIXME: Can't use sandbox here, see https://github.com/sinonjs/sinon/issues/781
         // should assign to a variable here, see https://groups.google.com/forum/#!topic/sinonjs/kRrON0h7riU
-        let stub = sinon.stub(application.__loop, 'target', { get: function () { return applicationLoopTargetObject; }});
+        const stub = sinon.stub(application.__loop, 'target', { get: function () { return applicationLoopTargetObject; }});
 
-        let result = application.target;
+        const result = application.target;
 
         t.assert(stub.get.calledOnce);
         t.is(result, applicationLoopTargetObject);  // calls application.target !
@@ -162,7 +162,7 @@ test('Application', function (t) {
     t.test('.getComponentState', function (t) {
       t.test('for component', function (t) {
         t.test('should contain component state\'s properties', function (t) {
-          let result = application.getComponentState(['componentName']);
+          const result = application.getComponentState(['componentName']);
 
           t.is(result.property, 'value');
 
@@ -193,7 +193,7 @@ test('Application', function (t) {
         });
 
         t.test('should contain subcomponent state\'s properties', function (t) {
-          let result = application.getComponentState(['componentName', 'subcomponentName']);
+          const result = application.getComponentState(['componentName', 'subcomponentName']);
 
           t.is(result.secondProperty, 'second value');
 
@@ -217,7 +217,7 @@ test('Application', function (t) {
 
       t.test('updating', function (t) {
         t.test('should call .redraw', function (t) {
-          let componentState = application.getComponentState(['componentName']);
+          const componentState = application.getComponentState(['componentName']);
 
           application.redraw.reset();
           componentState.set('newProperty', 'new value');

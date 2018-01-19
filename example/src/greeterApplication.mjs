@@ -1,8 +1,6 @@
-/** @jsx h */
+import { Application } from './helpers/rotorJsClasses.mjs';
 
-import { Application } from './helpers/rotorJsClasses';
-
-import GreeterRouter from './greeterRouter.jsx';
+import GreeterRouter from './greeterRouter.mjs';
 
 export default class GreeterApplication extends Application {
   constructor(ownerDocument) {
@@ -12,7 +10,7 @@ export default class GreeterApplication extends Application {
   }
 
   start() {
-    let router = new GreeterRouter(this, null, 'router');
+    const router = new GreeterRouter(this, null, 'router');
 
     super.start(router);
   }

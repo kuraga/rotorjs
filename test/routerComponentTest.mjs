@@ -82,7 +82,7 @@ test('RouterComponent', function (t) {
 
     t.test('with required arguments only', function (t) {
       t.test('should construct a RouterComponent (extends Component) instance', function (t) {
-        let anotherRouterComponent = new RouterComponent(application, null, name);
+        const anotherRouterComponent = new RouterComponent(application, null, name);
 
         t.assert(anotherRouterComponent instanceof RouterComponent);
         t.assert(anotherRouterComponent instanceof Component);
@@ -130,10 +130,10 @@ test('RouterComponent', function (t) {
 
   t.test('.render', function (t) {
     t.test('should return result of .renderInvalidRoute', function (t) {
-      let routerComponentRenderInvalidRouteResult = h('span');
+      const routerComponentRenderInvalidRouteResult = h('span');
       sandbox.stub(routerComponent, 'renderInvalidRoute').returns(routerComponentRenderInvalidRouteResult);
 
-      let result = routerComponent.render();
+      const result = routerComponent.render();
 
       t.assert(routerComponent.renderInvalidRoute.calledOnce);
       t.assert(routerComponent.renderInvalidRoute.calledWithExactly());
@@ -149,7 +149,7 @@ test('RouterComponent', function (t) {
   t.test('.route', function (t) {
     t.test('with correct path', function (t) {
       t.test('should return true', function (t) {
-        let result = routerComponent.route(secondRouteCorrectPath);
+        const result = routerComponent.route(secondRouteCorrectPath);
 
         t.is(result, true);
 
@@ -208,7 +208,7 @@ test('RouterComponent', function (t) {
 
     t.test('with incorrect path', function (t) {
       t.test('should return false', function (t) {
-        let result = routerComponent.route(wrongPath);
+        const result = routerComponent.route(wrongPath);
 
         t.is(result, false);
 
@@ -264,7 +264,7 @@ test('RouterComponent', function (t) {
       t.test('should return result of correct component\'s .render', function (t) {
         firstComponent.render.reset();
 
-        let result = routerComponent.render();
+        const result = routerComponent.render();
 
         t.assert(firstComponent.render.calledOnce);
         t.assert(firstComponent.render.calledWithExactly());
@@ -308,7 +308,7 @@ test('RouterComponent', function (t) {
     t.test('.route', function (t) {
       t.test('with correct path', function (t) {
         t.test('should return true', function (t) {
-          let result = routerComponent.route(secondRouteCorrectPath);
+          const result = routerComponent.route(secondRouteCorrectPath);
 
           t.is(result, true);
 
@@ -348,7 +348,7 @@ test('RouterComponent', function (t) {
 
       t.test('with incorrect path', function (t) {
         t.test('should return false', function (t) {
-          let result = routerComponent.route(wrongPath);
+          const result = routerComponent.route(wrongPath);
 
           t.is(result, false);
 
@@ -406,10 +406,10 @@ test('RouterComponent', function (t) {
 
     t.test('.render', function (t) {
       t.test('should return result of .renderInvalidRoute', function (t) {
-        let routerComponentRenderInvalidRouteResult = h('span');
+        const routerComponentRenderInvalidRouteResult = h('span');
         sandbox.stub(routerComponent, 'renderInvalidRoute').returns(routerComponentRenderInvalidRouteResult);
 
-        let result = routerComponent.render();
+        const result = routerComponent.render();
 
         t.assert(routerComponent.renderInvalidRoute.calledOnce);
         t.assert(routerComponent.renderInvalidRoute.calledWithExactly());
@@ -425,7 +425,7 @@ test('RouterComponent', function (t) {
     t.test('.route', function (t) {
       t.test('with correct path', function (t) {
         t.test('should return true', function (t) {
-          let result = routerComponent.route(secondRouteCorrectPath);
+          const result = routerComponent.route(secondRouteCorrectPath);
 
           t.is(result, true);
 
@@ -447,7 +447,7 @@ test('RouterComponent', function (t) {
 
       t.test('with incorrect path', function (t) {
         t.test('should return false', function (t) {
-          let result = routerComponent.route(wrongPath);
+          const result = routerComponent.route(wrongPath);
 
           t.is(result, false);
 

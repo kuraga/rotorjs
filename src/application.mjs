@@ -7,8 +7,8 @@ export default function getApplicationClass(Cursor, Loop) {
     }
 
     start(rootComponent) {
-      let rootComponentName = rootComponent.name;
-      let initialState = {
+      const rootComponentName = rootComponent.name;
+      const initialState = {
         rootComponentName,
         __subcomponents: {
           [rootComponentName]: rootComponent.initialState
@@ -45,8 +45,8 @@ export default function getApplicationClass(Cursor, Loop) {
     }
 
     get rootComponent() {
-      let rootComponentName = this.__state.rootComponentName;
-      let rootComponentState = this.__state.__subcomponents[rootComponentName];
+      const rootComponentName = this.__state.rootComponentName;
+      const rootComponentState = this.__state.__subcomponents[rootComponentName];
       return rootComponentState.component;
     }
 
@@ -56,7 +56,7 @@ export default function getApplicationClass(Cursor, Loop) {
       }
 
       let result = this.__state;
-      for (let chunk of path) {
+      for (const chunk of path) {
         result = result.__subcomponents[chunk];
       }
 

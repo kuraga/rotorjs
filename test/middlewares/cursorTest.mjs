@@ -6,7 +6,7 @@ import rafRaf from '../helpers/rafRaf';
 
 import { Cursor_FreezerJs as Cursor } from '../../middlewares';
 
-let seed = {
+const seed = {
   number: 1,
   object: { z: 0, y: 1, x: [ 'A', 'B' ] },
   array: [ 1, 2, { w: 3 } ],
@@ -14,7 +14,7 @@ let seed = {
   undefined: undefined,
   string: 'cats'
 };
-let sample = {
+const sample = {
   number: -1,
   object: { c: 1, b: -1, a: [ 'Y', 'Z' ] },
   array: [ -1, -2, { e: -3 } ],
@@ -53,7 +53,7 @@ test('Cursor', function (t) {
 
   t.test('.get', function (t) {
     t.test('should return actual state', function (t) {
-      let state = cursor.get();
+      const state = cursor.get();
 
       t.deepEqual(state, seed);
 
@@ -73,8 +73,8 @@ test('Cursor', function (t) {
     });
 
     t.test('should return updated object', function (t) {
-      let result = state.set('a', 9);
-      let updated = cursor.get();
+      const result = state.set('a', 9);
+      const updated = cursor.get();
 
       t.is(result, updated);
 
@@ -88,7 +88,7 @@ test('Cursor', function (t) {
           null: 123
         });
 
-        let updated = cursor.get();
+        const updated = cursor.get();
 
         t.deepEqual(updated.number, { b: 1 });
         t.deepEqual(updated.null, 123);
@@ -97,7 +97,7 @@ test('Cursor', function (t) {
       });
 
       t.test('shouldn\'t modify argument', function (t) {
-        let values = {
+        const values = {
           number: { b: 1 },
           null: 123
         },
@@ -120,7 +120,7 @@ test('Cursor', function (t) {
       t.test('should update value', function (t) {
         state.set('object', { b: 1 });
 
-        let updated = cursor.get();
+        const updated = cursor.get();
 
         t.deepEqual(updated.object, { b: 1 });
 
@@ -128,7 +128,7 @@ test('Cursor', function (t) {
       });
 
       t.test('shouldn\'t modify argument', function (t) {
-        let value = { b: 1 },
+        const value = { b: 1 },
           valueCopy = { b: 1 };
 
         state.set('object', value);
@@ -143,8 +143,8 @@ test('Cursor', function (t) {
 
     t.test('called on object element', function (t) {
       t.test('should return object called on', function (t) {
-        let result = state.object.set('z', 9);
-        let updated = cursor.get().object;
+        const result = state.object.set('z', 9);
+        const updated = cursor.get().object;
 
         t.is(result, updated);
 
@@ -154,7 +154,7 @@ test('Cursor', function (t) {
       t.test('should update value', function (t) {
         state.object.set('z', 'dogs');
 
-        let updated = cursor.get();
+        const updated = cursor.get();
 
         t.deepEqual(updated.object.z, 'dogs');
 
@@ -168,7 +168,7 @@ test('Cursor', function (t) {
       t.test('should update value', function (t) {
         state.array.set(0, 3);
 
-        let updated = cursor.get();
+        const updated = cursor.get();
 
         t.is(updated.array[0], 3);
 
@@ -178,12 +178,12 @@ test('Cursor', function (t) {
       t.end();
     });
 
-    for (let newUpdatedValueType of Object.keys(sample)) {
+    for (const newUpdatedValueType of Object.keys(sample)) {
       t.test(`set new ${newUpdatedValueType} value`, function (t) {
         t.test('should set value', function (t) {
           state.set('newValue', sample[newUpdatedValueType]);
 
-          let updated = cursor.get();
+          const updated = cursor.get();
 
           t.deepEqual(updated.newValue, sample[newUpdatedValueType]);
 
@@ -193,9 +193,9 @@ test('Cursor', function (t) {
         t.test('should not modify other values', function (t) {
           state.set('newValue', sample[newUpdatedValueType]);
 
-          let updated = cursor.get();
+          const updated = cursor.get();
 
-          for (let key of Object.keys(sample)) {
+          for (const key of Object.keys(sample)) {
             if (key !== 'newValue') {
               t.deepEqual(updated[key], seed[key]);
             }
@@ -207,12 +207,12 @@ test('Cursor', function (t) {
         t.end();
       });
 
-      for (let firstValueType of Object.keys(sample)) {
+      for (const firstValueType of Object.keys(sample)) {
         t.test(`update ${firstValueType} value to ${newUpdatedValueType} value`, function (t) {
           t.test('should update value', function (t) {
             state.set(firstValueType, sample[newUpdatedValueType]);
 
-            let updated = cursor.get();
+            const updated = cursor.get();
 
             t.deepEqual(updated[firstValueType], sample[newUpdatedValueType]);
 
@@ -222,9 +222,9 @@ test('Cursor', function (t) {
           t.test('should not modify other values', function (t) {
             state.set(firstValueType, sample[newUpdatedValueType]);
 
-            let updated = cursor.get();
+            const updated = cursor.get();
 
-            for (let key of Object.keys(sample)) {
+            for (const key of Object.keys(sample)) {
               if (key !== firstValueType) {
                 t.deepEqual(updated[key], seed[key]);
               }
@@ -239,10 +239,10 @@ test('Cursor', function (t) {
     }
 
     t.test('supports chaining calls', function (t) {
-      let chained = state.set('a', 9)
+      const chained = state.set('a', 9)
         .set('b', 0)
         .set({ c: [2, 3, 4] });
-      let updated = cursor.get();
+      const updated = cursor.get();
 
       t.is(chained, updated);
 
@@ -253,7 +253,7 @@ test('Cursor', function (t) {
       t.test('should update value', function (t) {
         state.set('a', state.object);
 
-        let updated = cursor.get();
+        const updated = cursor.get();
 
         t.is(state.object, updated.a);
 
@@ -264,7 +264,7 @@ test('Cursor', function (t) {
         state.set('a', state.object);
         state.object.set('z', 2);
 
-        let updated = cursor.get();
+        const updated = cursor.get();
 
         t.is(updated.object, updated.a);
         t.is(updated.a.z, 2);
@@ -288,8 +288,8 @@ test('Cursor', function (t) {
     });
 
     t.test('should return updated object', function (t) {
-      let result = state.remove('number');
-      let updated = cursor.get();
+      const result = state.remove('number');
+      const updated = cursor.get();
 
       t.is(result, updated);
 
@@ -299,7 +299,7 @@ test('Cursor', function (t) {
     t.test('should remove element', function(t) {
       state.remove('number');
 
-      let updated = cursor.get();
+      const updated = cursor.get();
 
       t.not('number' in updated);
       t.is(updated.number, undefined);
@@ -310,9 +310,9 @@ test('Cursor', function (t) {
     t.test('should not modify other values', function (t) {
       state.remove('number');
 
-      let updated = cursor.get();
+      const updated = cursor.get();
 
-      for (let key of Object.keys(sample)) {
+      for (const key of Object.keys(sample)) {
         if (key !== 'number') {
           t.deepEqual(updated[key], seed[key]);
         }
@@ -323,8 +323,8 @@ test('Cursor', function (t) {
 
     t.test('with object element', function (t) {
       t.test('should return updated object', function (t) {
-        let result = state.object.remove('z');
-        let updated = cursor.get().object;
+        const result = state.object.remove('z');
+        const updated = cursor.get().object;
 
         t.is(result, updated);
 
@@ -334,7 +334,7 @@ test('Cursor', function (t) {
       t.test('should remove element', function(t) {
         state.object.remove('z');
 
-        let updated = cursor.get();
+        const updated = cursor.get();
 
         t.not('z' in updated.object);
         t.is(updated.object.z, undefined);
@@ -345,9 +345,9 @@ test('Cursor', function (t) {
       t.test('should not modify other values', function (t) {
         state.object.remove('z');
 
-        let updated = cursor.get();
+        const updated = cursor.get();
 
-        for (let key of Object.keys(sample)) {
+        for (const key of Object.keys(sample)) {
           if (key !== 'number') {
             t.deepEqual(updated.object[key], sample.object[key]);
           }
@@ -361,7 +361,7 @@ test('Cursor', function (t) {
 
     t.test('with non-existent element', function (t) {
       t.test('should return object called on', function (t) {
-        let result = state.object.remove('unreal');
+        const result = state.object.remove('unreal');
 
         t.is(result, state.object);
 
@@ -371,9 +371,9 @@ test('Cursor', function (t) {
       t.test('should not modify any value', function (t) {
         state.object.remove('unreal');
 
-        let updated = cursor.get();
+        const updated = cursor.get();
 
-        for (let key of Object.keys(sample)) {
+        for (const key of Object.keys(sample)) {
           t.deepEqual(updated.object[key], sample.object[key]);
         }
 
@@ -385,8 +385,8 @@ test('Cursor', function (t) {
 
     t.test('with array of keys', function (t) {
       t.test('should return updated object', function (t) {
-        let result = state.remove(['number', 'string']);
-        let updated = cursor.get();
+        const result = state.remove(['number', 'string']);
+        const updated = cursor.get();
 
         t.is(result, updated);
 
@@ -396,7 +396,7 @@ test('Cursor', function (t) {
       t.test('should remove elements', function(t) {
         state.remove(['number', 'string']);
 
-        let updated = cursor.get();
+        const updated = cursor.get();
 
         t.not('number' in updated);
         t.is(updated.number, undefined);
@@ -409,9 +409,9 @@ test('Cursor', function (t) {
       t.test('should not modify other values', function (t) {
         state.remove(['number', 'string']);
 
-        let updated = cursor.get();
+        const updated = cursor.get();
 
-        for (let key of Object.keys(sample)) {
+        for (const key of Object.keys(sample)) {
           if (key !== 'number' && key !== 'string') {
             t.deepEqual(updated[key], seed[key]);
           }
@@ -426,10 +426,10 @@ test('Cursor', function (t) {
     t.test('references to other values', function (t) {
       t.test('should remove element', function(t) {
         state.set('a', state.object);
-        let updated = cursor.get();
+        const updated = cursor.get();
 
         updated.remove('object');
-        let newUpdated = cursor.get();
+        const newUpdated = cursor.get();
 
         t.not('object' in newUpdated);
         t.is(newUpdated.object, undefined);
@@ -439,22 +439,22 @@ test('Cursor', function (t) {
 
       t.test('should preserve duplicates', function (t) {
         state.set('a', state.object);
-        let updated = cursor.get();
+        const updated = cursor.get();
 
         updated.remove('object');
-        let newUpdated = cursor.get();
+        const newUpdated = cursor.get();
 
         t.is(newUpdated.a, state.object);
 
         t.end();
       });
 
-      t.test('should not preserve duplicates since all have been deleted', function (t) {
+      t.test('should not preserve duplicates since all have been deconsted', function (t) {
         state.set('a', state.object);
-        let updated = cursor.get();
+        const updated = cursor.get();
 
         updated.remove(['object', 'a']);
-        let newUpdated = cursor.get();
+        const newUpdated = cursor.get();
 
         t.not('object' in newUpdated);
         t.is(newUpdated.object, undefined);
@@ -472,15 +472,15 @@ test('Cursor', function (t) {
 
   t.test('after .remove', function (t) {
     t.test('removed object element can\'t update state', function (t) {
-      let state = cursor.get();
-      let object = state.object;
+      const state = cursor.get();
+      const object = state.object;
 
       state.remove('object');
 
-      let updated = cursor.get();
+      const updated = cursor.get();
       object.set('z', 2);
 
-      let newUpdated = cursor.get();
+      const newUpdated = cursor.get();
 
       t.is(newUpdated, updated);
 

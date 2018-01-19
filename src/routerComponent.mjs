@@ -1,16 +1,16 @@
 export default function getRouterComponent(Component, Trie) {
   class RouterComponent extends Component {
     constructor(application, parent, name, routes = {}) {
-      let trie = new Trie();
-      let compiledRoutes = {};
-      for (let pattern of Object.keys(routes)) {
+      const trie = new Trie();
+      const compiledRoutes = {};
+      for (const pattern of Object.keys(routes)) {
         compiledRoutes[pattern] = {
           node: trie.define(pattern),
           initializer: routes[pattern]
         };
       }
 
-      let initialState = {
+      const initialState = {
         __trie: trie,
         __compiledRoutes: compiledRoutes
       };
@@ -44,12 +44,12 @@ export default function getRouterComponent(Component, Trie) {
       }
       this.state.set('currentComponentName', null);
 
-      let currentMatch = this.state.__trie.match(newPath);
+      const currentMatch = this.state.__trie.match(newPath);
       if (currentMatch !== null) {
-        let currentPattern = currentMatch.node.pattern;
-        let currentRoute = this.state.__compiledRoutes[currentPattern];
+        const currentPattern = currentMatch.node.pattern;
+        const currentRoute = this.state.__compiledRoutes[currentPattern];
 
-        let currentComponent = (0, currentRoute.initializer)(currentMatch, this);
+        const currentComponent = (0, currentRoute.initializer)(currentMatch, this);
         this.state.set('currentComponentName', currentComponent.name)
         this.addSubcomponent(currentComponent);
 

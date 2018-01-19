@@ -26,8 +26,8 @@ export default class Loop_VirtualDom {
   }
 
   __redrawImmediately() {
-    let newTree = (0, this.view)();
-    let patches = vDomDiff(this.__currentTree, newTree);
+    const newTree = (0, this.view)();
+    const patches = vDomDiff(this.__currentTree, newTree);
     this.__target = vDomPatch(this.__target, patches);
 
     this.__currentTree = newTree;

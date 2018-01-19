@@ -6,12 +6,12 @@ export default class Trie_RouteTrie {
   }
 
   define(pattern) {
-    let routeTrieNode = this.__routeTrie.define(pattern);
+    const routeTrieNode = this.__routeTrie.define(pattern);
     return new Node(this, routeTrieNode);
   }
 
   match(path) {
-    let routeTrieMatch = this.__routeTrie.match(path);
+    const routeTrieMatch = this.__routeTrie.match(path);
     return routeTrieMatch !== null
       ? new Match(this, routeTrieMatch)
       : null;

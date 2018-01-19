@@ -1,8 +1,8 @@
 /** @jsx h */
 
-import { Component } from './helpers/rotorJsClasses';
+import { Component } from './helpers/rotorJsClasses.mjs';
 
-import h from './helpers/virtualDomSpreadH';  // eslint-disable-line no-unused-vars
+import h from './helpers/virtualDomSpreadH.mjs';  // eslint-disable-line no-unused-vars
 
 export default class MainComponent extends Component {
   constructor(application, parent = null, name = 'main') {
