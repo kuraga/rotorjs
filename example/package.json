@@ -1,9 +1,41 @@
 {
   "private": true,
   "name": "rotorjs-example",
-  "version": "0.4.0",
+  "version": "0.5.1",
   "license": "MIT",
-
+  "description": "RotorJS Example",
+  "keywords": [
+    "RotorJS",
+    "example",
+    "component",
+    "single-page application",
+    "SPA",
+    "user interface",
+    "UI",
+    "rich Internet application",
+    "RIA",
+    "model",
+    "state",
+    "DOM",
+    "virtual DOM",
+    "application loop",
+    "router",
+    "unidirectional dataflow",
+    "minimalistic",
+    "modular",
+    "isomorphic",
+    "universal",
+    "browser",
+    "server",
+    "ES6",
+    "Ecmascript 6",
+    "ES2015",
+    "Ecmascript 2015",
+    "ES2016",
+    "Ecmascript 2016",
+    "ES2017",
+    "Ecmascript 2017"
+  ],
   "homepage": "https://github.com/kuraga/rotorjs",
   "repository": {
     "type": "git",
@@ -17,7 +49,9 @@
     "url": "https://github.com/kuraga/rotorjs/issues",
     "email": "kuraga333@mail.ru"
   },
-
+  "main": "main.js",
+  "jsnext:main": "main.js",
+  "browser": "main.js",
   "dependencies": {
     "rotorjs": "file:..",
     "virtual-dom": "^2.1.1",
@@ -37,7 +71,6 @@
     "babel-plugin-transform-runtime": "^6.4.3",
     "babel-plugin-transform-react-jsx": "^6.4.0"
   },
-
   "scripts": {
     "build": "gulp build",
     "clean": "gulp clean"

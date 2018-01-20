@@ -1,6 +1,8 @@
+/** @jsx h */
+
 import { Application } from './helpers/rotorJsClasses';
 
-import GreeterRouter from './greeterRouter';
+import GreeterRouter from './greeterRouter.jsx';
 
 export default class GreeterApplication extends Application {
   constructor(ownerDocument) {

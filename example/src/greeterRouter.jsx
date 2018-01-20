@@ -1,3 +1,5 @@
+/** @jsx h */
+
 import BrowserRouterComponent from './helpers/browserRouterComponent';
 import MainComponent from './mainComponent.jsx';
 import GreeterComponent from './greeterComponent.jsx';

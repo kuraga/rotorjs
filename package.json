@@ -2,22 +2,37 @@
   "name": "rotorjs",
   "version": "0.5.1",
   "license": "MIT",
-
   "description": "Component-based JavaScript library for single-page applications",
   "keywords": [
     "RotorJS",
     "component",
-    "single-page application", "SPA",
-    "user interface", "UI",
-    "rich Internet application", "RIA",
-    "model", "state",
-    "DOM", "virtual DOM",
+    "single-page application",
+    "SPA",
+    "user interface",
+    "UI",
+    "rich Internet application",
+    "RIA",
+    "model",
+    "state",
+    "DOM",
+    "virtual DOM",
     "application loop",
     "router",
     "unidirectional dataflow",
-    "minimalistic", "modular",
-    "isomorphic", "universal", "browser", "server",
-    "ES2015", "ES6"
+    "minimalistic",
+    "modular",
+    "isomorphic",
+    "universal",
+    "browser",
+    "server",
+    "ES6",
+    "Ecmascript 6",
+    "ES2015",
+    "Ecmascript 2015",
+    "ES2016",
+    "Ecmascript 2016",
+    "ES2017",
+    "Ecmascript 2017"
   ],
   "homepage": "https://github.com/kuraga/rotorjs",
   "repository": {
@@ -32,10 +47,9 @@
     "url": "https://github.com/kuraga/rotorjs/issues",
     "email": "kuraga333@mail.ru"
   },
-
   "main": "index.js",
   "jsnext:main": "index.js",
-
+  "browser": "index.js",
   "dependencies": {
     "raf": "^3.1.0",
     "babel-runtime": "^6.3.19",
@@ -58,12 +72,10 @@
     "eslint": "^1.10.3",
     "babel-eslint": "^5.0.0-beta6"
   },
-
   "scripts": {
     "test": "node scripts/test.js",
     "test-browser": "node scripts/testBrowser.js",
     "lint": "eslint $(git ls-files '*.js' '*.jsx')",
-
     "release-patch": "git checkout master && npm version patch && git push origin master --tags && npm publish",
     "release-minor": "git checkout master && npm version minor && git push origin master --tags && npm publish",
     "release-major": "git checkout master && npm version major && git push origin master --tags && npm publish"
