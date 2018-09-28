@@ -6,12 +6,12 @@ export default function getRotorJsClasses(middleware) {
   const {
     Cursor,
     Loop,
-    Trie
+    PathNode
   } = middleware;
 
   const Application = getApplicationClass(Cursor, Loop),
     Component = getComponentClass(),
-    RouterComponent = getRouterComponentClass(Component, Trie);
+    RouterComponent = getRouterComponentClass(Component, PathNode);
 
   return {
     Application,

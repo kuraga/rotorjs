@@ -8,19 +8,25 @@ import h from 'virtual-dom/h';  // eslint-disable-line no-unused-vars
 
 export default class GreeterRouter extends BrowserRouterComponent {
   constructor(application, parent, name) {
-    const routes = {
-      '': (match, router) => (
-        new MainComponent(application, router, 'greeter')
-      ),
-      'greeter/:firstName/:lastName': (match, router) => (
-        new GreeterComponent(application, router, 'greeter', {
-          firstName: match.params.firstName,
-          lastName: match.params.lastName
-        })
-      )
-    };
+    const rootPathNode = new BrowserRouterComponent.__PathNode(null, {
+      initializer: function (matchedPathNode, matchedPathArguments, router) {  // eslint-disable-line no-unused-vars
+        return new MainComponent(application, router, 'greeter')
+      }
+    }),
+    greeterPathNode = new BrowserRouterComponent.__PathNode('greeter'),
+    personPathNode = new BrowserRouterComponent.__PathNode(/^(?<firstName>[^-]+?)-(?<lastName>[^-]+?)$/, {
+      initializer: function (matchedPathNode, matchedPathArguments, router) {  // eslint-disable-line no-unused-vars
+        return new GreeterComponent(application, router, 'greeter', {
+          firstName: matchedPathArguments.firstName,
+          lastName: matchedPathArguments.lastName
+        });
+      }
+    });
 
-    super(application, parent, name, routes);
+    rootPathNode.push(greeterPathNode);
+    greeterPathNode.push(personPathNode);
+
+    super(application, parent, name, rootPathNode);
   }
 
   renderInvalidRoute() {

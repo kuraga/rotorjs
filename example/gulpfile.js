@@ -41,6 +41,9 @@ gulp.task('build-system', function () {
       sourcemap: true
     },
     treeshake: false,
+    acorn: {
+      ecmaVersion: 2018
+    },
 
     plugins: [
       resolve({

@@ -25,14 +25,8 @@
     "universal",
     "browser",
     "server",
-    "ES6",
-    "ECMAScript 6",
-    "ES2015",
-    "ECMAScript 2015",
-    "ES2016",
-    "ECMAScript 2016",
-    "ES2017",
-    "ECMAScript 2017"
+    "ES2018",
+    "ECMAScript 2018"
   ],
   "homepage": "https://github.com/kuraga/rotorjs",
   "repository": {
@@ -57,7 +51,7 @@
   "dependencies": {
     "freezer-js": "^0.9.6",
     "raf": "^3.1.0",
-    "route-trie": "^1.2.1",
+    "tiny-path-matcher": "^0.1.0",
     "virtual-dom": "^2.1.1"
   },
   "devDependencies": {
@@ -70,7 +64,7 @@
     "tman": "^1.8.0"
   },
   "scripts": {
-    "test": "node scripts/test.js",
+    "test": "node --harmony scripts/test.js",
     "cover": "nyc npm run test",
     "lint": "eslint $(git ls-files '*.js' '*.mjs' '*.jsx')",
     "release-patch": "git checkout master && npm version patch && git push origin master --tags && npm publish",

@@ -31,7 +31,7 @@ Some additional features are also provided.
 * testability,
 * (not yet) documentability,
 * isomorphism,
-* ECMAScript 2015.
+* ECMAScript 2018.
 
 ## Default middleware
 

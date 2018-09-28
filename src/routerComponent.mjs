@@ -1,18 +1,8 @@
-export default function getRouterComponent(Component, Trie) {
+export default function getRouterComponent(Component, PathNode) {  // eslint-disable-line no-unused-vars
   class RouterComponent extends Component {
-    constructor(application, parent, name, routes = {}) {
-      const trie = new Trie();
-      const compiledRoutes = {};
-      for (const pattern of Object.keys(routes)) {
-        compiledRoutes[pattern] = {
-          node: trie.define(pattern),
-          initializer: routes[pattern]
-        };
-      }
-
+    constructor(application, parent, name, rootPathNode) {
       const initialState = {
-        __trie: trie,
-        __compiledRoutes: compiledRoutes
+        __rootPathNode: rootPathNode
       };
       super(application, parent, name, initialState);
     }
@@ -37,19 +27,24 @@ export default function getRouterComponent(Component, Trie) {
           : this.getSubcomponent(this.currentComponentName);
     }
 
-    route(newPath) {
+    route(uri) {
       if (this.currentComponentName !== undefined && this.currentComponentName !== null) {
         this.currentComponent.deactivate();
         this.removeSubcomponent(this.currentComponentName);
       }
       this.state.set('currentComponentName', null);
 
-      const currentMatch = this.state.__trie.match(newPath);
-      if (currentMatch !== null) {
-        const currentPattern = currentMatch.node.pattern;
-        const currentRoute = this.state.__compiledRoutes[currentPattern];
+      const routePath = uri.split('/')
+        .filter((chunk) => chunk.length > 0);
+      const matched = this.state.__rootPathNode.match(routePath);
+      if (matched !== null) {
+        const [ matchedPathNode, matchedPathArguments ] = matched;
 
-        const currentComponent = (0, currentRoute.initializer)(currentMatch, this);
+        if (matchedPathNode.data === undefined || !('initializer' in matchedPathNode.data)) {
+          return null;
+        }
+
+        const currentComponent = (0, matchedPathNode.data.initializer)(matchedPathNode, matchedPathArguments, this);
         this.state.set('currentComponentName', currentComponent.name)
         this.addSubcomponent(currentComponent);
 
@@ -71,6 +66,8 @@ export default function getRouterComponent(Component, Trie) {
         : this.renderInvalidRoute();
     }
   }
+
+  RouterComponent.__PathNode = PathNode;
 
   return RouterComponent;
 }

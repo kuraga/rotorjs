@@ -11,7 +11,7 @@ export default class MainComponent extends Component {
 
   render() {
     return <div>
-      Hello! <a href="#greeter/FirstName/LastName">Click here</a>!
+      Hello! <a href="#greeter/FirstName-LastName">Click here</a>!
       <br />
       Or try to visit an invalid <a href="#invalid">link</a>.
     </div>;

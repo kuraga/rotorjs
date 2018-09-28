@@ -478,7 +478,7 @@ tman.suite('Cursor', function () {
           });
         });
 
-        tman.suite('updating property', function (done) {
+        tman.suite('updating property', function () {
           tman.test('on root', function (done) {
             cursor.subscribe(function (state) {
               pass();

@@ -1,14 +1,14 @@
 import {
   Cursor_FreezerJs as Cursor,
   Loop_VirtualDom as Loop,
-  Trie_RouteTrie as Trie
+  PathNode_TinyPathMatcher as PathNode
 } from 'rotorjs/middlewares';
 import { getRotorJsClasses } from 'rotorjs';
 
 const middleware = {
   Cursor,
   Loop,
-  Trie
+  PathNode
 };
 
 const {

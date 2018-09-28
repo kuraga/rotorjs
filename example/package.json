@@ -3,7 +3,7 @@
   "name": "rotorjs-example",
   "version": "0.5.2",
   "license": "MIT",
-  "description": "RotorJS Example",
+  "description": "RotorJS Example.",
   "keywords": [
     "RotorJS",
     "example",
@@ -27,14 +27,8 @@
     "universal",
     "browser",
     "server",
-    "ES6",
-    "Ecmascript 6",
-    "ES2015",
-    "Ecmascript 2015",
-    "ES2016",
-    "Ecmascript 2016",
-    "ES2017",
-    "Ecmascript 2017"
+    "ES2018",
+    "ECMAScript 2018"
   ],
   "homepage": "https://github.com/kuraga/rotorjs",
   "repository": {
