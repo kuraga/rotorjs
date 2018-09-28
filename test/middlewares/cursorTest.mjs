@@ -1,8 +1,10 @@
 // Mostly inherited from https://github.com/arqex/freezer (by Arqex)
 
-import test from 'tapes';
+import tman from 'tman';
+import assert from 'assert';
 import sinon from 'sinon';
 import rafRaf from '../helpers/rafRaf';
+import { pass } from '../helpers/assertions';
 
 import { Cursor_FreezerJs as Cursor } from '../../middlewares';
 
@@ -23,66 +25,52 @@ const sample = {
   string: 'dogs'
 };
 
+tman.mocha();
+
 let sandbox;
 
-test('Cursor', function (t) {
+tman.suite('Cursor', function () {
   let cursor;
 
-  t.beforeEach(function (t) {
+  tman.beforeEach(function () {
     sandbox = sinon.sandbox.create();
     cursor = new Cursor(seed);
-
-    t.end();
   });
 
-  t.afterEach(function (t) {
+  tman.afterEach(function () {
     sandbox.restore();
-
-    t.end();
   });
 
-  t.test('constructor', function (t) {
-    t.test('construct an instance of Cursor', function (t) {
-      t.assert(cursor instanceof Cursor);
-
-      t.end();
+  tman.suite('constructor', function () {
+    tman.test('construct an instance of Cursor', function () {
+      assert.ok(cursor instanceof Cursor);
     });
-
-    t.end();
   });
 
-  t.test('.get', function (t) {
-    t.test('should return actual state', function (t) {
+  tman.suite('.get', function () {
+    tman.test('should return actual state', function () {
       const state = cursor.get();
 
-      t.deepEqual(state, seed);
-
-      t.end();
+      assert.deepEqual(state, seed);
     });
-
-    t.end();
   });
 
-  t.test('.set', function (t) {
+  tman.suite('.set', function () {
     let state;
 
-    t.beforeEach(function (t) {
+    tman.beforeEach(function () {
       state = cursor.get();
-
-      t.end();
     });
 
-    t.test('should return updated object', function (t) {
+    tman.test('should return updated object', function () {
       const result = state.set('a', 9);
       const updated = cursor.get();
 
-      t.is(result, updated);
-
-      t.end();
+      assert.strictEqual(result, updated);
     });
 
-    t.test('with object argument', function (t) {
-      t.test('should update values', function (t) {
+    tman.suite('with object argument', function () {
+      tman.test('should update values', function () {
         state.set({
           number: { b: 1 },
           null: 123
@@ -90,13 +78,11 @@ test('Cursor', function (t) {
 
         const updated = cursor.get();
 
-        t.deepEqual(updated.number, { b: 1 });
-        t.deepEqual(updated.null, 123);
-
-        t.end();
+        assert.deepEqual(updated.number, { b: 1 });
+        assert.deepEqual(updated.null, 123);
       });
 
-      t.test('shouldn\'t modify argument', function (t) {
+      tman.test('shouldn\'t modify argument', function () {
         const values = {
           number: { b: 1 },
           null: 123
@@ -108,370 +94,288 @@ test('Cursor', function (t) {
 
         state.set(values);
 
-        t.deepEqual(values, valuesCopy);
-
-        t.end();
+        assert.deepEqual(values, valuesCopy);
       });
-
-      t.end();
     });
 
-    t.test('with key and value arguments', function (t) {
-      t.test('should update value', function (t) {
+    tman.suite('with key and value arguments', function () {
+      tman.test('should update value', function () {
         state.set('object', { b: 1 });
 
         const updated = cursor.get();
 
-        t.deepEqual(updated.object, { b: 1 });
-
-        t.end();
+        assert.deepEqual(updated.object, { b: 1 });
       });
 
-      t.test('shouldn\'t modify argument', function (t) {
+      tman.test('shouldn\'t modify argument', function () {
         const value = { b: 1 },
           valueCopy = { b: 1 };
 
         state.set('object', value);
 
-        t.deepEqual(value, valueCopy);
-
-        t.end();
+        assert.deepEqual(value, valueCopy);
       });
-
-      t.end();
     });
 
-    t.test('called on object element', function (t) {
-      t.test('should return object called on', function (t) {
+    tman.suite('called on object element', function () {
+      tman.test('should return object called on', function () {
         const result = state.object.set('z', 9);
         const updated = cursor.get().object;
 
-        t.is(result, updated);
-
-        t.end();
+        assert.strictEqual(result, updated);
       });
 
-      t.test('should update value', function (t) {
+      tman.test('should update value', function () {
         state.object.set('z', 'dogs');
 
         const updated = cursor.get();
 
-        t.deepEqual(updated.object.z, 'dogs');
-
-        t.end();
+        assert.deepEqual(updated.object.z, 'dogs');
       });
-
-      t.end();
     });
 
-    t.test('called on array', function (t) {
-      t.test('should update value', function (t) {
+    tman.suite('called on array', function () {
+      tman.test('should update value', function () {
         state.array.set(0, 3);
 
         const updated = cursor.get();
 
-        t.is(updated.array[0], 3);
-
-        t.end();
+        assert.strictEqual(updated.array[0], 3);
       });
-
-      t.end();
     });
 
     for (const newUpdatedValueType of Object.keys(sample)) {
-      t.test(`set new ${newUpdatedValueType} value`, function (t) {
-        t.test('should set value', function (t) {
+      tman.suite(`set new ${newUpdatedValueType} value`, function () {
+        tman.test('should set value', function () {
           state.set('newValue', sample[newUpdatedValueType]);
 
           const updated = cursor.get();
 
-          t.deepEqual(updated.newValue, sample[newUpdatedValueType]);
-
-          t.end();
+          assert.deepEqual(updated.newValue, sample[newUpdatedValueType]);
         });
 
-        t.test('should not modify other values', function (t) {
+        tman.test('should not modify other values', function () {
           state.set('newValue', sample[newUpdatedValueType]);
 
           const updated = cursor.get();
 
           for (const key of Object.keys(sample)) {
             if (key !== 'newValue') {
-              t.deepEqual(updated[key], seed[key]);
+              assert.deepEqual(updated[key], seed[key]);
             }
           }
-
-          t.end();
         });
-
-        t.end();
       });
 
       for (const firstValueType of Object.keys(sample)) {
-        t.test(`update ${firstValueType} value to ${newUpdatedValueType} value`, function (t) {
-          t.test('should update value', function (t) {
+        tman.suite(`update ${firstValueType} value to ${newUpdatedValueType} value`, function () {
+          tman.test('should update value', function () {
             state.set(firstValueType, sample[newUpdatedValueType]);
 
             const updated = cursor.get();
 
-            t.deepEqual(updated[firstValueType], sample[newUpdatedValueType]);
-
-            t.end();
+            assert.deepEqual(updated[firstValueType], sample[newUpdatedValueType]);
           });
 
-          t.test('should not modify other values', function (t) {
+          tman.test('should not modify other values', function () {
             state.set(firstValueType, sample[newUpdatedValueType]);
 
             const updated = cursor.get();
 
             for (const key of Object.keys(sample)) {
               if (key !== firstValueType) {
-                t.deepEqual(updated[key], seed[key]);
+                assert.deepEqual(updated[key], seed[key]);
               }
             }
-
-            t.end();
           });
-
-          t.end();
         });
       }
     }
 
-    t.test('supports chaining calls', function (t) {
+    tman.test('supports chaining calls', function () {
       const chained = state.set('a', 9)
         .set('b', 0)
         .set({ c: [2, 3, 4] });
       const updated = cursor.get();
 
-      t.is(chained, updated);
-
-      t.end();
+      assert.strictEqual(chained, updated);
     });
 
-    t.test('with existing node as value', function (t) {
-      t.test('should update value', function (t) {
+    tman.suite('with existing node as value', function () {
+      tman.test('should update value', function () {
         state.set('a', state.object);
 
         const updated = cursor.get();
 
-        t.is(state.object, updated.a);
-
-        t.end();
+        assert.strictEqual(state.object, updated.a);
       });
 
-      t.test('should update value but with reference', function (t) {
+      tman.test('should update value but with reference', function () {
         state.set('a', state.object);
         state.object.set('z', 2);
 
         const updated = cursor.get();
 
-        t.is(updated.object, updated.a);
-        t.is(updated.a.z, 2);
-
-        t.end();
+        assert.strictEqual(updated.object, updated.a);
+        assert.strictEqual(updated.a.z, 2);
       });
-
-      t.end();
     });
-
-    t.end();
   });
 
-  t.test('.remove', function (t) {
+  tman.suite('.remove', function () {
     let state;
 
-    t.beforeEach(function (t) {
+    tman.beforeEach(function () {
       state = cursor.get();
-
-      t.end();
     });
 
-    t.test('should return updated object', function (t) {
+    tman.test('should return updated object', function () {
       const result = state.remove('number');
       const updated = cursor.get();
 
-      t.is(result, updated);
-
-      t.end();
+      assert.strictEqual(result, updated);
     });
 
-    t.test('should remove element', function(t) {
+    tman.test('should remove element', function() {
       state.remove('number');
 
       const updated = cursor.get();
 
-      t.not('number' in updated);
-      t.is(updated.number, undefined);
-
-      t.end();
+      assert.ok(!('number' in updated));
+      assert.strictEqual(updated.number, undefined);
     });
 
-    t.test('should not modify other values', function (t) {
+    tman.test('should not modify other values', function () {
       state.remove('number');
 
       const updated = cursor.get();
 
       for (const key of Object.keys(sample)) {
         if (key !== 'number') {
-          t.deepEqual(updated[key], seed[key]);
+          assert.deepEqual(updated[key], seed[key]);
         }
       }
-
-      t.end();
     });
 
-    t.test('with object element', function (t) {
-      t.test('should return updated object', function (t) {
+    tman.suite('with object element', function () {
+      tman.test('should return updated object', function () {
         const result = state.object.remove('z');
         const updated = cursor.get().object;
 
-        t.is(result, updated);
-
-        t.end();
+        assert.strictEqual(result, updated);
       });
 
-      t.test('should remove element', function(t) {
+      tman.test('should remove element', function() {
         state.object.remove('z');
 
         const updated = cursor.get();
 
-        t.not('z' in updated.object);
-        t.is(updated.object.z, undefined);
-
-        t.end();
+        assert.ok(!('z' in updated.object));
+        assert.strictEqual(updated.object.z, undefined);
       });
 
-      t.test('should not modify other values', function (t) {
+      tman.test('should not modify other values', function () {
         state.object.remove('z');
 
         const updated = cursor.get();
 
         for (const key of Object.keys(sample)) {
           if (key !== 'number') {
-            t.deepEqual(updated.object[key], sample.object[key]);
+            assert.deepEqual(updated.object[key], sample.object[key]);
           }
         }
-
-        t.end();
       });
-
-      t.end();
     });
 
-    t.test('with non-existent element', function (t) {
-      t.test('should return object called on', function (t) {
+    tman.suite('with non-existent element', function () {
+      tman.test('should return object called on', function () {
         const result = state.object.remove('unreal');
 
-        t.is(result, state.object);
-
-        t.end();
+        assert.strictEqual(result, state.object);
       });
 
-      t.test('should not modify any value', function (t) {
+      tman.test('should not modify any value', function () {
         state.object.remove('unreal');
 
         const updated = cursor.get();
 
         for (const key of Object.keys(sample)) {
-          t.deepEqual(updated.object[key], sample.object[key]);
+          assert.deepEqual(updated.object[key], sample.object[key]);
         }
-
-        t.end();
       });
-
-      t.end();
     });
 
-    t.test('with array of keys', function (t) {
-      t.test('should return updated object', function (t) {
+    tman.suite('with array of keys', function () {
+      tman.test('should return updated object', function () {
         const result = state.remove(['number', 'string']);
         const updated = cursor.get();
 
-        t.is(result, updated);
-
-        t.end();
+        assert.strictEqual(result, updated);
       });
 
-      t.test('should remove elements', function(t) {
+      tman.test('should remove elements', function() {
         state.remove(['number', 'string']);
 
         const updated = cursor.get();
 
-        t.not('number' in updated);
-        t.is(updated.number, undefined);
-        t.not('string' in updated);
-        t.is(updated.string, undefined);
-
-        t.end();
+        assert.ok(!('number' in updated));
+        assert.strictEqual(updated.number, undefined);
+        assert.ok(!('string' in updated));
+        assert.strictEqual(updated.string, undefined);
       });
 
-      t.test('should not modify other values', function (t) {
+      tman.test('should not modify other values', function () {
         state.remove(['number', 'string']);
 
         const updated = cursor.get();
 
         for (const key of Object.keys(sample)) {
           if (key !== 'number' && key !== 'string') {
-            t.deepEqual(updated[key], seed[key]);
+            assert.deepEqual(updated[key], seed[key]);
           }
         }
-
-        t.end();
       });
-
-      t.end();
     });
 
-    t.test('references to other values', function (t) {
-      t.test('should remove element', function(t) {
+    tman.suite('references to other values', function () {
+      tman.test('should remove element', function() {
         state.set('a', state.object);
         const updated = cursor.get();
 
         updated.remove('object');
         const newUpdated = cursor.get();
 
-        t.not('object' in newUpdated);
-        t.is(newUpdated.object, undefined);
-
-        t.end();
+        assert.ok(!('object' in newUpdated));
+        assert.strictEqual(newUpdated.object, undefined);
       });
 
-      t.test('should preserve duplicates', function (t) {
+      tman.test('should preserve duplicates', function () {
         state.set('a', state.object);
         const updated = cursor.get();
 
         updated.remove('object');
         const newUpdated = cursor.get();
 
-        t.is(newUpdated.a, state.object);
-
-        t.end();
+        assert.strictEqual(newUpdated.a, state.object);
       });
 
-      t.test('should not preserve duplicates since all have been deconsted', function (t) {
+      tman.test('should not preserve duplicates since all have been deconsted', function () {
         state.set('a', state.object);
         const updated = cursor.get();
 
         updated.remove(['object', 'a']);
         const newUpdated = cursor.get();
 
-        t.not('object' in newUpdated);
-        t.is(newUpdated.object, undefined);
-        t.not('a' in newUpdated);
-        t.is(newUpdated.a, undefined);
-
-        t.end();
+        assert.ok(!('object' in newUpdated));
+        assert.strictEqual(newUpdated.object, undefined);
+        assert.ok(!('a' in newUpdated));
+        assert.strictEqual(newUpdated.a, undefined);
       });
-
-      t.end();
     });
-
-    t.end();
   });
 
-  t.test('after .remove', function (t) {
-    t.test('removed object element can\'t update state', function (t) {
+  tman.suite('after .remove', function () {
+    tman.test('removed object element can\'t update state', function () {
       const state = cursor.get();
       const object = state.object;
 
@@ -482,52 +386,44 @@ test('Cursor', function (t) {
 
       const newUpdated = cursor.get();
 
-      t.is(newUpdated, updated);
-
-      t.end();
+      assert.strictEqual(newUpdated, updated);
     });
-
-    t.end();
   });
 
-  t.test('listeners', function (t) {
+  tman.suite('listeners', function () {
     let cursor, state,
       callback, callbackSpy, anotherCallback, anotherCallbackSpy;
 
-    t.beforeEach(function (t) {
+    tman.beforeEach(function () {
       cursor = new Cursor(seed);
       state = cursor.get();
       callback = function (state) {};  // eslint-disable-line no-unused-vars
       callbackSpy = sandbox.spy(callback);
       anotherCallback = function (state) {};  // eslint-disable-line no-unused-vars
       anotherCallbackSpy = sandbox.spy(anotherCallback);
-
-      t.end();
     });
 
-    t.test('.subscribe', function (t) {
-      t.test('should do something', function (t) {
-        t.doesNotThrow(function () {
+    tman.suite('.subscribe', function () {
+      tman.test('should do something', function () {
+        assert.doesNotThrow(function () {
           cursor.subscribe(callback);
         });
-
-        t.end();
       });
 
-      t.test('should subscribe a callback', function (t) {
+      tman.test('should subscribe a callback', function (done) {
         cursor.subscribe(callbackSpy);
         callbackSpy.reset();
 
         state.object.set('a', 2);
 
         rafRaf(() => {
-          t.assert(callbackSpy.calledOnce);
+          assert.ok(callbackSpy.calledOnce);
 
-          t.end();
+          done();
         });
       });
 
-      t.test('should subscribe several callbacks', function (t) {
+      tman.test('should subscribe several callbacks', function (done) {
         cursor.subscribe(callbackSpy);
         cursor.subscribe(anotherCallbackSpy);
         callbackSpy.reset();
@@ -536,153 +432,145 @@ test('Cursor', function (t) {
         state.object.set('a', 2);
 
         rafRaf(() => {
-          t.assert(callbackSpy.calledOnce);
-          t.assert(anotherCallbackSpy.calledOnce);
+          assert.ok(callbackSpy.calledOnce);
+          assert.ok(anotherCallbackSpy.calledOnce);
 
-          t.end();
+          done();
         });
       });
 
-      t.test('should trigger callbacks after...', function (t) {
-        t.test('setting property', function (t) {
-          t.test('on root', function (t) {
+      tman.suite('should trigger callbacks after...', function () {
+        tman.suite('setting property', function () {
+          tman.test('on root', function (done) {
             cursor.subscribe(function (state) {
-              t.pass();
-              t.is(state.a, 1);
-              t.is(cursor.get().a, 1);
+              pass();
+              assert.strictEqual(state.a, 1);
+              assert.strictEqual(cursor.get().a, 1);
 
-              t.end();
+              done();
             });
 
             state.set('a', 1);
           });
 
-          t.test('on object element', function (t) {
+          tman.test('on object element', function (done) {
             cursor.subscribe(function (state) {
-              t.pass();
-              t.is(state.object.a, 1);
-              t.is(cursor.get().object.a, 1);
+              pass();
+              assert.strictEqual(state.object.a, 1);
+              assert.strictEqual(cursor.get().object.a, 1);
 
-              t.end();
+              done();
             });
 
             state.object.set('a', 1);
           });
 
-          t.test('on array element', function (t) {
+          tman.test('on array element', function (done) {
             cursor.subscribe(function (state) {
-              t.pass();
-              t.is(state.array[3], 1);
-              t.is(cursor.get().array[3], 1);
+              pass();
+              assert.strictEqual(state.array[3], 1);
+              assert.strictEqual(cursor.get().array[3], 1);
 
-              t.end();
+              done();
             });
 
             state.array.set(3, 1);
           });
-
-          t.end();
         });
 
-        t.test('updating property', function (t) {
-          t.test('on root', function (t) {
+        tman.suite('updating property', function (done) {
+          tman.test('on root', function (done) {
             cursor.subscribe(function (state) {
-              t.pass();
-              t.is(state.number, 2);
-              t.is(cursor.get().number, 2);
+              pass();
+              assert.strictEqual(state.number, 2);
+              assert.strictEqual(cursor.get().number, 2);
 
-              t.end();
+              done();
             });
 
             state.set('number', 2);
           });
 
-          t.test('on object element', function (t) {
+          tman.test('on object element', function (done) {
             cursor.subscribe(function (state) {
-              t.pass();
-              t.is(state.object.z, 2);
-              t.is(cursor.get().object.z, 2);
+              pass();
+              assert.strictEqual(state.object.z, 2);
+              assert.strictEqual(cursor.get().object.z, 2);
 
-              t.end();
+              done();
             });
 
             state.object.set('z', 2);
           });
 
-          t.test('on array element', function (t) {
+          tman.test('on array element', function (done) {
             cursor.subscribe(function (state) {
-              t.pass();
-              t.is(state.array[0], 2);
-              t.is(cursor.get().array[0], 2);
+              pass();
+              assert.strictEqual(state.array[0], 2);
+              assert.strictEqual(cursor.get().array[0], 2);
 
-              t.end();
+              done();
             });
 
             state.array.set(0, 2);
           });
-
-          t.end();
         });
 
-        t.test('removing property', function (t) {
-          t.test('on root', function (t) {
+        tman.suite('removing property', function () {
+          tman.test('on root', function (done) {
             cursor.subscribe(function (state) {
-              t.pass();
-              t.not('number' in state);
-              t.is(state.number, undefined);
+              pass();
+              assert.ok(!('number' in state));
+              assert.strictEqual(state.number, undefined);
 
-              t.end();
+              done();
             });
 
             state.remove('number');
           });
 
-          t.test('on object element', function (t) {
+          tman.test('on object element', function (done) {
             cursor.subscribe(function (state) {
-              t.pass();
-              t.not('z' in state.object);
-              t.is(state.object.z, undefined);
+              pass();
+              assert.ok(!('z' in state.object));
+              assert.strictEqual(state.object.z, undefined);
 
-              t.end();
+              done();
             });
 
             state.object.remove('z');
           });
-
-          t.end();
         });
-
-        t.end();
       });
 
-      t.test('should not trigger callback on .remove with non-existant property', function (t) {
+      tman.test('should not trigger callback on .remove with non-existant property', function (done) {
         cursor.subscribe(callbackSpy);
         callbackSpy.reset();
 
         state.remove('wrongProperty');
 
         rafRaf(() => {
-          t.assert(callbackSpy.notCalled);
+          assert.ok(callbackSpy.notCalled);
 
-          t.end();
+          done();
         });
       });
 
-      t.test('should not trigger callback on non-updating .set', function (t) {
+      tman.test('should not trigger callback on non-updating .set', function (done) {
         cursor.subscribe(callbackSpy);
         callbackSpy.reset();
 
         state.set('number', 1);
 
         rafRaf(() => {
-          t.assert(callbackSpy.notCalled);
+          assert.ok(callbackSpy.notCalled);
 
-          t.end();
+          done();
         });
       });
 
       // TODO: Doesn't work (for Freezer) due to https://github.com/arqex/freezer/issues/85
-      t.skip('should not trigger callback if it has been subscribed after .set call', function (t) {
+      tman.it.skip('should not trigger callback if it has been subscribed after .set call', function (done) {
         callbackSpy.reset();
 
         state.object.set('a', 2);
@@ -690,22 +578,22 @@ test('Cursor', function (t) {
         cursor.subscribe(callbackSpy);
 
         rafRaf(() => {
-          t.assert(callbackSpy.notCalled);
+          assert.ok(callbackSpy.notCalled);
 
-          t.end();
+          done();
         });
       });
 
-      t.test('should trigger callback after all changes', function (t) {
-        t.test('updating by an object', function (t) {
+      tman.test('should trigger callback after all changes', function () {
+        tman.test('updating by an object', function (done) {
           cursor.subscribe(function (state) {
-            t.pass();
-            t.is(state.object.a, 2);
-            t.is(cursor.get().object.a, 2);
-            t.is(state.object.b, 3);
-            t.is(cursor.get().object.b, 3);
+            pass();
+            assert.strictEqual(state.object.a, 2);
+            assert.strictEqual(cursor.get().object.a, 2);
+            assert.strictEqual(state.object.b, 3);
+            assert.strictEqual(cursor.get().object.b, 3);
 
-            t.end();
+            done();
           });
 
           state.object.set({
@@ -714,57 +602,49 @@ test('Cursor', function (t) {
           });
         });
 
-        t.test('updating by chaining calls', function (t) {
+        tman.test('updating by chaining calls', function (done) {
           cursor.subscribe(function (state) {
-            t.pass();
-            t.is(state.object.a, 2);
-            t.is(cursor.get().object.a, 2);
-            t.is(state.object.b, 3);
-            t.is(cursor.get().object.b, 3);
+            pass();
+            assert.strictEqual(state.object.a, 2);
+            assert.strictEqual(cursor.get().object.a, 2);
+            assert.strictEqual(state.object.b, 3);
+            assert.strictEqual(cursor.get().object.b, 3);
 
-            t.end();
+            done();
           });
 
           state.object.set('a', 2)
             .set('b', 3);
         });
-
-        t.end();
       });
-
-      t.end();
     });
 
-    t.test('.unsubscribe', function (t) {
-      t.test('with subscribed callback', function (t) {
-        t.beforeEach(function (t) {
+    tman.suite('.unsubscribe', function () {
+      tman.suite('with subscribed callback', function () {
+        tman.beforeEach(function () {
           cursor.subscribe(callbackSpy);
-
-          t.end();
         });
 
-        t.test('should do something', function (t) {
-          t.doesNotThrow(function () {
+        tman.test('should do something', function () {
+          assert.doesNotThrow(function () {
             cursor.unsubscribe(callbackSpy);
           });
-
-          t.end();
         });
 
-        t.test('should unsubscribe callback', function (t) {
+        tman.test('should unsubscribe callback', function (done) {
           cursor.unsubscribe(callbackSpy);
           callbackSpy.reset();
 
           state.object.set('a', 2);
 
           rafRaf(() => {
-            t.assert(callbackSpy.notCalled);
+            assert.ok(callbackSpy.notCalled);
 
-            t.end();
+            done();
           });
         });
 
-        t.test('should not unsubscribe other callbacks', function (t) {
+        tman.test('should not unsubscribe other callbacks', function (done) {
           cursor.subscribe(anotherCallbackSpy);
 
           cursor.unsubscribe(callbackSpy);
@@ -774,29 +654,23 @@ test('Cursor', function (t) {
           state.object.set('a', 2);
 
           rafRaf(() => {
-            t.assert(callbackSpy.notCalled);
-            t.assert(anotherCallbackSpy.calledOnce);
+            assert.ok(callbackSpy.notCalled);
+            assert.ok(anotherCallbackSpy.calledOnce);
 
-            t.end();
+            done();
           });
         });
-
-        t.end();
       });
-
-      t.end();
     });
 
-    t.test('.trigger', function (t) {
-      t.test('should do something', function (t) {
-        t.doesNotThrow(function () {
+    tman.suite('.trigger', function () {
+      tman.test('should do something', function () {
+        assert.doesNotThrow(function () {
           cursor.trigger();
         });
-
-        t.end();
       });
 
-      t.test('should trigger callbacks', function (t) {
+      tman.test('should trigger callbacks', function (done) {
         cursor.subscribe(callbackSpy);
         cursor.subscribe(anotherCallbackSpy);
         callbackSpy.reset();
@@ -805,33 +679,28 @@ test('Cursor', function (t) {
         cursor.trigger();
 
         rafRaf(() => {
-          t.assert(callbackSpy.calledOnce);
-          t.assert(anotherCallbackSpy.calledOnce);
+          assert.ok(callbackSpy.calledOnce);
+          assert.ok(anotherCallbackSpy.calledOnce);
 
-          t.end();
+          done();
         });
       });
 
-      // TODO: t.end() called twice (with Freezer) due to https://github.com/arqex/freezer/issues/85
-      t.skip('should trigger callback with current state', function (t) {
+      // TODO: done() called twice (with Freezer) due to https://github.com/arqex/freezer/issues/85
+      tman.it.skip('should trigger callback with current state', function (done) {
         state.object.set('a', 2);
 
         cursor.subscribe(function (state) {
-          t.pass();
-          t.is(state.object.a, 2);
-          t.is(cursor.get().object.a, 2);
+          pass();
+          assert.strictEqual(state.object.a, 2);
+          assert.strictEqual(cursor.get().object.a, 2);
 
-          t.end();
+          done();
         });
 
         cursor.trigger();
       });
-
-      t.end();
     });
-
-    t.end();
   });
   
-  t.end();
 });

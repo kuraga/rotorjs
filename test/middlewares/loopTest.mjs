@@ -1,4 +1,5 @@
-import test from 'tapes';
+import tman from 'tman';
+import assert from 'assert';
 import sinon from 'sinon';
 import rafRaf from '../helpers/rafRaf';
 import clone from 'clone';
@@ -6,13 +7,15 @@ import clone from 'clone';
 import { Loop_VirtualDom as Loop } from '../../middlewares';
 import h from 'virtual-dom/h';
 
+tman.mocha();
+
 let sandbox;
 
-test('Loop', function (t) {
+tman.suite('Loop', function () {
   let loop,
     state, view, viewBinded, viewBindedSpy;
 
-  t.beforeEach(function (t) {
+  tman.beforeEach(function () {
     sandbox = sinon.sandbox.create();
     state = {
       property: 'value'
@@ -26,90 +29,68 @@ test('Loop', function (t) {
     viewBindedSpy = sandbox.spy(viewBinded);
 
     loop = new Loop(viewBindedSpy);
-
-    t.end();
   });
 
-  t.afterEach(function (t) {
+  tman.afterEach(function () {
     sandbox.restore();
-
-    t.end();
   });
 
-  t.test('constructor', function (t) {
-    t.test('should construct an instance of Loop', function (t) {
-      t.assert(loop instanceof Loop);
-
-      t.end();
+  tman.suite('constructor', function () {
+    tman.test('should construct an instance of Loop', function () {
+      assert.ok(loop instanceof Loop);
     });
-
-    t.end();
   });
 
-  t.test('.view', function (t) {
-    t.test('should return view', function (t) {
-      t.is(loop.view, viewBindedSpy);
-
-      t.end();
+  tman.suite('.view', function () {
+    tman.test('should return view', function () {
+      assert.strictEqual(loop.view, viewBindedSpy);
     });
-
-    t.end();
   });
 
-  t.test('.target', function (t) {
-    t.test('should be defined', function (t) {
-      t.not(loop.target, undefined);
-
-      t.end();
+  tman.suite('.target', function () {
+    tman.test('should be defined', function () {
+      assert.notStrictEqual(loop.target, undefined);
     });
-
-    t.end();
   });
 
-  t.test('.redraw', function (t) {
-    t.test('should call .view function', function (t) {
+  tman.suite('.redraw', function () {
+    tman.test('should call .view function', function (done) {
       viewBindedSpy.reset();
 
       loop.redraw();
 
       rafRaf(() => {
-        t.assert(viewBindedSpy.calledOnce);
-        t.assert(viewBindedSpy.calledWithExactly());
-        t.assert(viewBindedSpy.calledOn(undefined));  // try to check here if not rebound
+        assert.ok(viewBindedSpy.calledOnce);
+        assert.ok(viewBindedSpy.calledWithExactly());
+        assert.ok(viewBindedSpy.calledOn(undefined));  // try to check here if not rebound
 
-        t.end();
+        done();
       });
     });
 
-    t.skip('should re-render target since state has been changed', function (t) {
+    tman.test('should re-render target since state has been changed', function (done) {
       const targetCopy = clone(loop.target);
 
       state.property = 'new value';
       loop.redraw();
 
       rafRaf(() => {
-        // TODO: Doesn't work due to circular refernces, see https://github.com/substack/node-deep-equal/issues/19
-        t.notDeepEquals(loop.target, targetCopy);
+        assert.notStrictEqual(loop.target, targetCopy);
 
-        t.end();
+        done();
       });
     });
 
-    t.skip('should not re-render target until state has been changed', function (t) {
+    tman.test('should not re-render target until state has been changed', function (done) {
       const targetCopy = clone(loop.target);
 
       loop.redraw();
 
       rafRaf(() => {
-        // TODO: Doesn't work due to circular refernces, see https://github.com/substack/node-deep-equal/issues/19
-        t.deepEquals(loop.target, targetCopy);
+        assert.deepEqual(loop.target, targetCopy);
 
-        t.end();
+        done();
       });
     });
-
-    t.end();
   });
-
-  t.end();
 });

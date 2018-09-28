@@ -1,4 +1,5 @@
-import test from 'tapes';
+import tman from 'tman';
+import assert from 'assert';
 import sinon from 'sinon';
 import rafRaf from './helpers/rafRaf';
 
@@ -9,13 +10,15 @@ import {
 
 import h from 'virtual-dom/h';
 
+tman.mocha();
+
 let sandbox;
 
-test('Application', function (t) {
+tman.suite('Application', function () {
   let application,
     componentInitialState, component;
 
-  t.beforeEach(function (t) {
+  tman.beforeEach(function () {
     sandbox = sinon.sandbox.create();
     application = new Application();
     sandbox.spy(application, 'redraw');
@@ -26,106 +29,76 @@ test('Application', function (t) {
     component.render = function () {
       return h('span');
     };
-
-    t.end();
   });
 
-  t.afterEach(function (t) {
+  tman.afterEach(function () {
     sandbox.restore();
-
-    t.end();
   });
 
-  t.test('constructor', function (t) {
-    t.test('should construct an Application instance', function (t) {
-      t.assert(application instanceof Application);
-
-      t.end();
+  tman.suite('constructor', function () {
+    tman.test('should construct an Application instance', function () {
+      assert.ok(application instanceof Application);
     });
-
-    t.end();
   });
 
-  t.test('.start', function (t) {
-    t.afterEach(function (t) {
+  tman.suite('.start', function () {
+    tman.afterEach(function () {
       application.stop();
-
-      t.end();
     });
 
-    t.test('should activate root component', function (t) {
+    tman.test('should activate root component', function () {
       sandbox.spy(component, 'activate');
 
       application.start(component);
 
-      t.assert(component.activate.calledOnce);
-      t.assert(component.activate.calledWithExactly());
-
-      t.end();
+      assert.ok(component.activate.calledOnce);
+      assert.ok(component.activate.calledWithExactly());
     });
 
-    t.test('should render root component', function (t) {
+    tman.test('should render root component', function () {
       sandbox.spy(component, 'render');
 
       application.start(component);
 
-      t.assert(component.render.calledOnce);
-      t.assert(component.render.calledWithExactly());
-      t.assert(component.render.calledOn(component));
-
-      t.end();
+      assert.ok(component.render.calledOnce);
+      assert.ok(component.render.calledWithExactly());
+      assert.ok(component.render.calledOn(component));
     });
-
-    t.end();
   });
 
-  t.test('.stop (called after .start)', function (t) {
-    t.beforeEach(function (t) {
+  tman.suite('.stop (called after .start)', function () {
+    tman.beforeEach(function () {
       application.start(component);
-
-      t.end();
     });
 
-    t.test('should deactivate root component', function (t) {
+    tman.test('should deactivate root component', function () {
       sandbox.spy(component, 'deactivate');
 
       application.stop();
 
-      t.assert(component.deactivate.calledOnce);
-      t.assert(component.deactivate.calledWithExactly());
-      t.assert(component.deactivate.calledOn(component));
-
-      t.end();
+      assert.ok(component.deactivate.calledOnce);
+      assert.ok(component.deactivate.calledWithExactly());
+      assert.ok(component.deactivate.calledOn(component));
     });
-
-    t.end();
   });
 
-  t.test('between .start and .stop', function (t) {
-    t.beforeEach(function (t) {
+  tman.suite('between .start and .stop', function () {
+    tman.beforeEach(function () {
       application.start(component);
-
-      t.end();
     });
 
-    t.afterEach(function (t) {
+    tman.afterEach(function () {
       application.stop();
-
-      t.end();
     });
 
-    t.test('.rootComponent', function (t) {
-      t.test('should return root component', function (t) {
-        t.is(application.rootComponent, component);
-
-        t.end();
+    tman.suite('.rootComponent', function () {
+      tman.test('should return root component', function () {
+        assert.strictEqual(application.rootComponent, component);
       });
-
-      t.end();
     });
 
-    t.test('.target', function (t) {
-      t.test('should return loop\'s target', function (t) {
+    tman.suite('.target', function () {
+      tman.test('should return loop\'s target', function () {
         const applicationLoopTargetObject = {};
         // FIXME: Can't use sandbox here, see https://github.com/sinonjs/sinon/issues/781
         // should assign to a variable here, see https://groups.google.com/forum/#!topic/sinonjs/kRrON0h7riU
@@ -133,112 +106,80 @@ test('Application', function (t) {
 
         const result = application.target;
 
-        t.assert(stub.get.calledOnce);
-        t.is(result, applicationLoopTargetObject);  // calls application.target !
-
-        t.end();
+        assert.ok(stub.get.calledOnce);
+        assert.strictEqual(result, applicationLoopTargetObject);  // calls application.target !
       });
-
-      t.end();
     });
 
-    t.test('.redraw', function (t) {
-      t.test('should call loop\'s .redraw', function (t) {
+    tman.suite('.redraw', function () {
+      tman.test('should call loop\'s .redraw', function () {
         // FIXME: Can't use sandbox here, see https://github.com/sinonjs/sinon/issues/781
         sinon.spy(application.__loop, 'redraw');
 
         application.redraw();
 
-        t.assert(application.__loop.redraw.calledOnce);
-        t.assert(application.__loop.redraw.calledWithExactly());
-        t.assert(application.__loop.redraw.calledOn(application.__loop));
-
-        t.end();
+        assert.ok(application.__loop.redraw.calledOnce);
+        assert.ok(application.__loop.redraw.calledWithExactly());
+        assert.ok(application.__loop.redraw.calledOn(application.__loop));
       });
-
-      t.end();
     });
 
-    t.test('.getComponentState', function (t) {
-      t.test('for component', function (t) {
-        t.test('should contain component state\'s properties', function (t) {
+    tman.suite('.getComponentState', function () {
+      tman.suite('for component', function () {
+        tman.test('should contain component state\'s properties', function () {
           const result = application.getComponentState(['componentName']);
 
-          t.is(result.property, 'value');
-
-          t.end();
+          assert.strictEqual(result.property, 'value');
         });
-
-        t.end();
       });
 
-      t.test('for subcomponent', function (t) {
+      tman.suite('for subcomponent', function () {
         let subcomponentInitialState, subcomponent;
 
-        t.beforeEach(function (t) {
+        tman.beforeEach(function () {
           subcomponentInitialState = {
             secondProperty: 'second value'
           };
           subcomponent = new Component(application, component, 'subcomponentName', subcomponentInitialState);
 
           component.addSubcomponent(subcomponent);
-
-          t.end();
         });
 
-        t.afterEach(function (t) {
+        tman.afterEach(function () {
           component.removeSubcomponent('subcomponentName');
-
-          t.end();
         });
 
-        t.test('should contain subcomponent state\'s properties', function (t) {
+        tman.test('should contain subcomponent state\'s properties', function () {
           const result = application.getComponentState(['componentName', 'subcomponentName']);
 
-          t.is(result.secondProperty, 'second value');
-
-          t.end();
+          assert.strictEqual(result.secondProperty, 'second value');
         });
-
-        t.end();
       });
 
-      t.test('with wrong path', function (t) {
-        t.test('should throw an error', function (t) {
-          t.throws(function () {
+      tman.suite('with wrong path', function () {
+        tman.test('should throw an error', function () {
+          assert.throws(function () {
             application.getComponentState([]);
           }, /Incorrect component path/);
-
-          t.end();
         });
-
-        t.end();
       });
 
-      t.test('updating', function (t) {
-        t.test('should call .redraw', function (t) {
+      tman.suite('updating', function () {
+        tman.test('should call .redraw', function (done) {
           const componentState = application.getComponentState(['componentName']);
 
           application.redraw.reset();
           componentState.set('newProperty', 'new value');
 
           rafRaf(() => {
-            t.assert(application.redraw.calledOnce);
-            t.assert(application.redraw.calledWithExactly());
-            t.assert(application.redraw.calledOn(application));
+            assert.ok(application.redraw.calledOnce);
+            assert.ok(application.redraw.calledWithExactly());
+            assert.ok(application.redraw.calledOn(application));
 
-            t.end();
+            done();
           });
         });
-
-        t.end();
       });
-
-      t.end();
     });
-
-    t.end();
   });
-
-  t.end();
 });

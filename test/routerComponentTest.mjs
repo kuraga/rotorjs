@@ -1,4 +1,5 @@
-import test from 'tapes';
+import tman from 'tman';
+import assert from 'assert';
 import sinon from 'sinon';
 
 import {
@@ -9,9 +10,11 @@ import {
 
 import h from 'virtual-dom/h';
 
+tman.mocha();
+
 let sandbox;
 
-test('RouterComponent', function (t) {
+tman.suite('RouterComponent', function () {
   let application,
     name, routerComponent,
     firstComponent, firstComponentRenderResult, secondComponent,
@@ -20,7 +23,7 @@ test('RouterComponent', function (t) {
     routes,
     firstRouteCorrectPath, secondRouteCorrectPath, secondRouteCorrectPathParams, wrongPath;
 
-  t.beforeEach(function (t) {
+  tman.beforeEach(function () {
     sandbox = sinon.sandbox.create();
     application = new Application();
     application.render = function () {  // avoid routerComponent.renderInvalidRoute at application start
@@ -56,424 +59,302 @@ test('RouterComponent', function (t) {
     routerComponent = new RouterComponent(application, null, name, routes);
 
     application.start(routerComponent);
-
-    t.end();
   });
 
-  t.afterEach(function (t) {
+  tman.afterEach(function () {
     application.stop();
 
     sandbox.restore();
-
-    t.end();
   });
 
-  t.test('constructor', function (t) {
-    t.test('with all arguments', function (t) {
-      t.test('should construct a RouterComponent instance', function (t) {
-        t.assert(routerComponent instanceof RouterComponent);
-        t.assert(routerComponent instanceof Component);
-
-        t.end();
+  tman.suite('constructor', function () {
+    tman.suite('with all arguments', function () {
+      tman.test('should construct a RouterComponent instance', function () {
+        assert.ok(routerComponent instanceof RouterComponent);
+        assert.ok(routerComponent instanceof Component);
       });
-
-      t.end();
     });
 
-    t.test('with required arguments only', function (t) {
-      t.test('should construct a RouterComponent (extends Component) instance', function (t) {
+    tman.suite('with required arguments only', function () {
+      tman.test('should construct a RouterComponent (extends Component) instance', function () {
         const anotherRouterComponent = new RouterComponent(application, null, name);
 
-        t.assert(anotherRouterComponent instanceof RouterComponent);
-        t.assert(anotherRouterComponent instanceof Component);
-
-        t.end();
+        assert.ok(anotherRouterComponent instanceof RouterComponent);
+        assert.ok(anotherRouterComponent instanceof Component);
       });
-
-      t.end();
     });
-
-    t.end();
   });
 
-  t.test('.currentComponentName', function (t) {
-    t.test('should be undefined', function (t) {
-      t.is(routerComponent.currentComponentName, undefined);
-
-      t.end();
+  tman.suite('.currentComponentName', function () {
+    tman.test('should be undefined', function () {
+      assert.strictEqual(routerComponent.currentComponentName, undefined);
     });
-
-    t.end();
   });
 
-  t.test('.currentComponent', function (t) {
-    t.test('should be undefined', function (t) {
-      t.is(routerComponent.currentComponent, undefined);
-
-      t.end();
+  tman.suite('.currentComponent', function () {
+    tman.test('should be undefined', function () {
+      assert.strictEqual(routerComponent.currentComponent, undefined);
     });
-
-    t.end();
   });
 
-  t.test('.renderInvalidRoute', function (t) {
-    t.test('isn\'t implemented', function (t) {
-      t.throws(function () {
+  tman.suite('.renderInvalidRoute', function () {
+    tman.test('isn\'t implemented', function () {
+      assert.throws(function () {
         routerComponent.renderInvalidRoute();
       }, /Not implemented/);
-
-      t.end();
     });
-
-    t.end();
   });
 
-  t.test('.render', function (t) {
-    t.test('should return result of .renderInvalidRoute', function (t) {
+  tman.suite('.render', function () {
+    tman.test('should return result of .renderInvalidRoute', function () {
       const routerComponentRenderInvalidRouteResult = h('span');
       sandbox.stub(routerComponent, 'renderInvalidRoute').returns(routerComponentRenderInvalidRouteResult);
 
       const result = routerComponent.render();
 
-      t.assert(routerComponent.renderInvalidRoute.calledOnce);
-      t.assert(routerComponent.renderInvalidRoute.calledWithExactly());
-      t.assert(routerComponent.renderInvalidRoute.calledOn(routerComponent));
-      t.is(result, routerComponentRenderInvalidRouteResult);
-
-      t.end();
+      assert.ok(routerComponent.renderInvalidRoute.calledOnce);
+      assert.ok(routerComponent.renderInvalidRoute.calledWithExactly());
+      assert.ok(routerComponent.renderInvalidRoute.calledOn(routerComponent));
+      assert.strictEqual(result, routerComponentRenderInvalidRouteResult);
     });
-
-    t.end();
   });
 
-  t.test('.route', function (t) {
-    t.test('with correct path', function (t) {
-      t.test('should return true', function (t) {
+  tman.suite('.route', function () {
+    tman.suite('with correct path', function () {
+      tman.test('should return true', function () {
         const result = routerComponent.route(secondRouteCorrectPath);
 
-        t.is(result, true);
-
-        t.end();
+        assert.strictEqual(result, true);
       });
 
-      t.test('should call correct initializer', function (t) {
+      tman.test('should call correct initializer', function () {
         secondInitializerSpy.reset();
 
         routerComponent.route(secondRouteCorrectPath);
 
-        t.assert(secondInitializerSpy.calledOnce);
-        t.assert(secondInitializerSpy.calledOn(undefined));
-        t.assert(secondInitializerSpy.firstCall.args[0] instanceof Object);
-        t.deepEqual(secondInitializerSpy.firstCall.args[0].params, secondRouteCorrectPathParams);
-        t.is(secondInitializerSpy.firstCall.args[1], routerComponent);
-
-        t.end();
+        assert.ok(secondInitializerSpy.calledOnce);
+        assert.ok(secondInitializerSpy.calledOn(undefined));
+        assert.ok(secondInitializerSpy.firstCall.args[0] instanceof Object);
+        assert.deepEqual(secondInitializerSpy.firstCall.args[0].params, secondRouteCorrectPathParams);
+        assert.strictEqual(secondInitializerSpy.firstCall.args[1], routerComponent);
       });
 
-      t.test('should not call other initializers', function (t) {
+      tman.test('should not call other initializers', function () {
         firstInitializerSpy.reset();
 
         routerComponent.route(secondRouteCorrectPath);
 
-        t.assert(firstInitializerSpy.notCalled);
-
-        t.end();
+        assert.ok(firstInitializerSpy.notCalled);
       });
 
-      t.test('should activate new component', function (t) {
+      tman.test('should activate new component', function () {
         routerComponent.route(secondRouteCorrectPath);
 
-        t.assert(secondComponent.activate.calledOnce);
-        t.assert(secondComponent.activate.calledWithExactly());
-        t.assert(secondComponent.activate.calledOn(secondComponent));
-
-        t.end();
+        assert.ok(secondComponent.activate.calledOnce);
+        assert.ok(secondComponent.activate.calledWithExactly());
+        assert.ok(secondComponent.activate.calledOn(secondComponent));
       });
 
-      t.test('should activate new component after adding it to the state', function (t) {
+      tman.test('should activate new component after adding it to the state', function () {
         secondComponent.oldActivate = secondComponent.activate;
         secondComponent.activate = function (...args) {
-          t.is(routerComponent.currentComponentName, 'secondComponentName');
-          t.is(routerComponent.currentComponent, secondComponent);
+          assert.strictEqual(routerComponent.currentComponentName, 'secondComponentName');
+          assert.strictEqual(routerComponent.currentComponent, secondComponent);
           return this.oldActivate(...args);
         };
 
         routerComponent.route(secondRouteCorrectPath);
-
-        t.end();
       });
-
-      t.end();
     });
 
-    t.test('with incorrect path', function (t) {
-      t.test('should return false', function (t) {
+    tman.suite('with incorrect path', function () {
+      tman.test('should return false', function () {
         const result = routerComponent.route(wrongPath);
 
-        t.is(result, false);
-
-        t.end();
+        assert.strictEqual(result, false);
       });
 
-      t.test('should not call initializers', function (t) {
+      tman.test('should not call initializers', function () {
         firstInitializerSpy.reset();
         secondInitializerSpy.reset();
 
         routerComponent.route(wrongPath);
 
-        t.assert(firstInitializerSpy.notCalled);
-        t.assert(secondInitializerSpy.notCalled);
-
-        t.end();
+        assert.ok(firstInitializerSpy.notCalled);
+        assert.ok(secondInitializerSpy.notCalled);
       });
-
-      t.end();
     });
-
-    t.end();
   });
 
-  t.test('after .route with correct path', function (t) {
-    t.beforeEach(function (t) {
+  tman.suite('after .route with correct path', function () {
+    tman.beforeEach(function () {
       routerComponent.route(firstRouteCorrectPath);
-
-      t.end();
     });
 
-    t.test('.currentComponentName', function (t) {
-      t.test('should be equal to respective component name', function (t) {
-        t.is(routerComponent.currentComponentName, 'firstComponentName');
-
-        t.end();
+    tman.suite('.currentComponentName', function () {
+      tman.test('should be equal to respective component name', function () {
+        assert.strictEqual(routerComponent.currentComponentName, 'firstComponentName');
       });
-
-    t.end();
     });
 
-    t.test('.currentComponent', function (t) {
-      t.test('should refer to respective component', function (t) {
-        t.is(routerComponent.currentComponent, firstComponent);
-
-        t.end();
+    tman.suite('.currentComponent', function () {
+      tman.test('should refer to respective component', function () {
+        assert.strictEqual(routerComponent.currentComponent, firstComponent);
       });
-
-      t.end();
     });
 
-    t.test('.render', function (t) {
-      t.test('should return result of correct component\'s .render', function (t) {
+    tman.suite('.render', function () {
+      tman.test('should return result of correct component\'s .render', function () {
         firstComponent.render.reset();
 
         const result = routerComponent.render();
 
-        t.assert(firstComponent.render.calledOnce);
-        t.assert(firstComponent.render.calledWithExactly());
-        t.assert(firstComponent.render.calledOn(firstComponent));
-        t.is(result, firstComponentRenderResult);
-
-        t.end();
+        assert.ok(firstComponent.render.calledOnce);
+        assert.ok(firstComponent.render.calledWithExactly());
+        assert.ok(firstComponent.render.calledOn(firstComponent));
+        assert.strictEqual(result, firstComponentRenderResult);
       });
-
-      t.end();
     });
 
 
-    t.test('.deactivate', function (t) {
-      t.test('should deactivate subcomponents', function (t) {
+    tman.suite('.deactivate', function () {
+      tman.test('should deactivate subcomponents', function () {
         firstComponent.deactivate.reset();
 
         routerComponent.deactivate();
 
-        t.assert(firstComponent.deactivate.calledOnce);
-        t.assert(firstComponent.deactivate.calledWithExactly());
-        t.assert(firstComponent.deactivate.calledOn(firstComponent));
-
-        t.end();
+        assert.ok(firstComponent.deactivate.calledOnce);
+        assert.ok(firstComponent.deactivate.calledWithExactly());
+        assert.ok(firstComponent.deactivate.calledOn(firstComponent));
       });
 
-      t.test('should remove subcomponents', function (t) {
+      tman.test('should remove subcomponents', function () {
         routerComponent.deactivate();
 
-        t.deepEquals(routerComponent.subcomponentNames, []);
-        t.throws(function () {
+        assert.deepEqual(routerComponent.subcomponentNames, []);
+        assert.throws(function () {
           routerComponent.getSubcomponent('firstComponentName');
         }, /Subcomponent 'firstComponentName' doesn't exist/);
-
-        t.end();
       });
-
-      t.end();
     });
 
-    t.test('.route', function (t) {
-      t.test('with correct path', function (t) {
-        t.test('should return true', function (t) {
+    tman.suite('.route', function () {
+      tman.suite('with correct path', function () {
+        tman.test('should return true', function () {
           const result = routerComponent.route(secondRouteCorrectPath);
 
-          t.is(result, true);
-
-          t.end();
+          assert.strictEqual(result, true);
         });
 
-        t.test('should deactivate old component', function (t) {
+        tman.test('should deactivate old component', function () {
           routerComponent.route(secondRouteCorrectPath);
 
-          t.assert(firstComponent.deactivate.calledOnce);
-          t.assert(firstComponent.deactivate.calledWithExactly());
-          t.assert(firstComponent.deactivate.calledOn(firstComponent));
-
-          t.end();
+          assert.ok(firstComponent.deactivate.calledOnce);
+          assert.ok(firstComponent.deactivate.calledWithExactly());
+          assert.ok(firstComponent.deactivate.calledOn(firstComponent));
         });
 
-        t.test('should activate new component', function (t) {
+        tman.test('should activate new component', function () {
           routerComponent.route(secondRouteCorrectPath);
 
-          t.assert(secondComponent.activate.calledOnce);
-          t.assert(secondComponent.activate.calledWithExactly());
-          t.assert(secondComponent.activate.calledOn(secondComponent));
-
-          t.end();
+          assert.ok(secondComponent.activate.calledOnce);
+          assert.ok(secondComponent.activate.calledWithExactly());
+          assert.ok(secondComponent.activate.calledOn(secondComponent));
         });
 
-        t.test('should activate new component after deactivating old component', function (t) {
+        tman.test('should activate new component after deactivating old component', function () {
           routerComponent.route(secondRouteCorrectPath);
 
-          t.assert(secondComponent.activate.calledAfter(firstComponent.deactivate));
-
-          t.end();
+          assert.ok(secondComponent.activate.calledAfter(firstComponent.deactivate));
         });
-
-        t.end();
       });
 
-      t.test('with incorrect path', function (t) {
-        t.test('should return false', function (t) {
+      tman.suite('with incorrect path', function () {
+        tman.test('should return false', function () {
           const result = routerComponent.route(wrongPath);
 
-          t.is(result, false);
-
-          t.end();
+          assert.strictEqual(result, false);
 
         });
 
-        t.test('should not call initializers', function (t) {
+        tman.test('should not call initializers', function () {
           firstInitializerSpy.reset();
           secondInitializerSpy.reset();
 
           routerComponent.route(wrongPath);
 
-          t.assert(firstInitializerSpy.notCalled);
-          t.assert(secondInitializerSpy.notCalled);
-
-          t.end();
+          assert.ok(firstInitializerSpy.notCalled);
+          assert.ok(secondInitializerSpy.notCalled);
         });
-
-        t.end();
       });
-
-      t.end();
     });
-
-    t.end();
   });
 
-  t.test('after .route with incorrect path', function (t) {
-    t.beforeEach(function (t) {
+  tman.suite('after .route with incorrect path', function () {
+    tman.beforeEach(function () {
       routerComponent.route(wrongPath);
-
-      t.end();
     });
 
-    t.test('.currentComponentName', function (t) {
-      t.test('should be null', function (t) {
-        t.is(routerComponent.currentComponentName, null);
-
-        t.end();
+    tman.suite('.currentComponentName', function () {
+      tman.test('should be null', function () {
+        assert.strictEqual(routerComponent.currentComponentName, null);
       });
-
-      t.end();
     });
 
-    t.test('.currentComponent', function (t) {
-      t.test('should be null', function (t) {
-        t.is(routerComponent.currentComponent, null);
-
-        t.end();
+    tman.suite('.currentComponent', function () {
+      tman.test('should be null', function () {
+        assert.strictEqual(routerComponent.currentComponent, null);
       });
-
-      t.end();
     });
 
-    t.test('.render', function (t) {
-      t.test('should return result of .renderInvalidRoute', function (t) {
+    tman.suite('.render', function () {
+      tman.test('should return result of .renderInvalidRoute', function () {
         const routerComponentRenderInvalidRouteResult = h('span');
         sandbox.stub(routerComponent, 'renderInvalidRoute').returns(routerComponentRenderInvalidRouteResult);
 
         const result = routerComponent.render();
 
-        t.assert(routerComponent.renderInvalidRoute.calledOnce);
-        t.assert(routerComponent.renderInvalidRoute.calledWithExactly());
-        t.assert(routerComponent.renderInvalidRoute.calledOn(routerComponent));
-        t.is(result, routerComponentRenderInvalidRouteResult);
-
-        t.end();
+        assert.ok(routerComponent.renderInvalidRoute.calledOnce);
+        assert.ok(routerComponent.renderInvalidRoute.calledWithExactly());
+        assert.ok(routerComponent.renderInvalidRoute.calledOn(routerComponent));
+        assert.strictEqual(result, routerComponentRenderInvalidRouteResult);
       });
-
-      t.end();
     });
 
-    t.test('.route', function (t) {
-      t.test('with correct path', function (t) {
-        t.test('should return true', function (t) {
+    tman.suite('.route', function () {
+      tman.suite('with correct path', function () {
+        tman.test('should return true', function () {
           const result = routerComponent.route(secondRouteCorrectPath);
 
-          t.is(result, true);
-
-          t.end();
+          assert.strictEqual(result, true);
         });
 
-        t.test('should activate new component', function (t) {
+        tman.test('should activate new component', function () {
           routerComponent.route(secondRouteCorrectPath);
 
-          t.assert(secondComponent.activate.calledOnce);
-          t.assert(secondComponent.activate.calledWithExactly());
-          t.assert(secondComponent.activate.calledOn(secondComponent));
-
-          t.end();
+          assert.ok(secondComponent.activate.calledOnce);
+          assert.ok(secondComponent.activate.calledWithExactly());
+          assert.ok(secondComponent.activate.calledOn(secondComponent));
         });
-
-        t.end();
       });
 
-      t.test('with incorrect path', function (t) {
-        t.test('should return false', function (t) {
+      tman.suite('with incorrect path', function () {
+        tman.test('should return false', function () {
           const result = routerComponent.route(wrongPath);
 
-          t.is(result, false);
-
-          t.end();
+          assert.strictEqual(result, false);
         });
 
-        t.test('should not call initializers', function (t) {
+        tman.test('should not call initializers', function () {
           firstInitializerSpy.reset();
           secondInitializerSpy.reset();
 
           routerComponent.route(wrongPath);
 
-          t.assert(firstInitializerSpy.notCalled);
-          t.assert(secondInitializerSpy.notCalled);
-
-          t.end();
+          assert.ok(firstInitializerSpy.notCalled);
+          assert.ok(secondInitializerSpy.notCalled);
         });
-
-        t.end();
       });
-
-      t.end();
     });
-
-    t.end();
   });
-
-  t.end();
 });

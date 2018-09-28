@@ -2,7 +2,8 @@
 
 const globSync = require('glob').sync,
   path = require('path'),
-  esm = require("@std/esm");
+  esm = require("@std/esm"),
+  tman = require('tman');
 
 const esmRequire = esm(module);
 
@@ -12,3 +13,5 @@ const testFiles = globSync(testFilesGlob);
 for (const testFile of testFiles) {
   esmRequire(testFile);
 }
+
+tman.run();
