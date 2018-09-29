@@ -1,0 +1,14 @@
+{
+  "reporter": [
+    "html",
+    "text"
+  ],
+   "extension": [
+    ".js",
+    ".mjs"
+   ],
+  "exclude": [
+    "example"
+    ],
+  "report-dir": "./coverage"
+}

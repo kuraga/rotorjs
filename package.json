@@ -65,11 +65,13 @@
     "clone": "^1.0.2",
     "eslint": "^4.12.1",
     "glob": "^6.0.4",
+    "nyc": "^13.0.1",
     "sinon": "^1.17.2",
     "tman": "^1.8.0"
   },
   "scripts": {
     "test": "node scripts/test.js",
+    "cover": "nyc npm run test",
     "lint": "eslint $(git ls-files '*.js' '*.mjs' '*.jsx')",
     "release-patch": "git checkout master && npm version patch && git push origin master --tags && npm publish",
     "release-minor": "git checkout master && npm version minor && git push origin master --tags && npm publish",
