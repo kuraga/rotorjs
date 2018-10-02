@@ -2,6 +2,16 @@
 
 This is a beta-stage component-based JavaScript library for single-page applications and an example application.
 
+[![npm version](https://badge.fury.io/js/rotorjs.svg)](http://badge.fury.io/js/rotorjs)
+
+## Installation
+
+```sh
+npm install rotorjs
+```
+
+(Note: an ES2018+ESM-compatible environment is required.)
+
 ## Philosophy
 
 RotorJS provides classes which represent an application and its components.
@@ -15,7 +25,7 @@ Component's state (model) is available during render.
 Components may also have their activating and deactivating hooks.
 Subcomponents are supported.
 
-Application is also a subclass RotorJS class.
+Application is also a subclass of a RotorJS class.
 You may implement application's start and stop hooks but default start hook receives a root component.
 
 A target object (e.g. DOM tree) is available after application has been started.
@@ -67,6 +77,10 @@ Alexander Kurakin <<kuraga333@mail.ru>>
 * [React](http://facebook.github.io/react),
 * [Preact](http://developit.github.io/preact),
 * [Zorium](https://github.com/Zorium/zorium).
+* [Freezer](https://github.com/arqex/freezer),
+* [virtual-dom](https://github.com/Matt-Esch/virtual-dom),
+* [route-trie](https://github.com/zensh/route-trie),
+* [Snabbdom](https://github.com/snabbdom/snabbdom).
 
 ## Feedback and contribute
 
