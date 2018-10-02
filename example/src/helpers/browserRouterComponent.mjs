@@ -1,5 +1,6 @@
 import { RouterComponent } from './rotorJsClasses.mjs';
 
+// TODO: Move to RotorJS
 export default class BrowserRouterComponent extends RouterComponent {
   constructor(...args) {
     super(...args);

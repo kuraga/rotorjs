@@ -1,5 +1,6 @@
 import Freezer from 'freezer-js';
 
+// FIXME: All the methods return `Freezer` instead of this class instances itself
 export default class Cursor_FreezerJs {
   constructor(object) {
     this.__freezer = new Freezer(object);

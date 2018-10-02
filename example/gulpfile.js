@@ -1,5 +1,7 @@
 'use strict';
 
+// TODO: Migrate to GulpJS v4
+
 var path = require('path');
 var gulp = require('gulp');
 var runSequence = require('run-sequence');

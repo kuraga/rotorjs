@@ -1,3 +1,4 @@
+// TODO: Re-implement using (not yet implemented) finite-state-machine component
 export default function getRouterComponent(Component, PathNode) {  // eslint-disable-line no-unused-vars
   class RouterComponent extends Component {
     constructor(application, parent, name, rootPathNode) {
@@ -34,8 +35,8 @@ export default function getRouterComponent(Component, PathNode) {  // eslint-dis
       }
       this.state.set('currentComponentName', null);
 
-      const routePath = uri.split('/')
-        .filter((chunk) => chunk.length > 0);
+      const routePath = uri.split('/')         // TODO: Control of correctness and transform the URI
+        .filter((chunk) => chunk.length > 0);  // TODO: Add options to control this
       const matched = this.state.__rootPathNode.match(routePath);
       if (matched !== null) {
         const [ matchedPathNode, matchedPathArguments ] = matched;
@@ -67,7 +68,7 @@ export default function getRouterComponent(Component, PathNode) {  // eslint-dis
     }
   }
 
-  RouterComponent.__PathNode = PathNode;
+  RouterComponent.__PathNode = PathNode;  // TODO: use static class fields for this
 
   return RouterComponent;
 }
