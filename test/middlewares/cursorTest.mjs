@@ -663,10 +663,10 @@ tman.suite('Cursor', function () {
       });
     });
 
-    tman.suite('.trigger', function () {
+    tman.suite('.triggerUpdate', function () {
       tman.test('should do something', function () {
         assert.doesNotThrow(function () {
-          cursor.trigger();
+          cursor.triggerUpdate();
         });
       });
 
@@ -676,7 +676,7 @@ tman.suite('Cursor', function () {
         callbackSpy.reset();
         anotherCallbackSpy.reset();
 
-        cursor.trigger();
+        cursor.triggerUpdate();
 
         rafRaf(() => {
           assert.ok(callbackSpy.calledOnce);
@@ -698,9 +698,8 @@ tman.suite('Cursor', function () {
           done();
         });
 
-        cursor.trigger();
+        cursor.triggerUpdate();
       });
     });
   });
-  
 });
