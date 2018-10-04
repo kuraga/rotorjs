@@ -11,15 +11,12 @@ import h from 'virtual-dom/h';
 
 tman.mocha();
 
-let sandbox;
-
 tman.suite('Component', function () {
   let application,
     rootComponent, name, additionalInitialState, component,
     subcomponent, anotherSubcomponent;
 
   tman.beforeEach(function () {
-    sandbox = sinon.sandbox.create();
     application = new Application();
     application.render = function () {  // avoid renderInvalidRoute
       return h('span');
@@ -38,7 +35,7 @@ tman.suite('Component', function () {
   tman.afterEach(function () {
     application.stop();
 
-    sandbox.restore();
+    sinon.restore();
   });
 
   tman.suite('constructor', function () {
@@ -192,7 +189,7 @@ tman.suite('Component', function () {
 
     tman.suite('.state', function () {
       tman.beforeEach(function () {
-        sandbox.stub(application, 'getComponentState');
+        sinon.stub(application, 'getComponentState');
       });
 
       tman.suite('of root component', function () {

@@ -27,18 +27,15 @@ const sample = {
 
 tman.mocha();
 
-let sandbox;
-
 tman.suite('Cursor', function () {
   let cursor;
 
   tman.beforeEach(function () {
-    sandbox = sinon.sandbox.create();
     cursor = new Cursor(seed);
   });
 
   tman.afterEach(function () {
-    sandbox.restore();
+    sinon.restore();
   });
 
   tman.suite('constructor', function () {
@@ -398,9 +395,9 @@ tman.suite('Cursor', function () {
       cursor = new Cursor(seed);
       state = cursor.get();
       callback = function (state) {};  // eslint-disable-line no-unused-vars
-      callbackSpy = sandbox.spy(callback);
+      callbackSpy = sinon.spy(callback);
       anotherCallback = function (state) {};  // eslint-disable-line no-unused-vars
-      anotherCallbackSpy = sandbox.spy(anotherCallback);
+      anotherCallbackSpy = sinon.spy(anotherCallback);
     });
 
     tman.suite('.subscribe', function () {
@@ -412,7 +409,7 @@ tman.suite('Cursor', function () {
 
       tman.test('should subscribe a callback', function (done) {
         cursor.subscribe(callbackSpy);
-        callbackSpy.reset();
+        callbackSpy.resetHistory();
 
         state.object.set('a', 2);
 
@@ -426,8 +423,8 @@ tman.suite('Cursor', function () {
       tman.test('should subscribe several callbacks', function (done) {
         cursor.subscribe(callbackSpy);
         cursor.subscribe(anotherCallbackSpy);
-        callbackSpy.reset();
-        anotherCallbackSpy.reset();
+        callbackSpy.resetHistory();
+        anotherCallbackSpy.resetHistory();
 
         state.object.set('a', 2);
 
@@ -545,7 +542,7 @@ tman.suite('Cursor', function () {
 
       tman.test('should not trigger callback on .remove with non-existant property', function (done) {
         cursor.subscribe(callbackSpy);
-        callbackSpy.reset();
+        callbackSpy.resetHistory();
 
         state.remove('wrongProperty');
 
@@ -558,7 +555,7 @@ tman.suite('Cursor', function () {
 
       tman.test('should not trigger callback on non-updating .set', function (done) {
         cursor.subscribe(callbackSpy);
-        callbackSpy.reset();
+        callbackSpy.resetHistory();
 
         state.set('number', 1);
 
@@ -571,7 +568,7 @@ tman.suite('Cursor', function () {
 
       // TODO: Doesn't work (for Freezer) due to https://github.com/arqex/freezer/issues/85
       tman.it.skip('should not trigger callback if it has been subscribed after .set call', function (done) {
-        callbackSpy.reset();
+        callbackSpy.resetHistory();
 
         state.object.set('a', 2);
 
@@ -633,7 +630,7 @@ tman.suite('Cursor', function () {
 
         tman.test('should unsubscribe callback', function (done) {
           cursor.unsubscribe(callbackSpy);
-          callbackSpy.reset();
+          callbackSpy.resetHistory();
 
           state.object.set('a', 2);
 
@@ -649,7 +646,7 @@ tman.suite('Cursor', function () {
 
           cursor.unsubscribe(callbackSpy);
 
-          callbackSpy.reset();
+          callbackSpy.resetHistory();
 
           state.object.set('a', 2);
 
@@ -673,8 +670,8 @@ tman.suite('Cursor', function () {
       tman.test('should trigger callbacks', function (done) {
         cursor.subscribe(callbackSpy);
         cursor.subscribe(anotherCallbackSpy);
-        callbackSpy.reset();
-        anotherCallbackSpy.reset();
+        callbackSpy.resetHistory();
+        anotherCallbackSpy.resetHistory();
 
         cursor.triggerUpdate();
 

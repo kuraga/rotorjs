@@ -9,14 +9,11 @@ import h from 'virtual-dom/h';
 
 tman.mocha();
 
-let sandbox;
-
 tman.suite('Loop', function () {
   let loop,
     state, view, viewBinded, viewBindedSpy;
 
   tman.beforeEach(function () {
-    sandbox = sinon.sandbox.create();
     state = {
       property: 'value'
     };
@@ -26,13 +23,13 @@ tman.suite('Loop', function () {
       );
     };
     viewBinded = view.bind(state);
-    viewBindedSpy = sandbox.spy(viewBinded);
+    viewBindedSpy = sinon.spy(viewBinded);
 
     loop = new Loop(viewBindedSpy);
   });
 
   tman.afterEach(function () {
-    sandbox.restore();
+    sinon.restore();
   });
 
   tman.suite('constructor', function () {
@@ -55,7 +52,7 @@ tman.suite('Loop', function () {
 
   tman.suite('.redraw', function () {
     tman.test('should call .view function', function (done) {
-      viewBindedSpy.reset();
+      viewBindedSpy.resetHistory();
 
       loop.redraw();
 

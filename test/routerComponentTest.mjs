@@ -13,8 +13,6 @@ import h from 'virtual-dom/h';
 
 tman.mocha();
 
-let sandbox;
-
 tman.suite('RouterComponent', function () {
   let application,
     rootPathNode, usersPathNode, usersUserPathNode, aboutPathNode,
@@ -26,8 +24,6 @@ tman.suite('RouterComponent', function () {
     userComponentInitializer, userComponentInitializerSpy;
 
   tman.beforeEach(function () {
-    sandbox = sinon.sandbox.create();
-
     application = new Application();
     application.render = function () {  // avoid routerComponent.renderInvalidRoute at application start
       return h('span');
@@ -39,19 +35,19 @@ tman.suite('RouterComponent', function () {
     ]);
     aboutComponentInitializer = function (matchedPathNode, matchedPathArguments, routerComponent) {  // eslint-disable-line no-unused-vars
       aboutComponent = new Component(application, routerComponent, 'aboutComponentName');
-      sandbox.stub(aboutComponent, 'render');
+      sinon.stub(aboutComponent, 'render');
       aboutComponent.render.returns(aboutComponentRenderResult);
-      sandbox.spy(aboutComponent, 'deactivate');
+      sinon.spy(aboutComponent, 'deactivate');
       return aboutComponent;
     };
-    aboutComponentInitializerSpy = sandbox.spy(aboutComponentInitializer);
+    aboutComponentInitializerSpy = sinon.spy(aboutComponentInitializer);
 
     userComponentInitializer = function (matchedPathNode, matchedPathArguments, routerComponent) {  // eslint-disable-line no-unused-vars
       userComponent = new Component(application, routerComponent, 'userComponentName');
-      sandbox.spy(userComponent, 'activate');
+      sinon.spy(userComponent, 'activate');
       return userComponent;
     };
-    userComponentInitializerSpy = sandbox.spy(userComponentInitializer);
+    userComponentInitializerSpy = sinon.spy(userComponentInitializer);
 
     rootPathNode = new PathNode();
     aboutPathNode = new PathNode('about', { initializer: aboutComponentInitializerSpy });
@@ -75,7 +71,7 @@ tman.suite('RouterComponent', function () {
   tman.afterEach(function () {
     application.stop();
 
-    sandbox.restore();
+    sinon.restore();
   });
 
   tman.suite('constructor', function () {
@@ -122,7 +118,7 @@ tman.suite('RouterComponent', function () {
   tman.suite('.render', function () {
     tman.test('should return result of .renderInvalidRoute', function () {
       const routerComponentRenderInvalidRouteResult = h('span');
-      sandbox.stub(routerComponent, 'renderInvalidRoute').returns(routerComponentRenderInvalidRouteResult);
+      sinon.stub(routerComponent, 'renderInvalidRoute').returns(routerComponentRenderInvalidRouteResult);
 
       const result = routerComponent.render();
 
@@ -142,7 +138,7 @@ tman.suite('RouterComponent', function () {
       });
 
       tman.test('should call correct initializer', function () {
-        userComponentInitializerSpy.reset();
+        userComponentInitializerSpy.resetHistory();
 
         routerComponent.route(usersUserUri);
 
@@ -154,7 +150,7 @@ tman.suite('RouterComponent', function () {
       });
 
       tman.test('should not call other initializers', function () {
-        aboutComponentInitializerSpy.reset();
+        aboutComponentInitializerSpy.resetHistory();
 
         routerComponent.route(usersUserUri);
 
@@ -189,8 +185,8 @@ tman.suite('RouterComponent', function () {
       });
 
       tman.test('should not call initializers', function () {
-        aboutComponentInitializerSpy.reset();
-        userComponentInitializerSpy.reset();
+        aboutComponentInitializerSpy.resetHistory();
+        userComponentInitializerSpy.resetHistory();
 
         routerComponent.route(usersUserWrongUri);
 
@@ -207,8 +203,8 @@ tman.suite('RouterComponent', function () {
       });
 
       tman.test('should not call initializers', function () {
-        aboutComponentInitializerSpy.reset();
-        userComponentInitializerSpy.reset();
+        aboutComponentInitializerSpy.resetHistory();
+        userComponentInitializerSpy.resetHistory();
 
         routerComponent.route(usersInactiveUri);
 
@@ -237,7 +233,7 @@ tman.suite('RouterComponent', function () {
 
     tman.suite('.render', function () {
       tman.test('should return result of correct component\'s .render', function () {
-        aboutComponent.render.reset();
+        aboutComponent.render.resetHistory();
 
         const result = routerComponent.render();
 
@@ -251,7 +247,7 @@ tman.suite('RouterComponent', function () {
 
     tman.suite('.deactivate', function () {
       tman.test('should deactivate subcomponents', function () {
-        aboutComponent.deactivate.reset();
+        aboutComponent.deactivate.resetHistory();
 
         routerComponent.deactivate();
 
@@ -310,8 +306,8 @@ tman.suite('RouterComponent', function () {
         });
 
         tman.test('should not call initializers', function () {
-          aboutComponentInitializerSpy.reset();
-          userComponentInitializerSpy.reset();
+          aboutComponentInitializerSpy.resetHistory();
+          userComponentInitializerSpy.resetHistory();
 
           routerComponent.route(usersUserWrongUri);
 
@@ -342,7 +338,7 @@ tman.suite('RouterComponent', function () {
     tman.suite('.render', function () {
       tman.test('should return result of .renderInvalidRoute', function () {
         const routerComponentRenderInvalidRouteResult = h('span');
-        sandbox.stub(routerComponent, 'renderInvalidRoute').returns(routerComponentRenderInvalidRouteResult);
+        sinon.stub(routerComponent, 'renderInvalidRoute').returns(routerComponentRenderInvalidRouteResult);
 
         const result = routerComponent.render();
 
@@ -378,8 +374,8 @@ tman.suite('RouterComponent', function () {
         });
 
         tman.test('should not call initializers', function () {
-          aboutComponentInitializerSpy.reset();
-          userComponentInitializerSpy.reset();
+          aboutComponentInitializerSpy.resetHistory();
+          userComponentInitializerSpy.resetHistory();
 
           routerComponent.route(usersUserWrongUri);
 
@@ -396,8 +392,8 @@ tman.suite('RouterComponent', function () {
         });
 
         tman.test('should not call initializers', function () {
-          aboutComponentInitializerSpy.reset();
-          userComponentInitializerSpy.reset();
+          aboutComponentInitializerSpy.resetHistory();
+          userComponentInitializerSpy.resetHistory();
 
           routerComponent.route(usersInactiveUri);
 

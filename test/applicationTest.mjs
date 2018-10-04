@@ -12,16 +12,13 @@ import h from 'virtual-dom/h';
 
 tman.mocha();
 
-let sandbox;
-
 tman.suite('Application', function () {
   let application,
     componentInitialState, component;
 
   tman.beforeEach(function () {
-    sandbox = sinon.sandbox.create();
     application = new Application();
-    sandbox.spy(application, 'redraw');
+    sinon.spy(application, 'redraw');
     componentInitialState = {
       property: 'value'
     };
@@ -32,7 +29,7 @@ tman.suite('Application', function () {
   });
 
   tman.afterEach(function () {
-    sandbox.restore();
+    sinon.restore();
   });
 
   tman.suite('constructor', function () {
@@ -47,7 +44,7 @@ tman.suite('Application', function () {
     });
 
     tman.test('should activate root component', function () {
-      sandbox.spy(component, 'activate');
+      sinon.spy(component, 'activate');
 
       application.start(component);
 
@@ -56,7 +53,7 @@ tman.suite('Application', function () {
     });
 
     tman.test('should render root component', function () {
-      sandbox.spy(component, 'render');
+      sinon.spy(component, 'render');
 
       application.start(component);
 
@@ -72,7 +69,7 @@ tman.suite('Application', function () {
     });
 
     tman.test('should deactivate root component', function () {
-      sandbox.spy(component, 'deactivate');
+      sinon.spy(component, 'deactivate');
 
       application.stop();
 
@@ -102,12 +99,11 @@ tman.suite('Application', function () {
         const applicationLoopTargetObject = {};
         // FIXME: Can't use sandbox here, see https://github.com/sinonjs/sinon/issues/781
         // should assign to a variable here, see https://groups.google.com/forum/#!topic/sinonjs/kRrON0h7riU
-        const stub = sinon.stub(application.__loop, 'target', { get: function () { return applicationLoopTargetObject; }});
+        const stub = sinon.stub(application.__loop, 'target').value(applicationLoopTargetObject);
 
         const result = application.target;
 
-        assert.ok(stub.get.calledOnce);
-        assert.strictEqual(result, applicationLoopTargetObject);  // calls application.target !
+        assert.strictEqual(result, applicationLoopTargetObject);
       });
     });
 
@@ -168,7 +164,7 @@ tman.suite('Application', function () {
         tman.test('should call .redraw', function (done) {
           const componentState = application.getComponentState(['componentName']);
 
-          application.redraw.reset();
+          application.redraw.resetHistory();
           componentState.set('newProperty', 'new value');
 
           rafRaf(() => {

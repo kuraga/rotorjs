@@ -10,6 +10,6 @@ export default class Cursor_FreezerJs extends Freezer {
   }
 
   triggerUpdate() {
-    return this.trigger('update', this.get());
+    return this.emit('update', this.get());
   }
 }

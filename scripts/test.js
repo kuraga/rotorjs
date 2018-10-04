@@ -2,7 +2,7 @@
 
 const globSync = require('glob').sync,
   path = require('path'),
-  esm = require("@std/esm"),
+  esm = require('esm'),
   tman = require('tman');
 
 const esmRequire = esm(module);
