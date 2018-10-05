@@ -2,5 +2,7 @@ package-lock.json
 node_modules
 *.log
 
+test/browser/testBrowserBundle.*
+
 coverage
 .nyc_output
