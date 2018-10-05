@@ -2,7 +2,6 @@ import tman from 'tman';
 import assert from 'assert';
 import sinon from 'sinon';
 import rafRaf from '../helpers/rafRaf';
-import clone from 'clone';
 
 import { Loop_VirtualDom as Loop } from '../../middlewares';
 import h from 'virtual-dom/h';
@@ -66,25 +65,25 @@ tman.suite('Loop', function () {
     });
 
     tman.test('should re-render target since state has been changed', function (done) {
-      const targetCopy = clone(loop.target);
+      const textCopy = loop.target.childNodes[0].childNodes[0].data;
 
       state.property = 'new value';
       loop.redraw();
 
       rafRaf(() => {
-        assert.notStrictEqual(loop.target, targetCopy);
+        assert.notStrictEqual(loop.target.childNodes[0].childNodes[0].data, textCopy);
 
         done();
       });
     });
 
     tman.test('should not re-render target until state has been changed', function (done) {
-      const targetCopy = clone(loop.target);
+      const textCopy = loop.target.childNodes[0].childNodes[0].data;
 
       loop.redraw();
 
       rafRaf(() => {
-        assert.deepEqual(loop.target, targetCopy);
+        assert.strictEqual(loop.target.childNodes[0].childNodes[0].data, textCopy);
 
         done();
       });
