@@ -9,6 +9,14 @@ import {
 
 import h from 'virtual-dom/h';
 
+function patchApplication(application) {
+  // WARNING: Avoid renderInvalidRoute at application start
+  application.render = function () {
+    return h('span');
+  };
+  application.__renderBinded = application.render.bind(application);
+}
+
 tman.mocha();
 
 tman.suite('Component', function () {
@@ -18,15 +26,16 @@ tman.suite('Component', function () {
 
   tman.beforeEach(function () {
     application = new Application();
-    application.render = function () {  // avoid renderInvalidRoute
-      return h('span');
-    };
-    application.__renderBinded = application.render.bind(application);
+    patchApplication(application);
+
     rootComponent = new Component(application, null, 'rootComponentName');
+
     name = 'componentName';
     additionalInitialState = { property: 'value' };
     component = new Component(application, rootComponent, name, additionalInitialState);
+
     subcomponent = new Component(application, rootComponent, 'subcomponentName');
+
     anotherSubcomponent = new Component(application, rootComponent, 'anotherSubcomponentName');
 
     application.start(rootComponent);

@@ -1,7 +1,7 @@
 import raf from 'raf';
-import vDomCreate from 'virtual-dom/vdom/create-element';
-import vDomDiff from 'virtual-dom/vtree/diff';
-import vDomPatch from 'virtual-dom/vdom/patch';
+import vDomCreate from 'virtual-dom/create-element';
+import vDomDiff from 'virtual-dom/diff';
+import vDomPatch from 'virtual-dom/patch';
 
 // TODO: Migrate to Snabbdom
 export default class Loop_VirtualDom {

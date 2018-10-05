@@ -11,6 +11,14 @@ import {
 import { PathNode } from 'tiny-path-matcher';
 import h from 'virtual-dom/h';
 
+function patchApplication(application) {
+  // WARNING: Avoid renderInvalidRoute at application start
+  application.render = function () {
+    return h('span');
+  };
+  application.__renderBinded = application.render.bind(application);
+}
+
 tman.mocha();
 
 tman.suite('RouterComponent', function () {
@@ -25,10 +33,7 @@ tman.suite('RouterComponent', function () {
 
   tman.beforeEach(function () {
     application = new Application();
-    application.render = function () {  // avoid routerComponent.renderInvalidRoute at application start
-      return h('span');
-    };
-    application.__renderBinded = application.render.bind(application);
+    patchApplication(application);
 
     aboutComponentRenderResult = h('span', { id: 'about' }, [
       'About'
@@ -167,7 +172,7 @@ tman.suite('RouterComponent', function () {
 
       tman.it.skip('should activate new component after adding it to the state', function () {
         // FIXME: aboutComponent is constructed in initializer so we really don't stub it here
-        sinon.stub(aboutComponent, 'activate').callsFake(function (...args) {
+        sinon.stub(aboutComponent, 'activate').callsFake(function (...args) {  // eslint-disable-line no-unused-vars
           assert.strictEqual(routerComponent.currentComponentName, 'userComponentName');
           assert.strictEqual(routerComponent.currentComponent, userComponent);
         });

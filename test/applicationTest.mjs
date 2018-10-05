@@ -97,9 +97,7 @@ tman.suite('Application', function () {
     tman.suite('.target', function () {
       tman.test('should return loop\'s target', function () {
         const applicationLoopTargetObject = {};
-        // FIXME: Can't use sandbox here, see https://github.com/sinonjs/sinon/issues/781
-        // should assign to a variable here, see https://groups.google.com/forum/#!topic/sinonjs/kRrON0h7riU
-        const stub = sinon.stub(application.__loop, 'target').value(applicationLoopTargetObject);
+        sinon.stub(application.__loop, 'target').value(applicationLoopTargetObject);
 
         const result = application.target;
 
@@ -109,7 +107,6 @@ tman.suite('Application', function () {
 
     tman.suite('.redraw', function () {
       tman.test('should call loop\'s .redraw', function () {
-        // FIXME: Can't use sandbox here, see https://github.com/sinonjs/sinon/issues/781
         sinon.spy(application.__loop, 'redraw');
 
         application.redraw();
