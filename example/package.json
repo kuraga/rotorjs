@@ -51,6 +51,7 @@
     "node": ">= 8.5.0"
   },
   "dependencies": {
+    "rollup": "^0.66.4",
     "rotorjs": "file:..",
     "virtual-dom": "^2.1.1",
     "vnode-immutable-thunk": "^0.2.0"
@@ -64,7 +65,10 @@
     "gulp-revert-path": "^2.0.0",
     "gulp-rollup": "^2.16.0",
     "rollup-plugin-commonjs": "^9.1.8",
-    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
     "run-sequence": "^2.2.1",
     "vinyl-paths": "^2.1.0"
   },

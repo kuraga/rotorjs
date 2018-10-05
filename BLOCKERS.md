@@ -5,3 +5,7 @@
   [isaacs/node-glob#365](https://github.com/isaacs/node-glob/issues/365).
   В коде имеются циклические зависимости, что вызывает неправильную транспиляцию кода примера `rollup`.
   Предложено исправление: [isaacs/node-glob#374](https://github.com/isaacs/node-glob/issues/374).
+
+* Не происходит сборка примера, поскольку в `rollup-plugin-node-globals` присутствует проблема:
+  [calvinmetcalf/rollup-plugin-node-globals#20](https://github.com/calvinmetcalf/rollup-plugin-node-globals/issues/20).
+  При наличии в транспилируемом кооде зависимостей `process`, возникает ошибка траспилирования.

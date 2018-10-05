@@ -2,18 +2,21 @@
 
 // TODO: Migrate to GulpJS v4
 
-var path = require('path');
-var gulp = require('gulp');
-var runSequence = require('run-sequence');
-var vinylPaths = require('vinyl-paths');
-var del = require('del');
-var gulpBabel = require('gulp-babel');
-var gulpRollup = require('gulp-rollup');
-var revertPath = require('gulp-revert-path');
-var resolve = require('rollup-plugin-node-resolve');
-var commonjs = require('rollup-plugin-commonjs');
+const path = require('path');
+const gulp = require('gulp');
+const runSequence = require('run-sequence');
+const vinylPaths = require('vinyl-paths');
+const del = require('del');
+const gulpBabel = require('gulp-babel');
+const gulpRollup = require('gulp-rollup');
+const revertPath = require('gulp-revert-path');
+const json = require('rollup-plugin-json');
+const bultins = require('rollup-plugin-node-builtins');
+const globals = require('rollup-plugin-node-globals');
+const resolve = require('rollup-plugin-node-resolve');
+const commonjs = require('rollup-plugin-commonjs');
 
-var babelJsxOptions = {
+const babelJsxOptions = {
   plugins: [
     ['transform-react-jsx', { pragma: 'h' }]
   ],
@@ -48,13 +51,18 @@ gulp.task('build-system', function () {
     },
 
     plugins: [
+      json(),
+
       resolve({
         extensions: [ '.mjs', '.js', '.json' ]
       }),
 
       commonjs({
         sourceMap: true
-      })
+      }),
+
+      globals(),
+      bultins()
     ],
 
     allowRealFiles: true
