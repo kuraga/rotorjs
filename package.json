@@ -17,7 +17,6 @@
     "DOM",
     "virtual DOM",
     "application loop",
-    "router",
     "unidirectional dataflow",
     "minimalistic",
     "modular",
@@ -25,6 +24,20 @@
     "universal",
     "browser",
     "server",
+    "ES6",
+    "ECMAScript 6",
+    "ES2015",
+    "ECMAScript 2015",
+    "ES7",
+    "ECMAScript 7",
+    "ES2016",
+    "ECMAScript 2016",
+    "ES8",
+    "ECMAScript 8",
+    "ES2017",
+    "ECMAScript 2017",
+    "ES9",
+    "ECMAScript 9",
     "ES2018",
     "ECMAScript 2018"
   ],
@@ -51,7 +64,6 @@
   "dependencies": {
     "freezer-js": "^0.14.1",
     "raf": "^3.1.0",
-    "tiny-path-matcher": "^0.1.0",
     "virtual-dom": "^2.1.1"
   },
   "devDependencies": {

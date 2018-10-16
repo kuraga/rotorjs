@@ -1,13 +1,5 @@
-// TODO: Re-implement using (not yet implemented) finite-state-machine component
-export default function getRouterComponent(Component, PathNode) {  // eslint-disable-line no-unused-vars
-  class RouterComponent extends Component {
-    constructor(application, parent, name, rootPathNode) {
-      const initialState = {
-        __rootPathNode: rootPathNode
-      };
-      super(application, parent, name, initialState);
-    }
-
+export default function getChildlyComponent(Component) {
+  class ChildlyComponent extends Component {
     deactivate() {
       if (this.currentComponentName !== undefined && this.currentComponentName !== null) {
         this.currentComponent.deactivate();
@@ -28,24 +20,15 @@ export default function getRouterComponent(Component, PathNode) {  // eslint-dis
           : this.getSubcomponent(this.currentComponentName);
     }
 
-    route(uri) {
+    route(...args) {
       if (this.currentComponentName !== undefined && this.currentComponentName !== null) {
         this.currentComponent.deactivate();
         this.removeSubcomponent(this.currentComponentName);
       }
       this.state.set('currentComponentName', null);
 
-      const routePath = uri.split('/')         // TODO: Control of correctness and transform the URI
-        .filter((chunk) => chunk.length > 0);  // TODO: Add options to control this
-      const matched = this.state.__rootPathNode.match(routePath);
-      if (matched !== null) {
-        const [ matchedPathNode, matchedPathArguments ] = matched;
-
-        if (matchedPathNode.data === undefined || !('initializer' in matchedPathNode.data)) {
-          return null;
-        }
-
-        const currentComponent = (0, matchedPathNode.data.initializer)(matchedPathNode, matchedPathArguments, this);
+      const currentComponent = this.__match(...args);
+      if (currentComponent !== null) {
         this.state.set('currentComponentName', currentComponent.name)
         this.addSubcomponent(currentComponent);
 
@@ -66,9 +49,11 @@ export default function getRouterComponent(Component, PathNode) {  // eslint-dis
         ? this.currentComponent.render()
         : this.renderInvalidRoute();
     }
+
+    __match(...args) {  // eslint-disable-line no-unused-vars
+      throw new Error('Not implemented');
+    }
   }
 
-  RouterComponent.__PathNode = PathNode;  // TODO: use static class fields for this
-
-  return RouterComponent;
+  return ChildlyComponent;
 }

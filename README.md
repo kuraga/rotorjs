@@ -10,7 +10,7 @@ This is a beta-stage component-based JavaScript library for single-page applicat
 npm install rotorjs
 ```
 
-(Note: an ES2018+ESM-compatible environment is required.)
+(Note: an ECMAScript 6+ & ESM-compatible environment is required.)
 
 **Note**: current version of RotorJS is 0.6.0. But it [doesn't work](https://github.com/kuraga/rotorjs/tree/master/BLOCKERS.md).
 So current published version is [0.5.2](https://github.com/kuraga/rotorjs/releases/tag/v0.5.2) but it has been rewritten completely.
@@ -44,7 +44,7 @@ Some additional features are also provided.
 * testability,
 * (not yet) documentability,
 * isomorphism,
-* ECMAScript 2018.
+* ECMAScript 6 & ESM.
 
 ## Default middleware
 
