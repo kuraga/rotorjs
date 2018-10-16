@@ -1,17 +1,14 @@
 'use strict';
 
-const globSync = require('glob').sync,
-  path = require('path'),
-  esm = require('esm'),
+const esm = require('esm'),
   tman = require('tman');
 
 const esmRequire = esm(module);
 
-const testFilesGlob = path.join(process.cwd(), 'test', '**', '*Test.mjs');
-const testFiles = globSync(testFilesGlob);
-
-for (const testFile of testFiles) {
-  esmRequire(testFile);
-}
+esmRequire('../test/middlewares/cursorTest');
+esmRequire('../test/middlewares/loopTest');
+esmRequire('../test/applicationTest');
+esmRequire('../test/componentTest');
+esmRequire('../test/childlyComponentTest');
 
 tman.run();
