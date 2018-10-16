@@ -1,10 +1,7 @@
 'use strict';
 
-// TODO: Migrate to GulpJS v4
-
 const path = require('path');
 const gulp = require('gulp');
-const runSequence = require('run-sequence');
 const del = require('del');
 const gulpBabel = require('gulp-babel');
 const gulpRollup = require('gulp-rollup');
@@ -22,11 +19,12 @@ const babelJsxOptions = {
   compact: false
 };
 
-gulp.task('clean', function() {
+function clean() {
   return del(path.join('dist'));
-});
+}
+clean.displayName = 'clean';
 
-gulp.task('build-system', function () {
+function buildSystem() {
   return gulp.src([
     path.join('src', '**', '*.js'),
     path.join('src', '**', '*.mjs'),
@@ -64,19 +62,19 @@ gulp.task('build-system', function () {
     allowRealFiles: true
   }))
   .pipe(gulp.dest('dist'));
-});
+}
+buildSystem.displayName = 'build:system';
 
-gulp.task('build-html', function () {
+function buildHtml() {
   return gulp.src([
     path.join('index.html')
   ])
   .pipe(gulp.dest(path.join('dist')));
-});
+}
+buildHtml.displayName = 'build:html';
 
-gulp.task('build', function (callback) {
-  return runSequence(
-    'clean',
-    ['build-system', 'build-html'],
-    callback
-  );
-});
+exports.clean = clean;
+exports.build = gulp.series(
+  clean,
+  gulp.parallel(buildSystem, buildHtml)
+);
