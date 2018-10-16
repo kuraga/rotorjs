@@ -5,7 +5,6 @@
 const path = require('path');
 const gulp = require('gulp');
 const runSequence = require('run-sequence');
-const vinylPaths = require('vinyl-paths');
 const del = require('del');
 const gulpBabel = require('gulp-babel');
 const gulpRollup = require('gulp-rollup');
@@ -24,10 +23,7 @@ const babelJsxOptions = {
 };
 
 gulp.task('clean', function() {
-  return gulp.src([
-    path.join('dist')
-  ])
-  .pipe(vinylPaths(del));
+  return del(path.join('dist'));
 });
 
 gulp.task('build-system', function () {

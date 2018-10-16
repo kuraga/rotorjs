@@ -72,8 +72,7 @@
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-node-resolve": "^3.4.0",
-    "run-sequence": "^2.2.1",
-    "vinyl-paths": "^2.1.0"
+    "run-sequence": "^2.2.1"
   },
   "scripts": {
     "build": "gulp build",
