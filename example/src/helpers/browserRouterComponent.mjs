@@ -1,69 +1,64 @@
-import { ChildlyComponent } from './rotorJsClasses.mjs';
-import { PathNode } from 'tiny-path-matcher';
-
-class RouterComponent extends ChildlyComponent {
-  constructor(application, parent, name, rootPathNode) {
-    const initialState = {
-      __rootPathNode: rootPathNode
-    };
-    super(application, parent, name, initialState);
-  }
-
-  __match(uri) {
-    const routePath = uri.split('/')
-      .filter((chunk) => chunk.length > 0);
-    const matched = this.state.__rootPathNode.match(routePath);
-    if (matched !== null) {
-      const [ matchedPathNode, matchedPathArguments ] = matched;
-
-      if (matchedPathNode.data === undefined || !('initializer' in matchedPathNode.data)) {
-        return null;
-      }
-
-      const component = (0, matchedPathNode.data.initializer)(matchedPathNode, matchedPathArguments, this);
-
-      return component;
-    }
-
-    return null;
-  }
-}
-
-RouterComponent.__PathNode = PathNode;  // TODO: use static class fields for this
+import RouterComponent from './routerComponent';
 
 export default class BrowserRouterComponent extends RouterComponent {
-  constructor(...args) {
-    super(...args);
+  // TODO: Add `window` argument
+  // TODO: Add `bindingWay` argument
+  constructor(application, parent, name, rootPathNode) {
+    super(application, parent, name, rootPathNode);
 
-    this.__onPopStateBinded = this.onPopState.bind(this);
+    this.onPopStateBinded = this.onPopState.bind(this);
   }
 
   activate() {
-    this.onPopState();
-
     super.activate();
 
-    window.addEventListener('popstate', this.__onPopStateBinded);
+    this.__curentPath = null;
+
+    window.addEventListener('popstate', this.onPopStateBinded);
   }
 
   deactivate() {
-    window.removeEventListener('popstate', this.__onPopStateBinded);
+    window.removeEventListener('popstate', this.onPopStateBinded);
+
+    this.__curentPath = null;
 
     super.deactivate();
   }
 
-  get __currentPath() {
-    const hash = document.location.hash;
-    const path = hash.slice(1);
-
-    return path;
+  get currentPath() {
+    return this.__currentPath;
   }
 
-  routeCurrentPath() {
-    return this.route(this.__currentPath);
+  routeToPath(path, syncLocationHash = true) {
+    this.__currentPath = path;
+
+    this.route(this.__currentPath);
+
+    if (syncLocationHash) {
+      this.__applyPathToLocationHashPath();
+    }
+  }
+
+  routeToLocationHashPath() {
+    return this.routeToPath(this.__currentLocationHashPath, false);
   }
 
   onPopState(event) {  // eslint-disable-line no-unused-vars
-    return this.routeCurrentPath();
+    return this.routeToLocationHashPath();
   }
+
+  get __currentLocationHashPath() {
+    const locationHash = window.location.hash;
+    const currentLocationHashPath = locationHash.slice(1);
+
+    return currentLocationHashPath;
+  }
+
+  __applyPathToLocationHashPath() {
+    const locationHash = '#' + this.currentPath;
+    window.history.pushState(this.currentPath, '', locationHash);
+  }
+
+  // TODO: Add `.window` property
+  // TODO: Add `.bindingWay` property
 }

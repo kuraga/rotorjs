@@ -7,6 +7,8 @@ export default class GreeterApplication extends Application {
     const router = new GreeterRouter(this, null, 'router');
 
     super.start(router);
+
+    this.rootComponent.routeToLocationHashPath();
   }
 
   stop() {
