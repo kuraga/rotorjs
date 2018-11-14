@@ -3,12 +3,6 @@ import { Application } from './helpers/rotorJsClasses.mjs';
 import GreeterRouter from './greeterRouter.mjs';
 
 export default class GreeterApplication extends Application {
-  constructor(ownerDocument) {
-    super();
-
-    this.ownerDocument = ownerDocument;
-  }
-
   start() {
     const router = new GreeterRouter(this, null, 'router');
 
@@ -16,7 +10,7 @@ export default class GreeterApplication extends Application {
   }
 
   stop() {
-    alert('Good bye!');
+    window.alert('Good bye!');
 
     super.stop();
   }

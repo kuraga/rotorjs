@@ -5,6 +5,7 @@ import vDomPatch from 'virtual-dom/patch';
 
 // TODO: Migrate to Snabbdom
 export default class Loop_VirtualDom {
+  // TODO: Add `window` argument
   constructor(view) {
     this.__view = view;
 
@@ -34,6 +35,7 @@ export default class Loop_VirtualDom {
     this.__currentTree = newTree;
   }
 
-  // TODO: Add `.document` property
-  // TODO: Add `.onNextTick` static method
+  // TODO: Add `.window` property
+  // TODO: Add `.start` and `.stop` methods
+  // TODO: Add `.onNextTick` method
 }

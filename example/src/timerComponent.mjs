@@ -8,6 +8,7 @@ export default class TimerComponent extends Component {
   constructor(application, parent = null, name = 'timer', initialState = {}) {
     initialState.count = initialState.count || 0;
     initialState.duration = initialState.duration || 1000;
+
     super(application, parent, name, initialState);
 
     this.__incCountBinded = this.incCount.bind(this);
@@ -16,12 +17,12 @@ export default class TimerComponent extends Component {
   activate() {
     super.activate();
 
-    const intervalId = setInterval(this.__incCountBinded, this.state.duration);
+    const intervalId = window.setInterval(this.__incCountBinded, this.state.duration);
     this.state.set('intervalId', intervalId);
   }
 
   deactivate() {
-    clearInterval(this.state.intervalId);
+    window.clearInterval(this.state.intervalId);
 
     super.deactivate();
   }

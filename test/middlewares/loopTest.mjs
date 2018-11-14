@@ -10,7 +10,7 @@ tman.mocha();
 
 tman.suite('Loop', function () {
   let loop,
-    state, view, viewBinded, viewBindedSpy;
+    state, view, viewSpy;
 
   tman.beforeEach(function () {
     state = {
@@ -21,10 +21,9 @@ tman.suite('Loop', function () {
         h('span', null, [ this.property ])
       );
     };
-    viewBinded = view.bind(state);
-    viewBindedSpy = sinon.spy(viewBinded);
+    viewSpy = sinon.spy(view);
 
-    loop = new Loop(viewBindedSpy);
+    loop = new Loop(viewSpy);
   });
 
   tman.afterEach(function () {
@@ -39,7 +38,7 @@ tman.suite('Loop', function () {
 
   tman.suite('.view', function () {
     tman.test('should return view', function () {
-      assert.strictEqual(loop.view, viewBindedSpy);
+      assert.strictEqual(loop.view, viewSpy);
     });
   });
 
@@ -51,39 +50,35 @@ tman.suite('Loop', function () {
 
   tman.suite('.redraw', function () {
     tman.test('should call .view function', function (done) {
-      viewBindedSpy.resetHistory();
+      viewSpy.resetHistory();
 
       loop.redraw();
 
       rafRaf(() => {
-        assert.ok(viewBindedSpy.calledOnce);
-        assert.ok(viewBindedSpy.calledWithExactly());
-        assert.ok(viewBindedSpy.calledOn(undefined));  // try to check here if not rebound
-
-        done();
-      });
-    });
-
-    tman.test('should re-render target since state has been changed', function (done) {
-      const textCopy = loop.target.childNodes[0].childNodes[0].data;
-
-      state.property = 'new value';
-      loop.redraw();
-
-      rafRaf(() => {
-        assert.notStrictEqual(loop.target.childNodes[0].childNodes[0].data, textCopy);
+        assert.ok(viewSpy.calledOnce);
+        assert.ok(viewSpy.calledWithExactly());
+        assert.ok(viewSpy.calledOn(undefined));  // try to check here if not rebound
 
         done();
       });
     });
 
     tman.test('should not re-render target until state has been changed', function (done) {
-      const textCopy = loop.target.childNodes[0].childNodes[0].data;
-
       loop.redraw();
 
       rafRaf(() => {
-        assert.strictEqual(loop.target.childNodes[0].childNodes[0].data, textCopy);
+        assert.strictEqual(loop.target.childNodes[0].childNodes[0].data, 'value');
+
+        done();
+      });
+    });
+
+    tman.test('should re-render target since state has been changed', function (done) {
+      state.property = 'new value';
+      loop.redraw();
+
+      rafRaf(() => {
+        assert.strictEqual(loop.target.childNodes[0].childNodes[0].data, 'new value');
 
         done();
       });

@@ -1,5 +1,6 @@
 export default function getApplicationClass(Cursor, Loop) {
   class Application {
+    // TODO: Add `window` argument
     constructor() {
       this.__redrawBinded = this.redraw.bind(this);
       this.__cursorUpdatedHandler = () => { this.redraw() };
@@ -62,6 +63,8 @@ export default function getApplicationClass(Cursor, Loop) {
 
       return result;
     }
+
+    // TODO: Add `.window` property
   }
 
   return Application;

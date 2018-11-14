@@ -10,7 +10,8 @@ class RouterComponent extends ChildlyComponent {
   }
 
   __match(uri) {
-    const routePath = uri.split('/').filter((chunk) => chunk.length > 0);
+    const routePath = uri.split('/')
+      .filter((chunk) => chunk.length > 0);
     const matched = this.state.__rootPathNode.match(routePath);
     if (matched !== null) {
       const [ matchedPathNode, matchedPathArguments ] = matched;
@@ -52,7 +53,7 @@ export default class BrowserRouterComponent extends RouterComponent {
   }
 
   get __currentPath() {
-    const hash = this.application.ownerDocument.location.hash;
+    const hash = document.location.hash;
     const path = hash.slice(1);
 
     return path;

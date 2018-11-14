@@ -5,7 +5,7 @@ import GreeterApplication from './src/greeterApplication.mjs';
 var application;
 
 window.onload = () => {
-  application = new GreeterApplication(document);
+  application = new GreeterApplication();
   application.start();
 
   document.body.appendChild(application.target);
