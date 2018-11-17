@@ -3,8 +3,8 @@ import assert from 'assert';
 import sinon from 'sinon';
 import rafRaf from '../helpers/rafRaf';
 
-import { Loop_VirtualDom as Loop } from '../../middlewares';
-import h from 'virtual-dom/h';
+import { Loop_Snabbdom as Loop } from '../../middlewares';
+import h from 'snabbdom/h';
 
 tman.mocha();
 
@@ -17,8 +17,8 @@ tman.suite('Loop', function () {
       property: 'value'
     };
     view = function () {
-      return h('div', { class: 'awesome' },
-        h('span', null, [ this.property ])
+      return h('div', {},
+        [ h('span', {}, state.property) ]
       );
     };
     viewSpy = sinon.spy(view);

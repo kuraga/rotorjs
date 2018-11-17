@@ -15,3 +15,13 @@
   [mcasimir/gulp-rollup#75](https://github.com/mcasimir/gulp-rollup/pull/75).
   Используется старая версия `rollup`, из-за чего не транспилируются ECMAScript2019-код примера.
   Предложено решение проблемы: [mcasimir/gulp-rollup#76](https://github.com/mcasimir/gulp-rollup/pull/76).
+
+* Не вполняются тесты; не ппроисходит сборка примера,
+  поскольку в `snabbdom` присутствует проблема: там используется некорректный с точки зрения ESM код.
+  Смотрите следующие тикеты: [snabbdom/snabbdom#200](https://github.com/snabbdom/snabbdom/pull/200),
+  [snabbdom/snabbdom#225](https://github.com/snabbdom/snabbdom/pull/225),
+  [snabbdom/snabbdom#247](https://github.com/snabbdom/snabbdom/pull/247),
+  [snabbdom/snabbdom#261](https://github.com/snabbdom/snabbdom/pull/261),
+  [snabbdom/snabbdom#312](https://github.com/snabbdom/snabbdom/pull/312),
+  [snabbdom/snabbdom#319](https://github.com/snabbdom/snabbdom/pull/319),
+  [snabbdom/snabbdom#338](https://github.com/snabbdom/snabbdom/pull/338).

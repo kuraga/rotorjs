@@ -1,10 +1,11 @@
-/** @jsx h */
+/** @jsx snabbdomCreateElement */
 
 import BrowserRouterComponent from './helpers/browserRouterComponent.mjs';
 import MainComponent from './mainComponent.mjs';
 import GreeterComponent from './greeterComponent.mjs';
 
-import h from 'virtual-dom/h';  // eslint-disable-line no-unused-vars
+import h from 'snabbdom/h';  // eslint-disable-line no-unused-vars
+import { createElement as snabbdomCreateElement } from 'snabbdom-pragma';  // eslint-disable-line no-unused-vars
 
 export default class GreeterRouter extends BrowserRouterComponent {
   constructor(application, parent, name) {

@@ -1,6 +1,6 @@
 import {
   Cursor_FreezerJs as Cursor,
-  Loop_VirtualDom as Loop,
+  Loop_Snabbdom as Loop,
 } from '../../middlewares';
 import { getRotorJsClasses } from '../../index';
 

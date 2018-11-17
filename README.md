@@ -48,11 +48,11 @@ Some additional features are also provided.
 
 ## Default middleware
 
-Default middleware is based on [Freezer](https://github.com/arqex/freezer) and [virtual-dom](https://github.com/Matt-Esch/virtual-dom).
+Default middleware is based on [Freezer](https://github.com/arqex/freezer) and [Snabbdom](https://github.com/snabbdom/snabbdom).
 So your application uses unidirectional dataflow, immutable state and provides DOM target with default middleware.
 
-You simple have to append application's target to your document's body and use virtual-dom's
-[virtual-hyperscript](https://github.com/Matt-Esch/virtual-dom/tree/master/virtual-hyperscript) to construct component's view.
+You simple have to append application's target to your document's body and use
+[Snabbdom's helpers](https://github.com/snabbdom/snabbdom#helpers) to construct component's view.
 See [example](https://github.com/kuraga/rotorjs/tree/master/example) for more information.
 
 ## Get started

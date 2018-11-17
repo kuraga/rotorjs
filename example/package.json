@@ -55,9 +55,9 @@
   "dependencies": {
     "rollup": "^0.66.4",
     "rotorjs": "file:..",
-    "tiny-path-matcher": "^0.1.0",
-    "virtual-dom": "^2.1.1",
-    "vnode-immutable-thunk": "^0.2.0"
+    "snabbdom": "^0.7.2",
+    "snabbdom-pragma": "^2.8.0",
+    "tiny-path-matcher": "^0.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",

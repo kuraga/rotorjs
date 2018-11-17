@@ -8,7 +8,7 @@ import {
   Component
 } from './helpers/rotorJsClasses';
 
-import h from 'virtual-dom/h';
+import h from 'snabbdom/h';
 
 tman.mocha();
 
