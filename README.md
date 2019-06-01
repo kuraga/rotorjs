@@ -55,7 +55,7 @@ You simple have to append application's target to your document's body and use
 [Snabbdom's helpers](https://github.com/snabbdom/snabbdom#helpers) to construct component's view.
 See [example](https://github.com/kuraga/rotorjs/tree/master/example) for more information.
 
-## Get started
+## Getting started
 
 TODO
 
