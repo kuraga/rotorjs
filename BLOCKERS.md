@@ -24,8 +24,3 @@
   [isaacs/node-glob#365](https://github.com/isaacs/node-glob/issues/365).
   В коде имеются циклические зависимости, что вызывает неправильную транспиляцию кода примера `rollup`.
   Предложено исправление: [isaacs/node-glob#374](https://github.com/isaacs/node-glob/issues/374).
-
-* Не происходит сборка примера, поскольку в `gulp-rollup` присутствует проблема:
-  [mcasimir/gulp-rollup#75](https://github.com/mcasimir/gulp-rollup/pull/75).
-  Используется старая версия `rollup`, из-за чего не транспилируются ECMAScript2019-код примера.
-  Предложено решение проблемы: [mcasimir/gulp-rollup#76](https://github.com/mcasimir/gulp-rollup/pull/76).
