@@ -64,7 +64,7 @@
   "dependencies": {
     "freezer-js": "^0.14.1",
     "raf": "^3.1.0",
-    "snabbdom": "^0.7.2"
+    "snabbdom": "^0.7.3"
   },
   "devDependencies": {
     "eslint": "^5.6.1",

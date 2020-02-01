@@ -2,14 +2,8 @@
 В этот файл вносится информация о них, в коммите, где возникает проблема.
 
 * Не вполняются серверные тесты, и не ппроисходит сборка примера, поскольку в `snabbdom` присутствует проблема:
-  там используется некорректный с точки зрения ESM код. Смотрите следующие тикеты:
-  [snabbdom/snabbdom#200](https://github.com/snabbdom/snabbdom/pull/200),
-  [snabbdom/snabbdom#225](https://github.com/snabbdom/snabbdom/pull/225),
-  [snabbdom/snabbdom#247](https://github.com/snabbdom/snabbdom/pull/247),
-  [snabbdom/snabbdom#261](https://github.com/snabbdom/snabbdom/pull/261),
-  [snabbdom/snabbdom#312](https://github.com/snabbdom/snabbdom/pull/312),
-  [snabbdom/snabbdom#319](https://github.com/snabbdom/snabbdom/pull/319),
-  [snabbdom/snabbdom#338](https://github.com/snabbdom/snabbdom/pull/338).
+  [snabbdom/snabbdom#516](https://github.com/snabbdom/snabbdom/issues/516).
+  Там используется некорректный с точки зрения ESM код.
 
 * Не происходит сборка браузерных тестов, и не происходит сборка примера,
   поскольку в `rollup-plugin-node-globals` присутствует проблема:
