@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "rotorjs-example",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "license": "MIT",
   "description": "RotorJS Example.",
   "keywords": [
@@ -26,11 +26,7 @@
     "isomorphic",
     "universal",
     "browser",
-    "server",
-    "ES9",
-    "ECMAScript 9",
-    "ES2018",
-    "ECMAScript 2018"
+    "server"
   ],
   "homepage": "https://github.com/kuraga/rotorjs",
   "repository": {

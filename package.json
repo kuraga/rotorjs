@@ -1,6 +1,6 @@
 {
   "name": "rotorjs",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "license": "MIT",
   "description": "Component-based JavaScript library for single-page applications.",
   "keywords": [
@@ -23,23 +23,7 @@
     "isomorphic",
     "universal",
     "browser",
-    "server",
-    "ES6",
-    "ECMAScript 6",
-    "ES2015",
-    "ECMAScript 2015",
-    "ES7",
-    "ECMAScript 7",
-    "ES2016",
-    "ECMAScript 2016",
-    "ES8",
-    "ECMAScript 8",
-    "ES2017",
-    "ECMAScript 2017",
-    "ES9",
-    "ECMAScript 9",
-    "ES2018",
-    "ECMAScript 2018"
+    "server"
   ],
   "homepage": "https://github.com/kuraga/rotorjs",
   "repository": {
