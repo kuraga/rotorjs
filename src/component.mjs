@@ -54,7 +54,7 @@ export default function getComponentClass() {
     }
 
     getSubcomponent(subcomponentName) {
-      if (!this.state.__subcomponents.hasOwnProperty(subcomponentName)) {
+      if (!Object.prototype.hasOwnProperty.call(this.state.__subcomponents, subcomponentName)) {
         throw new Error(`Subcomponent '${subcomponentName}' doesn't exist`);
       }
 
@@ -69,7 +69,7 @@ export default function getComponentClass() {
 
       const subcomponentName = subcomponent.name;
 
-      if (this.state.__subcomponents.hasOwnProperty(subcomponentName)) {
+      if (Object.prototype.hasOwnProperty.call(this.state.__subcomponents, subcomponentName)) {
         throw new Error(`Subcomponent '${subcomponentName}' already exists`);
       }
 
@@ -79,7 +79,7 @@ export default function getComponentClass() {
     }
 
     removeSubcomponent(subcomponentName) {
-      if (!this.state.__subcomponents.hasOwnProperty(subcomponentName)) {
+      if (!Object.prototype.hasOwnProperty.call(this.state.__subcomponents, subcomponentName)) {
         throw new Error(`Subcomponent '${subcomponentName}' doesn't exist`);
       }
 
