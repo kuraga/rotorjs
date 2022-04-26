@@ -2,7 +2,6 @@
 
 import { Component } from './helpers/rotorJsClasses.mjs';
 
-import h from 'snabbdom/h';  // eslint-disable-line no-unused-vars
 import { thunk as snabbdomThunk } from 'snabbdom';
 import { createElement as snabbdomCreateElement } from 'snabbdom-pragma';  // eslint-disable-line no-unused-vars
 

@@ -2,7 +2,6 @@
 
 import { Component } from './helpers/rotorJsClasses.mjs';
 
-import h from 'snabbdom/h';  // eslint-disable-line no-unused-vars
 import { createElement as snabbdomCreateElement } from 'snabbdom-pragma';  // eslint-disable-line no-unused-vars
 
 export default class MainComponent extends Component {
