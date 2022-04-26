@@ -1,9 +1,11 @@
 import raf from 'raf';
-import { init as snabbdomInit } from 'snabbdom';
-import snabbdomPropsModule from 'snabbdom/es/modules/props';
-import snabbdomEventListenersModule from 'snabbdom/es/modules/eventlisteners';
-import snabbdomClassModule from 'snabbdom/es/modules/class';
-import snabbdomStyleModule from 'snabbdom/es/modules/style';
+import {
+  init as snabbdomInit,
+  propsModule as snabbdomPropsModule,
+  eventListenersModule as snabbdomEventListenersModule,
+  classModule as snabbdomClassModule,
+  styleModule as snabbdomStyleModule
+} from 'snabbdom';
 
 export default class Loop_Snabbdom {
   // TODO: Add `window` argument

@@ -1,14 +1,14 @@
 import tman from 'tman';
 import assert from 'assert';
 import sinon from 'sinon';
-import rafRaf from './helpers/rafRaf';
+import rafRaf from './helpers/rafRaf.mjs';
 
 import {
   Application,
   Component
-} from './helpers/rotorJsClasses';
+} from './helpers/rotorJsClasses.mjs';
 
-import h from 'snabbdom/h';
+import { h } from 'snabbdom';
 
 tman.mocha();
 

@@ -3,10 +3,10 @@
 import tman from 'tman';
 import assert from 'assert';
 import sinon from 'sinon';
-import rafRaf from '../helpers/rafRaf';
-import { pass } from '../helpers/assertions';
+import rafRaf from '../helpers/rafRaf.mjs';
+import { pass } from '../helpers/assertions.mjs';
 
-import { Cursor_FreezerJs as Cursor } from '../../middlewares';
+import { Cursor_FreezerJs as Cursor } from '../../middlewares.mjs';
 
 const seed = {
   number: 1,

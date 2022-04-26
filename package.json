@@ -59,30 +59,29 @@
   "jsnext:main": "index.mjs",
   "browser": "index.mjs",
   "engines": {
-    "node": ">= 8.5.0"
+    "node": ">= 14.0.0"
   },
   "dependencies": {
     "freezer-js": "^0.14.1",
-    "raf": "^3.1.0",
-    "snabbdom": "^0.7.3"
+    "raf": "^3.4.1",
+    "snabbdom": "^3.5.0"
   },
   "devDependencies": {
-    "eslint": "^5.6.1",
-    "esm": "^3.0.84",
-    "nyc": "^13.0.1",
-    "rollup": "^0.66.4",
-    "rollup-plugin-commonjs": "^9.1.8",
-    "rollup-plugin-json": "^3.1.0",
-    "rollup-plugin-node-builtins": "^2.1.2",
-    "rollup-plugin-node-globals": "^1.4.0",
-    "rollup-plugin-node-resolve": "^3.4.0",
-    "sinon": "^6.3.5",
-    "tman": "^1.8.1"
+    "eslint": "^8.14.0",
+    "nyc": "^15.1.0",
+    "rollup": "^2.70.2",
+    "@rollup/plugin-commonjs": "^22.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.2.1",
+    "rollup-plugin-polyfill-node": "^0.9.0",
+    "sinon": "^13.0.2",
+    "tman": "^1.10.0"
   },
   "scripts": {
-    "test": "node --harmony scripts/test.js",
-    "cover": "nyc npm run test",
     "lint": "eslint $(git ls-files '*.js' '*.mjs' '*.jsx')",
+    "test": "node scripts/test.js",
+    "cover": "nyc npm run test",
+    "cover-clean": "rm -fv coverage .nyc_output",
     "release-patch": "git checkout master && npm version patch && git push origin master --tags && npm publish",
     "release-minor": "git checkout master && npm version minor && git push origin master --tags && npm publish",
     "release-major": "git checkout master && npm version major && git push origin master --tags && npm publish"

@@ -6,9 +6,9 @@ import {
   Application,
   Component,
   ChildlyComponent
-} from './helpers/rotorJsClasses';
+} from './helpers/rotorJsClasses.mjs';
 
-import h from 'snabbdom/h';
+import { h } from 'snabbdom';
 
 function patchApplication(application) {
   // WARNING: Avoid renderInvalidRoute at application start

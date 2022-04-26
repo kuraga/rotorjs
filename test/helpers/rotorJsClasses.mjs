@@ -1,8 +1,8 @@
 import {
   Cursor_FreezerJs as Cursor,
   Loop_Snabbdom as Loop,
-} from '../../middlewares';
-import { getRotorJsClasses } from '../../index';
+} from '../../middlewares.mjs';
+import { getRotorJsClasses } from '../../index.mjs';
 
 const middleware = {
   Cursor,

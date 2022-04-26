@@ -1,10 +1,9 @@
-const rollup = require('rollup');
-const json = require('rollup-plugin-json');
-const bultins = require('rollup-plugin-node-builtins');
-const globals = require('rollup-plugin-node-globals');
-const resolve = require('rollup-plugin-node-resolve');
-const commonjs = require('rollup-plugin-commonjs');
-const path = require('path');
+import { rollup } from 'rollup';
+import json from '@rollup/plugin-json';
+import polyfills from 'rollup-plugin-polyfill-node';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import path from 'path';
 
 const inputPath = path.join('scripts', 'test.mjs'),
   outputPath = path.join('test', 'browser', 'testBrowserBundle.js');
@@ -13,23 +12,23 @@ const inputOptions = {
   input: inputPath,
   treeshake: false,
   acorn: {
-    ecmaVersion: 2018
+    ecmaVersion: 2019
   },
 
   plugins: [
     json(),
 
-    resolve({
+    nodeResolve({
       preferBuiltins: false,
+      browser: true,
       extensions: [ '.mjs', '.js', '.json' ]
     }),
 
     commonjs({
-      sourceMap: true
+      sourceMap: false
     }),
 
-    globals(),
-    bultins()
+    polyfills()
   ]
 };
 const outputOptions = {
@@ -39,7 +38,7 @@ const outputOptions = {
 };
 
 async function build() {
-  const bundle = await rollup.rollup(inputOptions);
+  const bundle = await rollup(inputOptions);
   await bundle.write(outputOptions);
 }
 

@@ -1,10 +1,10 @@
 import tman from 'tman';
 import assert from 'assert';
 import sinon from 'sinon';
-import rafRaf from '../helpers/rafRaf';
+import rafRaf from '../helpers/rafRaf.mjs';
 
-import { Loop_Snabbdom as Loop } from '../../middlewares';
-import h from 'snabbdom/h';
+import { Loop_Snabbdom as Loop } from '../../middlewares.mjs';
+import { h } from 'snabbdom';
 
 tman.mocha();
 
