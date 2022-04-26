@@ -80,6 +80,8 @@
   "scripts": {
     "lint": "eslint $(git ls-files '*.js' '*.mjs' '*.jsx')",
     "test": "node scripts/test.js",
+    "test-browser": "node scripts/testBrowser.mjs",
+    "test-browser-clean": "rm -fv test/browser/testBrowserBundle.js",
     "cover": "nyc npm run test",
     "cover-clean": "rm -fv coverage .nyc_output",
     "release-patch": "git checkout master && npm version patch && git push origin master --tags && npm publish",

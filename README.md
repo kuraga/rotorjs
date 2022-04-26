@@ -60,6 +60,15 @@ TODO
 
 See <https://github.com/kuraga/rotorjs/tree/master/example>.
 
+## How to test?
+
+```sh
+npm run test-browser
+open test/browser/testBrowser.html
+# read browser's console
+npm run test-browser-clean
+```
+
 ## See also
 
 * [DBMON RotorJS](http://mathieuancelin.github.io/js-repaint-perfs/rotorjs/index.html),

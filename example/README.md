@@ -11,7 +11,7 @@ It uses a default RotorJS middleware and is ECMAScript2019- and ESM-compatible.
 ```sh
 npm install
 npm run build
-open dist/index.html
+# start server at dist/
 ```
 
 ## Author
