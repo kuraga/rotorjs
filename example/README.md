@@ -4,7 +4,7 @@
 
 This is a [RotorJS](https://github.com/kuraga/rotorjs) application example.
 
-It uses a default RotorJS middleware and is ES2015-compatible.
+It uses a default RotorJS middleware and is ECMAScript2019- and ESM-compatible.
 
 ## Usage
 
